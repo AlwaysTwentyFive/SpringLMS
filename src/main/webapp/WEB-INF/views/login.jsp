@@ -7,12 +7,15 @@
 <title>Insert title here</title>
 
 
+
+
+
 <style>
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .login-page {
-	width: 360px;
-	padding: 8% 0 0;
+	width: 400px;
+	padding: 8%  0;
 	margin: auto;
 }
 
@@ -44,7 +47,7 @@
 	font-family: "Roboto", sans-serif;
 	text-transform: uppercase;
 	outline: 0;
-	background: #4CAF50;
+	background: #34495e;
 	width: 100%;
 	border: 0;
 	padding: 15px;
@@ -56,7 +59,7 @@
 }
 
 .form button:hover, .form button:active, .form button:focus {
-	background: #43A047;
+	background: #f1c40f;
 }
 
 .form .message {
@@ -114,8 +117,16 @@
 	color: #EF3B3A;
 }
 
+img {
+	 opacity: 0.5;
+
+}
+
 body {
-	
+	background: #e0e0e0; /* fallback for old browsers */
+	background: #c6d2df;
+	background: linear-gradient(90deg, #e0e0e0 0%,
+		#34495e 70%);
 	font-family: "Roboto", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -124,24 +135,16 @@ body {
 </head>
 <body>
 	<div class="login-page">
-		<div class="form">
-			<form class="register-form">
-				<input type="text" placeholder="name" /> 
-				<input type="password" placeholder="password" />
-				<input type="text" placeholder="email address" />
-				<button>create</button>
-				<p class="message">
-					Already registered? <a href="#">Sign In</a>
-				</p>
-			</form>
+		<div class="form">	
 			<form class="login-form">
 				<input type="text" placeholder="username" /> 
 				<input type="password" placeholder="password" />
 				<button>login</button>
-				<p class="message">
-					Not registered? <a href="#">Create an account</a>
-				</p>
 			</form>
+		</div>
+		<div style="text-align:center">
+			<img src="images/logo.png" width="300px" class="mx-auto"/>
+		
 		</div>
 	</div>
 </body>
