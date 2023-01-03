@@ -1,3 +1,4 @@
 *.class
 /target/
 pom.properties
+/target/
