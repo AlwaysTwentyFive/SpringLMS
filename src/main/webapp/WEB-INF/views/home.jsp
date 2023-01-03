@@ -73,10 +73,31 @@ text-align: center;
 }
 
 </style>
+
+<script type="text/javascript">
+    function showClock()
+    {
+        var currentDate=new Date();
+        var divClock=document.getElementById("divClock");
+        var apm=currentDate.getHours();
+        
+        var msg = "현재시간 : "+apm +":";
+        msg += currentDate.getMinutes() + ":";
+        msg += currentDate.getSeconds();
+        
+        divClock.innerText=msg;
+        
+        setTimeout(showClock,1000);
+    }
+</script>
+
+
 </head>
-<body>
+<body onload="showClock()">
+
+
 	<div class="container">
-		<div class="card mb-3 shadow bg-white rounded mx-auto" style="max-width: 540px;">
+		<div class="card mb-4 shadow bg-white rounded mx-auto" style="max-width: 540px;">
 			<div class="row no-gutters">
 				<div class="profile col-md-4">
 					<div style="width:150px" class=" mx-auto mt-4 mb-5">
@@ -95,9 +116,16 @@ text-align: center;
 				</div>
 			</div>
 		</div>
-		<div class="w-btn-outline w-btn-yellow-outline mb-3 mx-auto" style="width:240px;text-align: center;">
-        현재시간 : 13:08
-    </div>
+		<div class=" d-flex  justify-content-center">
+			<div id="divClock" class="clock w-btn-outline w-btn-yellow-outline mb-3 mr-2 " style="width:210px;text-align: center;">
+			</div>
+			<div class="clock w-btn-outline w-btn-yellow-outline mb-3 mr-2" style="width:210px;text-align: center;">
+			 출근시간 : 8:47
+			</div>
+			<div class="clock w-btn-outline w-btn-yellow-outline mb-3 " style="width:210px;text-align: center;">
+			퇴근시간 : 18:20
+			</div>
+		</div>
 		<div class="bttn">
 			 <button class="w-btn w-btn-attendance" type="button">
 		        출근하기
