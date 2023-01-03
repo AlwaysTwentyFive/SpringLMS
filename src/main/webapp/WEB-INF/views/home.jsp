@@ -27,7 +27,7 @@
 .birth {
 	color: #E6E6E6;
 }
-
+  
 .w-btn {
     position: relative;
     border: none;
