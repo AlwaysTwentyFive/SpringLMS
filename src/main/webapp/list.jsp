@@ -11,16 +11,27 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 	<style>
-		.wrapper {
-			width: 1440px;
+		* {
+			padding: 0px;
+			margin: 0px;
+			/*border: 1px solid black;*/
+		}
+	    .wrapper {
+	        width: 1400px;
+	        margin: 0px auto;
+	    }
+	    a {
+			color: black;
 		}
 	</style>
 </head>
 <body>
-	<div class="d-flex">
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+	<div class="wrapper row">
 		<jsp:include page="/WEB-INF/views/common/sidebar.jsp"></jsp:include>
-		<div class="flex-fill d-flex flex-column justify-content-center">
-			<div class="wrapper">
+		<div class="content col-sm-10 col-md-10">
+			<!-- content -->
+			<div class="d-flex flex-column justify-content-center">
 				<table class="table">
 					<thead>
 						<tr class="d-flex justify-content-center">
@@ -32,9 +43,7 @@
 						</tr>
 					</thead>
 				</table>
-			</div>
-			<div class="wrapper">
-				<table class="table table-bodered table-hover table-striped	">
+				<table class="table table-bordered table-hover">
 					<tbody>
 						<tr class="d-flex justify-content-center">
 							<td class="col-1">장현</td>
