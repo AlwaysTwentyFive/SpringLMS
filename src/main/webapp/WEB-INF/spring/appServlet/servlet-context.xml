@@ -9,6 +9,8 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
+	<context:component-scan base-package="com.oti.myuniversity"></context:component-scan>
+	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
@@ -26,8 +28,22 @@
 	<resources location="/WEB-INF/resources/css/" mapping="/css/**"></resources>
 	<resources location="/WEB-INF/resources/images/" mapping="/images/**"></resources>
 	
-	<context:component-scan base-package="com.oti.myuniversity" />
+	<context:component-scan base-package="com.oti.myuniversity"/>
 	
+	<!-- ViewController -->
+	<view-controller path="/" view-name="home"/>
 	
+	<!-- MaxUploadFileSize -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="100000000"/>
+	</beans:bean>
 	
+	<!-- interceptor -->
+	<interceptors>
+		<interceptor>
+			<mapping path="/file/**"/>
+			<exclude-mapping path="/home"/>
+			<beans:bean class="com.oti.myuniversity.common.LoginInterceptor"/>
+		</interceptor>
+	</interceptors>
 </beans:beans>
