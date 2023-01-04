@@ -1,30 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-	<style>
-		* {
-			padding: 0px;
-			margin: 0px;
-			/*border: 1px solid black;*/
-		}
-	    .wrapper {
-	        width: 1200px;
-	        margin: 0px auto;
-	    }
-	</style>
-</head>
-<body>
-	<jsp:include page="/WEB-INF/views/common/sidebar.jsp"></jsp:include>
-	<div class="wrapper d-flex flex-column justify-content-center">
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+<style>
+	* {
+		padding: 0px;
+		margin: 0px;
+		/*border: 1px solid black;*/
+	}
+    .wrapper {
+        width: 1400px;
+        margin: 0px auto;
+    }
+    a {
+		color: black;
+	}
+</style>
+<div class="wrapper row">
+	<jsp:include page="/WEB-INF/views/include/sidebar.jsp"></jsp:include>
+	<div class="content col-sm-10 col-md-10">
 		<div class="">
 			<table class="table table-bordered table-hover bg-white">
 				<thead>
@@ -50,5 +42,5 @@
 			</table>
 		</div>
 	</div>
-</body>
-</html>
+</div>
+<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
