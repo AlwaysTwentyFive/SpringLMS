@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<<style>
-
+<style>
 input[type=text], select, textarea {
   width: 100%;
   padding: 12px;
@@ -38,6 +37,7 @@ input[type=text], select, textarea {
   padding: 20px;
 }
 </style>
+
 
 <div class="container">
 	<h5>과제실 작성하기</h5>
