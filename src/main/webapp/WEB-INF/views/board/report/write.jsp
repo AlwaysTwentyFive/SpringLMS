@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<<style>
-
+<style>
 input[type=text], select, textarea {
   width: 100%;
   padding: 12px;
@@ -32,7 +31,7 @@ input[type=text], select, textarea {
   background-color: #AE8B00;
 }
 
-.container {
+#writeContainer {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
@@ -40,12 +39,15 @@ input[type=text], select, textarea {
 </style>
 
 
-<div class="container">
-	<h5>자료실 작성하기</h5>
+<div class="container" id="writeContainer">
+	<h5>과제실 작성하기</h5>
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
 	    	<form action="#">
-		        <label for="title">제목</label>
+	    		<div class="row">
+		        	<label class="col-1" for="title">제목</label>
+		        	<div class="col-11 btn btn-lg btn-info" style="height:22px; width:30px;"></div>
+		        </div>
 		        <input type="text" id="writeTitle" name="title" placeholder="title">
 		
 		        <label for="content">내용</label>

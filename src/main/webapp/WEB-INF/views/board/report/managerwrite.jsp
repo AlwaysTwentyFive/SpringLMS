@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <link rel="stylesheet" type="text/css" href="css/style.css">
-
 <style>
 
 input[type=text], select, textarea {
@@ -41,9 +40,8 @@ input[type=text], select, textarea {
 }
 </style>
 
-
 <div class="container" id="writeContainer">
-	<h5>자료실 작성하기</h5>
+	<h5>과제실 작성하기</h5>
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
 	    	<form action="#">
