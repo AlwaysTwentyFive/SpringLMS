@@ -44,17 +44,15 @@ input[type=text], select, textarea {
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
 	    	<form action="#">
-	    		<div class="row">
-		        	<label class="col-1" for="title">제목</label>
-		        	<div class="col-11 btn btn-lg btn-info" style="height:22px; width:30px;"></div>
-		        </div>
+	        	<label for="title">제목</label>
 		        <input type="text" id="writeTitle" name="title" placeholder="title">
-		
 		        <label for="content">내용</label>
 		        <textarea id="writeContent" name="content" placeholder="content" style="height:200px"></textarea>
 				<label for="myfile">첨부 파일:</label>
  				<input class="btn btn-sm" type="file" id="myfile" name="myfile"><br><br>
-				
+ 				<label>제출 기한:</label>
+ 				<input name="deadlineDate" type="date">
+				<input name="deadlineTime" type="time">
 				<div class="d-flex justify-content-center">
 			        <a href="#" class="mr-3 btn btn-md" id="cancle">취소</a>
 			        <input class="ml-3 btn btn-md" id="register" type="submit" value="등록">
