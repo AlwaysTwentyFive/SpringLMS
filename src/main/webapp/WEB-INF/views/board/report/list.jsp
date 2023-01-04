@@ -5,36 +5,11 @@
 	<!-- content -->
   	<form action="#">
 	<div class="d-flex mb-3">
-		<div class="col-7"></div>
-		<div class="d-flex align-items-end justify-content-around col-5">
-			<div>
-			    <select id="year" name="year" class="custom-select">
-			    	<option value="2023" selected>2023</option>
-			    	<option value="2020">2020</option>
-			    	<option value="2021">2021</option>
-			    	<option value="2022">2022</option>
-			    </select>
-			</div>
-		    <h5>년</h5>
-			<div>
-			    <select id="month" name="month" class="custom-select">
-			    	<option value="1" selected>1</option>
-			    	<option value="2">2</option>
-			    	<option value="3">3</option>
-			    	<option value="4">4</option>
-			    </select>		    
-			</div>
-		    <h5>월</h5>
-			<div>
-			    <select id="day" name="day" class="custom-select">
-			    	<option value="1" selected>1</option>
-			    	<option value="2">2</option>
-			    	<option value="3">3</option>
-			    	<option value="4">4</option>
-			    </select>
-			</div>
-		    <h5>일</h5>
-	    	<button type="submit" class="btn btn-primary">검색</button>
+		<div class="col-7">
+			<h1>과제</h1>
+		</div>
+		<div class="d-flex align-items-end justify-content-end col-5">
+			<button type="submit" name="writeReport" value="writeReport" class="btn btn-sm btn-warning">과제 등록</button>
 		</div>
 	</div>
   	</form>
@@ -43,36 +18,20 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th class="col-1">name</th>
-					<th class="col-2">date</th>
-					<th class="col-3">arrive time</th>
-					<th class="col-3">dapart time</th>
-					<th class="col-2">status</th>
+					<th class="col-5">과제</th>
+					<th class="col-3">제출기한</th>
+					<th class="col-2">제출</th>
+					<th class="col-2">점수</th>
 				</tr>
 			</thead>
 		</table>
 		<table class="table table-bordered table-hover">
 			<tbody>
 				<tr>
-					<td class="col-1">장현</td>
-					<td class="col-2">1월 3일</td>
-					<td class="col-3">N/A</td>
-					<td class="col-3">N/A</td>
-					<td class="col-2">무단결석</td>
-				</tr>
-				<tr>
-					<td class="col-1">이예승</td>
-					<td class="col-2">1월 3일</td>
-					<td class="col-3">9:00</td>
-					<td class="col-3">9:01</td>
-					<td class="col-2">도망</td>
-				</tr>
-				<tr>
-					<td class="col-1">신문영</td>
-					<td class="col-2">1월 3일</td>
-					<td class="col-3">9:00</td>
-					<td class="col-3">18:00</td>
-					<td class="col-2">출석</td>
+					<td class="col-5">Assginment</td>
+					<td class="col-3">2023-01-10 23:59:59</td>
+					<td class="col-2">미제출</td>
+					<td class="col-2">0</td>
 				</tr>
 			</tbody>
 		</table>
@@ -106,4 +65,3 @@
 		<div class="flex-fulfill"></div>
 	</div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
-		

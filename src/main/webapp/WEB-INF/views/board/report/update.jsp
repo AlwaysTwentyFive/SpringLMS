@@ -31,7 +31,7 @@ input[type=text], select, textarea {
   background-color: #AE8B00;
 }
 
-#writeContainer {
+.container {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
@@ -39,23 +39,27 @@ input[type=text], select, textarea {
 </style>
 
 
-<div class="container" id="writeContainer">
-	<h5>과제실 작성하기</h5>
+<div class="container">
+	<h5>과제실 수정하기</h5>
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
 	    	<form action="#">
-	        	<label for="title">제목</label>
+	    		<div class="row">
+		        	<label class="col-1" for="title">제목</label>
+		        	<div class="col-11 btn btn-lg btn-info" style="height:22px; width:30px;"></div>
+		        </div>
+		        <!-- input value에 EL 작성 필요 -->
 		        <input type="text" id="writeTitle" name="title" placeholder="title">
+		
 		        <label for="content">내용</label>
 		        <textarea id="writeContent" name="content" placeholder="content" style="height:200px"></textarea>
 				<label for="myfile">첨부 파일:</label>
+				
  				<input class="btn btn-sm" type="file" id="myfile" name="myfile"><br><br>
- 				<label>제출 기한:</label>
- 				<input name="deadlineDate" type="date">
-				<input name="deadlineTime" type="time">
+				
 				<div class="d-flex justify-content-center">
 			        <a href="#" class="mr-3 btn btn-md" id="cancle">취소</a>
-			        <input class="ml-3 btn btn-md" id="register" type="submit" value="등록">
+			        <input class="ml-3 btn btn-md" id="register" type="submit" value="수정">
 				</div>
 	    	</form>
 	    </div>
