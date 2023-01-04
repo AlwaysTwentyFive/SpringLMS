@@ -1,0 +1,59 @@
+.profile {
+	background: #34495e;
+}
+
+.email {
+	color: #3bc9db;
+}
+
+.birth {
+	color: #E6E6E6;
+}
+
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: "paybooc-Light", sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
+.w-btn-attendance {
+	background-color: #f1c40f;
+	color: #34495e;
+	display: inline-block;
+}
+
+.w-btn:active {
+	transform: scale(1.5);
+}
+
+.bttn {
+	text-align: center;
+}
+
+.w-btn-yellow-outline {
+	border: 3px solid #e0e0e0;
+	color: #6e6e6e;
+}
+
+.w-btn-outline {
+	position: relative;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: "paybooc-Light", sans-serif;
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
+#topHeader {
+	margin-top: 10px;
+	background-color: #34495e;
+	height: 55px;
+}

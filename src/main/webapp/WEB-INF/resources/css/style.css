@@ -1,0 +1,12 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	/*border: 1px solid black;*/
+}
+.wrapper {
+    width: 1400px;
+    margin: 0px auto;
+}
+a {
+	color: black;
+}
