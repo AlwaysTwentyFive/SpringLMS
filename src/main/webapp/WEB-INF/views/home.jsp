@@ -57,12 +57,12 @@
 						</div>
 					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
-						<img class="mt-3" src="images/logo.png" width="125" height="95"/>
+						<img class="mt-3" src="images/logo.png" width="125" height="105"/>
 					</div>
 					<hr color = "#34495e" size = "3"/>
 				</header>
 			</div>
-			<br><br>
+			<br/><br/><br/>
 			<div class="container row wrapper" id="totalWrapper">
 				<div id="sidebar" class="col-sm-2 col-md-2 d-none d-xl-block">
 					<div class="d-flex justify-content-center shadow rounded align-content-center flex-wrap" style="background-color: #c6d2df; height:48px;">
