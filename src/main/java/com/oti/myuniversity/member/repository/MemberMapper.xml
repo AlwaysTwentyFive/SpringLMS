@@ -6,17 +6,52 @@
 	<select id="selectMember" parameterType="string" resultType="com.oti.myuniversity.member.model.Member">
 		<![CDATA[
 			SELECT 
-				MEMBER_ID AS memberId,
-				MEMBER_PASSWORD AS memberPassword,
-				MEMBER_NAME AS memberName,
-				member_email as memberEmail,
-				member_phone_number as memberPhoneNumber,
-				member_bitrhday as memberBirthday,
-				member_type as memberType
+				memberId,
+				memberPassword,
+				memberName,
+				memberEmail,
+				memberPhoneNumber,
+				memberBirthday,
+				memberType
 			FROM 
-				members
-			WHERE member_id=#{memberId}
+				MEMBERS
+			WHERE memberid=#{memberId}
 		]]>
-	
 	</select>
+	
+	<update id="updateMember" parameterType="com.oti.myuniversity.member.model.Member">
+	<![CDATA[
+		UPDATE 
+			MEMBERS 
+		SET 
+			memberId=#{memberId},
+			memberPassword=#{memberPassword},
+			memberEmail=#{memberEmail},
+			memberPhoneNumber=#{memberPhoneNumber},
+			memberBirthday=#{memberBirthday}
+		WHERE
+			memberId=#{memberId}
+	]]>
+	</update>
+	
+	<select id="selectMemberList" parameterType="com.oti.myuniversity.common.Pager" resultType="com.oti.myuniversity.member.model.Member">
+	<![CDATA[
+		SELECT
+			memberName, memberEmail, memberPhoneNumber
+		FROM
+			MEMBERS
+		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
+		FETCH NEXT #{rowsPerPage} ROWS ONLY
+	]]>
+	</select>
+	
+	<select id="getTotalMemberCount" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			MEMBERS
+	]]>
+	</select>
+	
 </mapper>
