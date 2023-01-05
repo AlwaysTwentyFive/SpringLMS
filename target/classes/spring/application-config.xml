@@ -8,8 +8,6 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-
-	<context:property-placeholder location="classpath:database/jdbc.properties"/>
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -44,7 +42,32 @@
 		<property name="defaultErrorView" value="error/default"></property>
 	</bean>
 	
+	<!-- JDBC Encryption -->
+	<bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor"/>
+		<property name="locations">
+			<list>
+				<value>classpath:/database/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="environmentVaraiablesConfiguration" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+		<property name="algorithm" value="PBEWithMD5AndDES"></property>
+		<property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD"></property>
+	</bean>
+	
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVaraiablesConfiguration"/>
+		<property name="password" value="12345"/>
+	</bean>
+	
+	
 	<mybatis-spring:scan base-package="com.oti.myuniversity.member.repository"/>
-	<context:component-scan base-package="com.oit.myuniversity.member.service"/>
+	<mybatis-spring:scan base-package="com.oti.myuniversity.attendance.repository"/>
+	<mybatis-spring:scan base-package="com.oti.myuniversity.board.repository"/>
+	<context:component-scan base-package="com.oti.myuniversity.member.service"/>
+	<context:component-scan base-package="com.oti.myuniversity.attendance.service"/>
+	<context:component-scan base-package="com.oti.myuniversity.board.service"/>
 	
 </beans>
