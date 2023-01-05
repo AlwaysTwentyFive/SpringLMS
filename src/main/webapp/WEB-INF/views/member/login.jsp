@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,10 +137,10 @@ body {
 <body>
 	<div class="login-page">
 		<div class="form">	
-			<form class="login-form">
-				<input type="text" placeholder="username" /> 
-				<input type="password" placeholder="password" />
-				<button>login</button>        
+			<form action="<c:url value='/member/login'/>" method="post" class="login-form">
+				<input name="memberId" type="text" placeholder="아이디를 입력해주세요" /> 
+				<input name="password" type="password" placeholder="비밀번호를 입력해주세요" />
+				<button type="submit">login</button>        
 			</form>
 		</div>
 		<div style="text-align:center">

@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<link rel="stylesheet" type="text/css" href="css/home.css">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/css/home.css"/>">
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -52,12 +52,12 @@
 				<header style="height:155px;">
 					<div id="topHeader">
 						<div class="d-flex justify-content-end">
-							<img class="mb-1 p-2" src="images/userProfile.png" width="60">
+							<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
 							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">신문영 학생</div>
 						</div>
 					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
-						<img class="mt-3" src="images/logo.png" width="125" height="105"/>
+						<img class="mt-3" src="<c:url value="/images/logo.png"/>" width="125" height="105"/>
 					</div>
 					<hr color = "#34495e" size = "3"/>
 				</header>
@@ -106,16 +106,16 @@
 	                     <div class="row no-gutters">
 	                        <div class="profile col-md-4">
 	                           <div style="width: 150px" class=" mx-auto mt-4 mb-5">
-	                              <img src="images/profile.png" class="card-img" width="100%">
+	                              <img src="<c:url value="/images/profile.png"/>" class="card-img" width="100%">
 	                           </div>
 	                        </div>
 	                        <div class="col-md-8">
 	                           <div class="card-body">
-	                              <h5 class="card-title">신문영</h5>
-	                              <p class="email card-text">moon0129@gmail.com</p>
-	                              <p>010-0000-1111</p>
+	                              <h5 class="card-title">${member.memberName}</h5>
+	                              <p class="email card-text">${member.memberEmail}</p>
+	                              <p>${member.memberPhoneNumber}</p>
 	                              <p class="card-text">
-	                                 <small class="birth text-muted">1997.1.29</small>
+	                                 <small class="birth text-muted">${member.memberBirthday}</small>
 	                              </p>
 	                           </div>
 	                        </div>
