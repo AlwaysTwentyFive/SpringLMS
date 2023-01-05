@@ -43,5 +43,8 @@
 		</property>
 		<property name="defaultErrorView" value="error/default"></property>
 	</bean>
-
+	
+	<mybatis-spring:scan base-package="com.oti.myuniversity.member.repository"/>
+	<context:component-scan base-package="com.oit.myuniversity.member.service"/>
+	
 </beans>
