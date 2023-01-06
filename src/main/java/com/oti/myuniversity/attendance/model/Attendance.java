@@ -1,14 +1,14 @@
 package com.oti.myuniversity.attendance.model;
 
 import java.sql.Date;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 public class Attendance {
 	private int attendanceId;
 	private String memberId;
 	private Date attendanceDate;
-	private Time attendanceArriveTime;
-	private Time attendanceDepartTime;
+	private Timestamp attendanceArriveTime;
+	private Timestamp attendanceDepartTime;
 	private String attendanceStatus;
 	
 	public int getAttendanceId() {
@@ -29,16 +29,16 @@ public class Attendance {
 	public void setAttendanceDate(Date attendanceDate) {
 		this.attendanceDate = attendanceDate;
 	}
-	public Time getAttendanceArriveTime() {
+	public Timestamp getAttendanceArriveTime() {
 		return attendanceArriveTime;
 	}
-	public void setAttendanceArriveTime(Time attendanceArriveTime) {
+	public void setAttendanceArriveTime(Timestamp attendanceArriveTime) {
 		this.attendanceArriveTime = attendanceArriveTime;
 	}
-	public Time getAttendanceDepartTime() {
+	public Timestamp getAttendanceDepartTime() {
 		return attendanceDepartTime;
 	}
-	public void setAttendanceDepartTime(Time attendanceDepartTime) {
+	public void setAttendanceDepartTime(Timestamp attendanceDepartTime) {
 		this.attendanceDepartTime = attendanceDepartTime;
 	}
 	public String getAttendanceStatus() {

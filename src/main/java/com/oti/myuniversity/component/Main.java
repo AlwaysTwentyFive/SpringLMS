@@ -1,5 +1,6 @@
 package com.oti.myuniversity.component;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -7,18 +8,24 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Date utilDate = new Date();
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+		Timestamp now = new Timestamp(System.currentTimeMillis());
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
 		
-		String formattedDate = dateFormat.format(utilDate);
-		String formattedTime = timeFormat.format(utilDate);
+		String formattedDate = dateFormat.format(now);
+		String formattedTime = timeFormat.format(now);
 		
-		java.sql.Date sqlDate = java.sql.Date.valueOf(formattedDate);
-		java.sql.Time sqlTime = java.sql.Time.valueOf(formattedTime);
+		Timestamp sqlTime = Timestamp.valueOf(formattedTime);
+
 		
-		System.out.println("오늘 날짜 : "+sqlDate);
-		System.out.println("현재 시간 : "+sqlTime);
+		String startTime = "09:00:00";
+		String endTime = "18:00:00";
+		String departTime = "08:00:00";
+		int start = departTime.compareTo(startTime);
+		//System.out.println(start);
+		
+		
+		
 
 	}
 
