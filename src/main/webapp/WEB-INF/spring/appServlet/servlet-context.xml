@@ -41,8 +41,7 @@
 	<!-- interceptor -->
 	<interceptors>
 		<interceptor>
-			<mapping path="/file/**"/>
-			<exclude-mapping path="/home"/>
+			<mapping path="/myuniversity/**"/>
 			<beans:bean class="com.oti.myuniversity.common.LoginInterceptor"/>
 		</interceptor>
 	</interceptors>
