@@ -29,6 +29,9 @@
 	display: inline-block;
 }
 
+.w-btn:active {
+	transform: scale(1.5);
+}
 
 .bttn {
 	text-align: center;

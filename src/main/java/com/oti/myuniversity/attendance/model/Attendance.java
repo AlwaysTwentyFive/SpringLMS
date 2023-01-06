@@ -1,13 +1,14 @@
 package com.oti.myuniversity.attendance.model;
 
 import java.sql.Date;
+import java.sql.Time;
 
 public class Attendance {
 	private int attendanceId;
 	private String memberId;
 	private Date attendanceDate;
-	private Date attendanceArriveTime;
-	private Date attendanceDepartTime;
+	private Time attendanceArriveTime;
+	private Time attendanceDepartTime;
 	private String attendanceStatus;
 	
 	public int getAttendanceId() {
@@ -28,16 +29,16 @@ public class Attendance {
 	public void setAttendanceDate(Date attendanceDate) {
 		this.attendanceDate = attendanceDate;
 	}
-	public Date getAttendanceArriveTime() {
+	public Time getAttendanceArriveTime() {
 		return attendanceArriveTime;
 	}
-	public void setAttendanceArriveTime(Date attendanceArriveTime) {
+	public void setAttendanceArriveTime(Time attendanceArriveTime) {
 		this.attendanceArriveTime = attendanceArriveTime;
 	}
-	public Date getAttendanceDepartTime() {
+	public Time getAttendanceDepartTime() {
 		return attendanceDepartTime;
 	}
-	public void setAttendanceDepartTime(Date attendanceDepartTime) {
+	public void setAttendanceDepartTime(Time attendanceDepartTime) {
 		this.attendanceDepartTime = attendanceDepartTime;
 	}
 	public String getAttendanceStatus() {

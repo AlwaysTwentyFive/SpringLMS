@@ -70,4 +70,5 @@
 	<context:component-scan base-package="com.oti.myuniversity.attendance.service"/>
 	<context:component-scan base-package="com.oti.myuniversity.board.service"/>
 	<context:component-scan base-package="com.oti.myuniversity.common"/>
+	<context:component-scan base-package="com.oti.myuniversity.component"/>
 </beans>
