@@ -1,6 +1,9 @@
 package com.oti.myuniversity.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import static com.oti.myuniversity.common.Consts.DUMMY_PASSWORD;
+import static com.oti.myuniversity.common.Consts.PAGES_PER_GROUP;
+import static com.oti.myuniversity.common.Consts.ROWS_PER_PAGE;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.oti.myuniversity.board.service.IBoardService;
 import com.oti.myuniversity.common.Pager;
 import com.oti.myuniversity.member.model.Member;
 import com.oti.myuniversity.member.service.IMemberService;
@@ -24,7 +27,16 @@ public class MemberController {
 	IMemberService memberService;
 	
 	@Autowired
+	IBoardService boardService;
+	
+	@Autowired
 	Pager pager;
+	
+	private void resetSession(HttpSession session, Member member) {
+		session.invalidate();
+		member.setMemberPassword(DUMMY_PASSWORD);
+		session.setAttribute("member", member);
+	}
 	
 	@RequestMapping(value="/member/login", method=RequestMethod.GET)
 	public String login() {
@@ -38,26 +50,31 @@ public class MemberController {
 		if(member != null) {
 			String dbPassword = member.getMemberPassword();
 			if(dbPassword == null) {
-				//아이디가 없음
-				model.addAttribute("message", "NOT_VALID_USER");
+				//비밀번호가 없음
+				model.addAttribute("message", "비밀번호가 없습니다(?).");
 			} else {
 				//아이디 있음
 				if(dbPassword.equals(password)) {
 					//비밀번호 일치
-					member.setMemberPassword("1");
-					session.setAttribute("member", member);
+					resetSession(session, member);
+					
+					//invoke service which checking member attendance
+					//Date utilDate = new Date();
+					//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					//java.sql.Date sqlDate = java.sql.Date.valueOf(formattedDate);
+					//int isAttend = checkAttendance(memberId, sqlDate);
+					//model.setAttribute("isAttend", isAttend);
 					return "home";
 				} else {
 					//비밀번호 불일치
-					model.addAttribute("message", "WRONG_PASSWORD");
+					model.addAttribute("message", "아이디 또는 비밀번호가 불일치 합니다.");
 				}
 			}
 		} else {
 			//유저가 없음
-			model.addAttribute("message", "USER_NOT_FOUND");		
+			model.addAttribute("message", "해당 아이디가 존재하지 않습니다.");		
 		}
 
-		session.invalidate();
 		return "member/login";
 	}
 	
@@ -82,10 +99,18 @@ public class MemberController {
 		
 		if (password != null && repassword != null) {
 			if (password.equals(repassword)) {
+				//update Member
 				memberService.updateMember(member);
-				member = (Member) session.getAttribute("member");
-				String memberId = member.getMemberId();
-				model.addAttribute("member", memberService.selectMember(memberId));
+				
+				//get member id from session 
+				//to select updated member data
+				String memberId = ((Member) session.getAttribute("member")).getMemberId();
+				member = memberService.selectMember(memberId);
+				
+				//reset session with new member data
+				resetSession(session, member);
+				
+				model.addAttribute("member", member);
 				return "home";
 			}
 			else {
@@ -107,7 +132,7 @@ public class MemberController {
 	
 	@RequestMapping(value="/member/list/{page}")
 	public String getMemberList(@PathVariable int page, Model model) {
-		pager.init(10, 5, memberService.getTotalMemberCount(), page);
+		pager.init(ROWS_PER_PAGE, PAGES_PER_GROUP, memberService.getTotalMemberCount(), page);
 		model.addAttribute("memberList", memberService.selectMemberList(pager));
 		model.addAttribute("pager", pager);
 		return "member/list";
