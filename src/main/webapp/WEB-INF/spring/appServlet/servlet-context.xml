@@ -31,7 +31,7 @@
 	<resources location="/WEB-INF/resources/images/" mapping="/images/**"></resources>
 	
 	<!-- ViewController -->
-	<view-controller path="/" view-name="home"/>
+	<view-controller path="/" view-name="member/login"/>
 	
 	<!-- MaxUploadFileSize -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -41,8 +41,7 @@
 	<!-- interceptor -->
 	<interceptors>
 		<interceptor>
-			<mapping path="/file/**"/>
-			<exclude-mapping path="/home"/>
+			<mapping path="/myuniversity/**"/>
 			<beans:bean class="com.oti.myuniversity.common.LoginInterceptor"/>
 		</interceptor>
 	</interceptors>

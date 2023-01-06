@@ -53,7 +53,7 @@
 					<div id="topHeader">
 						<div class="d-flex justify-content-end">
 							<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
-							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">신문영 학생</div>
+							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${member.memberName}</div>
 						</div>
 					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
@@ -75,7 +75,7 @@
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseOne text-left">
-									<a href="#" style="color: black;">Lecture Material</a>
+									<a href="<c:url value='/board/cat/1'/>">Lecture Material</a>
 								</div>
 								<div class="collapse collapseOne text-left">
 									<a href="#" style="color: black;">Report</a>
