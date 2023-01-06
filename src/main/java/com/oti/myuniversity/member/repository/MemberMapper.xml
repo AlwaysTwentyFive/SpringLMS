@@ -5,7 +5,7 @@
 	
 	<select id="selectMember" parameterType="string" resultType="com.oti.myuniversity.member.model.Member">
 		<![CDATA[
-			SELECT 
+			SELECT
 				MEMBERID,
 				MEMBERPASSWORD,
 				MEMBERNAME,
@@ -17,8 +17,8 @@
 				members
 			WHERE memberid=#{memberId}
 		]]>
-	</select>
-	
+		</select>
+		
 	<update id="updateMember" parameterType="com.oti.myuniversity.member.model.Member">
 	<![CDATA[
 		UPDATE 

@@ -13,6 +13,7 @@
 	<context:component-scan base-package="com.oti.myuniversity.attendance.controller"></context:component-scan>
 	<context:component-scan base-package="com.oti.myuniversity.board.controller"></context:component-scan>
 	
+	<beans:bean class="com.oti.myuniversity.HomeController"></beans:bean>
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
