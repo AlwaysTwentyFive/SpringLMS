@@ -2,4 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.oti.myuniversity.attendance.repository.IAttendanceRepository">
+	
+	<insert id="insertAttendance" parameterType="com.oti.myuniversity.attendance.model.Attendance">
+		<![CDATA[
+			insert into 
+				attendances (attendanceid, memberid, attendancearrivetime, ATTENDANCEDATE, ATTENDANCESTATUS
+				)
+			values (seq_attendanceid.nextval, #{memberId}, 
+					#{attendanceArriveTime}, #{attendanceDate}, #{attendanceStatus})
+		]]>	
+	</insert>
+	
+	<select id="checkAttendance" resultType="int">
+		<![CDATA[
+			select count(*) 
+			from attendances
+			where ATTENDANCEDATE = #{sqlDate} and memberid = #{memberId}		
+		]]>
+	</select>
+	
+	<select id="selectAttendance" resultType="com.oti.myuniversity.attendance.model.Attendance">
+		<![CDATA[
+			select ATTENDANCEID, MEMBERID, ATTENDANCEDATE, ATTENDANCEARRIVETIME, ATTENDANCEDEPARTTIME, ATTENDANCESTATUS
+			from attendances
+			where ATTENDANCEDATE = #{sqlDate} and memberid = #{memberId}	
+		
+		]]>
+	
+	</select>
+	
+	<update id="updateTimeStatus" parameterType="com.oti.myuniversity.attendance.model.Attendance">
+		<![CDATA[
+			update attendances
+			set ATTENDANCEDEPARTTIME = #{attendanceDepartTime}, ATTENDANCESTATUS = #{attendanceStatus}
+			where ATTENDANCEDATE = #{attendanceDate} and memberid = #{memberId}
+		]]>
+	
+	</update>
+	
 </mapper>

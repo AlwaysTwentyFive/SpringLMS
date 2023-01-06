@@ -125,14 +125,18 @@
 	                     <div id="divClock"
 	                        class="clock w-btn-outline w-btn-yellow-outline mb-3 mr-2 "
 	                        style="width: 210px; text-align: center;"></div>
+	                        <!-- 만약에 출근을 했다면 (c:if) 출근시간 el로 뽑기 안했다면 -로 시간 나타냄-->
 	                     <div class="clock w-btn-outline w-btn-yellow-outline mb-3 mr-2"
 	                        style="width: 210px; text-align: center;">출근시간 : 8:47</div>
 	                     <div class="clock w-btn-outline w-btn-yellow-outline mb-3 "
 	                        style="width: 210px; text-align: center;">퇴근시간 : 18:20</div>
 	                  </div>
-	                  <div class="bttn">
-	                     <button class="w-btn w-btn-attendance" type="button">출근하기</button>
-	                  </div>
+	                  <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
+		                  <div class="bttn">
+		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
+		                     <button class="w-btn w-btn-attendance" type="submit">출근하기</button>
+		                  </div>
+	                  </form>
 	               </div>
 	               <!-- 카드 내용 -->				
 				</div> <!-- divcontentWrapper -->
