@@ -8,9 +8,9 @@ import com.oti.myuniversity.board.model.Board;
 
 public interface IBoardRepository {
 
-	List<Board> selectArticleListByCatoryType(@Param("categoryType") int categoryType, @Param("start") int start,
+	public List<Board> selectArticleListByCatoryType(@Param("categoryType") int categoryType, @Param("start") int start,
 			@Param("end") int end, @Param("pageNo") int pageNo);
-	int selectTotalArticleCountByCategoryType(int categoryType);
-	
+	public int selectTotalArticleCountByCategoryType(int categoryType);
+	public Board selectArticle(int boardId);
 
 }

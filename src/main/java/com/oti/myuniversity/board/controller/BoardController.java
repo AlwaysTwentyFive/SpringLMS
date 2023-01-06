@@ -26,6 +26,7 @@ public class BoardController {
 	@Autowired
 	Pager pager;
 	
+	//글 목록 조회
 	@RequestMapping("/board/cat/{categoryType}/{pageNo}")
 	public String getListByCategoryType(@PathVariable int categoryType, @PathVariable int pageNo, HttpSession session, Model model) {
 		session.setAttribute("page", pageNo);
@@ -51,8 +52,24 @@ public class BoardController {
 		return getListByCategoryType(categoryType, 1, session, model);
 	}
 	
-	
-	
+	//글 상세 보기
+	@RequestMapping("/board/{boardId}/{pageNo}")
+	public String getBoardDetails(@PathVariable int pageNo,@PathVariable int boardId, Model model) {
+		Board board = boardService.selectArticle(boardId);
+		model.addAttribute("board", board);
+		model.addAttribute("pageNo", pageNo);
+		logger.info("getBoardDetails: " + board.toString());
+		
+		if(board.getBoardCategory()==1) {
+			return "board/library/viewdetail";
+		} else {
+			return "board/report/viewdetail";
+		}
+	}
+	@RequestMapping("/board/{boardId}")
+	public String  getBoardDetails(@PathVariable int boardId, Model model) {
+		return getBoardDetails(1, boardId, model);
+	}
 	
 	
 }

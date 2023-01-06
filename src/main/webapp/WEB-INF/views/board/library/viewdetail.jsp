@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -73,7 +74,9 @@
 	<br/>
 	<br/>
 	<div class="bttn">
-   		<button class="w-btn w-btn-attendance" type="button">목록으로</button>
+   		<button class="w-btn w-btn-attendance" type="button">
+   			<a href='<c:url value="/board/cat/1/${page}"/>'>목록으로</a>
+   		</button>
 	</div>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

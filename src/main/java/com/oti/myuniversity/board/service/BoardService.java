@@ -28,4 +28,9 @@ public class BoardService implements IBoardService {
 		return boardRepository.selectTotalArticleCountByCategoryType(categoryType);
 	}
 
+	@Override
+	public Board selectArticle(int boardId) {
+		return boardRepository.selectArticle(boardId);
+	}
+
 }

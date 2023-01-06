@@ -7,7 +7,7 @@ public class Board {
 	private String boardTitle;
 	private String boardContent;
 	private Date boardDate;
-	private String boardCategory;
+	private int boardCategory;
 	private Date reportDeadline;
 	private Date submissionSubmitDate;
 	private int submissionScore;
@@ -37,10 +37,10 @@ public class Board {
 	public void setBoardDate(Date boardDate) {
 		this.boardDate = boardDate;
 	}
-	public String getBoardCategory() {
+	public int getBoardCategory() {
 		return boardCategory;
 	}
-	public void setBoardCategory(String boardCategory) {
+	public void setBoardCategory(int boardCategory) {
 		this.boardCategory = boardCategory;
 	}
 	public Date getReportDeadline() {

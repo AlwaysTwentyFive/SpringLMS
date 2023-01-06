@@ -28,7 +28,11 @@
 			<tbody>
 				<c:forEach var="board" items="${libraryList}">
 					<tr>
-						<td class="col-6">${board.boardTitle}</td>
+						<td class="col-6">
+							<a href="<c:url value='/board/${boardId}/${pageNo}'/>">
+								${board.boardTitle}
+							</a>
+						</td>
 						<td class="col-3">${board.boardDate}</td>
 						<td class="col-3">${board.memberId}</td>
 					</tr>
