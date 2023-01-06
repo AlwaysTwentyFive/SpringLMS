@@ -144,8 +144,7 @@ body {
 			</form>
 		</div>
 		<div style="text-align:center">
-			<img src="images/logo.png" width="300px" class="mx-auto"/>
-		
+			<img src="<c:url value="/images/logo.png"/>" width="300px" class="mx-auto"/>
 		</div>
 	</div>
 </body>

@@ -31,7 +31,7 @@
 	<resources location="/WEB-INF/resources/images/" mapping="/images/**"></resources>
 	
 	<!-- ViewController -->
-	<view-controller path="/" view-name="home"/>
+	<view-controller path="/" view-name="member/login"/>
 	
 	<!-- MaxUploadFileSize -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
