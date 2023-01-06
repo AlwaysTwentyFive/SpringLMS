@@ -17,6 +17,41 @@
 				members
 			WHERE memberid=#{memberId}
 		]]>
-	
 	</select>
+	
+	<update id="updateMember" parameterType="com.oti.myuniversity.member.model.Member">
+	<![CDATA[
+		UPDATE 
+			MEMBERS 
+		SET 
+			memberId=#{memberId},
+			memberPassword=#{memberPassword},
+			memberEmail=#{memberEmail},
+			memberPhoneNumber=#{memberPhoneNumber},
+			memberBirthday=#{memberBirthday}
+		WHERE
+			memberId=#{memberId}
+	]]>
+	</update>
+	
+	<select id="selectMemberList" parameterType="com.oti.myuniversity.common.Pager" resultType="com.oti.myuniversity.member.model.Member">
+	<![CDATA[
+		SELECT
+			memberName, memberEmail, memberPhoneNumber
+		FROM
+			MEMBERS
+		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
+		FETCH NEXT #{rowsPerPage} ROWS ONLY
+	]]>
+	</select>
+	
+	<select id="getTotalMemberCount" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			MEMBERS
+	]]>
+	</select>
+	
 </mapper>

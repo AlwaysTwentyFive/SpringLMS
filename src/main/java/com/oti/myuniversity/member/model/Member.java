@@ -11,6 +11,7 @@ public class Member {
 	private Date memberBirthday;
 	private String memberType;
 	
+	private String repassword;
 	
 	public String getMemberId() {
 		return memberId;
@@ -53,6 +54,12 @@ public class Member {
 	}
 	public void setMemberType(String memberType) {
 		this.memberType = memberType;
+	}
+	public String getRepassword() {
+		return repassword;
+	}
+	public void setRepassword(String repassword) {
+		this.repassword = repassword;
 	}
 	
 	@Override
