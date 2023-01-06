@@ -4,6 +4,9 @@ import static com.oti.myuniversity.common.Consts.DUMMY_PASSWORD;
 import static com.oti.myuniversity.common.Consts.PAGES_PER_GROUP;
 import static com.oti.myuniversity.common.Consts.ROWS_PER_PAGE;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.oti.myuniversity.board.service.IBoardService;
+import com.oti.myuniversity.attendance.service.IAttendanceService;
 import com.oti.myuniversity.common.Pager;
 import com.oti.myuniversity.member.model.Member;
 import com.oti.myuniversity.member.service.IMemberService;
@@ -27,7 +30,7 @@ public class MemberController {
 	IMemberService memberService;
 	
 	@Autowired
-	IBoardService boardService;
+	IAttendanceService attendService;
 	
 	@Autowired
 	Pager pager;
@@ -57,12 +60,12 @@ public class MemberController {
 					//비밀번호 일치
 					resetSession(session, member);
 					
-					//invoke service which checking member attendance
-					//Date utilDate = new Date();
-					//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-					//java.sql.Date sqlDate = java.sql.Date.valueOf(formattedDate);
-					//int isAttend = checkAttendance(memberId, sqlDate);
-					//model.setAttribute("isAttend", isAttend);
+					Date utilDate = new Date();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					String formattedDate = dateFormat.format(utilDate);
+					java.sql.Date sqlDate = java.sql.Date.valueOf(formattedDate);
+					int isAttend = attendService.checkAttendance(memberId, sqlDate);
+					model.addAttribute("isAttend", isAttend); 
 					return "home";
 				} else {
 					//비밀번호 불일치

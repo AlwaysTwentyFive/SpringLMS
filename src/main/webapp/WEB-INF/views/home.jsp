@@ -134,7 +134,12 @@
 	                  <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
-		                     <button class="w-btn w-btn-attendance" type="submit">출근하기</button>
+		                  	<c:if test="${isAttend == 0}">
+		                    <button class="w-btn w-btn-attendance" type="submit">출근하기</button>
+		                  	</c:if>
+		                  	<c:if test="${isAttend == 1}">
+		                    <button class="w-btn w-btn-attendance" type="submit">퇴근하기</button>
+		                  	</c:if>
 		                  </div>
 	                  </form>
 	               </div>
