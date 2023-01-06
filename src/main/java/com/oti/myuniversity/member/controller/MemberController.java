@@ -33,7 +33,6 @@ public class MemberController {
 	Pager pager;
 	
 	private void resetSession(HttpSession session, Member member) {
-		session.invalidate();
 		member.setMemberPassword(DUMMY_PASSWORD);
 		session.setAttribute("member", member);
 	}

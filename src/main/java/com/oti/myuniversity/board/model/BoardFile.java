@@ -3,10 +3,9 @@ package com.oti.myuniversity.board.model;
 public class BoardFile {
 	private int boardFileId;
 	private String boardFileName;
-	private String boardFileSize;
+	private long boardFileSize;
 	private byte[] boardFileData;
 	private String boardFileContentType;
-	private int boardId;
 	
 	public int getBoardFileId() {
 		return boardFileId;
@@ -20,10 +19,10 @@ public class BoardFile {
 	public void setBoardFileName(String boardFileName) {
 		this.boardFileName = boardFileName;
 	}
-	public String getBoardFileSize() {
+	public long getBoardFileSize() {
 		return boardFileSize;
 	}
-	public void setBoardFileSize(String boardFileSize) {
+	public void setBoardFileSize(long boardFileSize) {
 		this.boardFileSize = boardFileSize;
 	}
 	public byte[] getBoardFileData() {
@@ -38,17 +37,12 @@ public class BoardFile {
 	public void setBoardFileContentType(String boardFileContentType) {
 		this.boardFileContentType = boardFileContentType;
 	}
-	public int getBoardId() {
-		return boardId;
-	}
-	public void setBoardId(int boardId) {
-		this.boardId = boardId;
-	}
+	
 	
 	@Override
 	public String toString() {
 		return "BoardFile [boardFileId=" + boardFileId + ", boardFileName=" + boardFileName + ", boardFileSize="
-				+ boardFileSize + ", boardFileContentType=" + boardFileContentType + ", boardId=" + boardId + "]";
+				+ boardFileSize + ", boardFileContentType=" + boardFileContentType + ", boardId="  + "]";
 	}
 	
 }

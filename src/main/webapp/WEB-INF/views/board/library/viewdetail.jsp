@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='css/style.css'/>">
 
 <!-- content -->
 <style>
@@ -30,20 +32,22 @@
 </style>
 <div class="d-flex flex-column justify-content-center">
 	<div id="reportTitle" class="d-flex">
-		<div class="col-8">Title</div>
-		<div class="col-2">Writer</div>
-		<div class="col-2">Date</div>
+		<div class="col-8">${board.boardTitle}</div>
+		<div class="col-2">${board.memberId}</div>
+		<div class="col-2">${board.boardDate}</div>
 	</div>
 	<hr/>
 	<div id="reportContent">
-		1월 10일에 쓸 강의 자료입니다<br/>
-		***교수님<br/>
+		${board.boardContent}<br/>
+		${board.memberName}<br/>
 	</div>
 	<hr/>
 	<div id="attachment" class="d-flex flex-column">
-		<a href="#">강의자료1.pptx (1.5MB)</a>
-		<a href="#">강의자료2.pptx (1.0MB)</a>
-		<a href="#">강의자료3.pptx (2.5MB)</a>
+		<c:if test="${!empty board.fileList}">
+			<c:forEach var="file" items="${boards.fileList}">
+					<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardddFileSize}</fmt:formatNumber>byte)</a>
+			</c:forEach>
+		</c:if>
 	</div>
 	<hr/>
 	<hr/>

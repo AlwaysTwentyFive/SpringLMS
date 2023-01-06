@@ -29,7 +29,7 @@
 <select id="selectArticle" resultType="com.oti.myuniversity.board.model.Board" parameterType="int">
 	<![CDATA[
 		select 
-			boards.BOARDID as boardId,
+			boards.BOARDID,
 			BOARDTITLE,
 			BOARDCONTENT,
 			BOARDDATE,
@@ -37,15 +37,10 @@
 			REPORTDEADLINE,
 			SUBMISSIONSUBMITDATE,
 			SUBMISSIONSCORE,
-			MEMBERID,
-			boards_files.BOARDFILEID as boardFileId,
-			boards_files.BOARDFILENAME as boardFileName,
-			boards_files.BOARDFILESIZE as boardFileSize,
-			boards_files.BOARDFILECONTENTTYPE as boardFileContentType
-			from boards left outer join boards_files 
-			on boards.boardid = boards_files.boardid
-			where boards.BOARDID=#{boardId}
-
+			boards.MEMBERID,
+			membername
+		from boards left join members on boards.memberid = members.memberid
+		where boards.BOARDID=#{boardId}
 	]]>
 
 

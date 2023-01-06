@@ -66,6 +66,7 @@ public class BoardController {
 			return "board/report/viewdetail";
 		}
 	}
+	
 	@RequestMapping("/board/{boardId}")
 	public String  getBoardDetails(@PathVariable int boardId, Model model) {
 		return getBoardDetails(1, boardId, model);
