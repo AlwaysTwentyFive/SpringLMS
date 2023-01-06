@@ -1,9 +1,5 @@
 package com.oti.myuniversity.component;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.springframework.stereotype.Component;
 
 import com.oti.myuniversity.attendance.model.Attendance;
@@ -13,12 +9,12 @@ public class OneDayPolicy implements AttendPolicy {
 	
 	@Override
 	public String evaluateAttend(Attendance attendance) {
-		try {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-			Date startTime = dateFormat.parse("09:00:00");
-			Date endTime = dateFormat.parse("18:00:00");	
-			int startSuccess = attendance.getAttendanceArriveTime().compareTo(startTime);
-			int endSuccess = attendance.getAttendanceDepartTime().compareTo(endTime);
+			String startTime = "09:00:00";
+			String endTime = "18:00:00";
+			String arriveTime = attendance.getAttendanceArriveTime().toString().substring(11,19);
+			String departTime = attendance.getAttendanceDepartTime().toString().substring(11,19);
+			int endSuccess = departTime.compareTo(endTime);
+			int startSuccess = arriveTime.compareTo(startTime);
 	
 			if(startSuccess<=0 && endSuccess>=0) {
 				return "정상";
@@ -29,11 +25,6 @@ public class OneDayPolicy implements AttendPolicy {
 				return "결석";
 			}
 			
-		} catch(ParseException e) {
-			e.printStackTrace();
-			
-		}
-		return null;
 	}
 
 }
