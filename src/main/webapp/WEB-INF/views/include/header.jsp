@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -36,12 +36,12 @@
 				<header style="height:155px;">
 					<div id="topHeader">
 						<div class="d-flex justify-content-end">
-							<img class="mb-1 p-2" src="images/userProfile.png" width="60">
-							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">신문영 학생</div>
+							<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
+							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${member.memberName}</div>
 						</div>
 					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
-						<img class="mt-3" src="images/logo.png" width="125" height="105"/>
+						<img class="mt-3" src="<c:url value="/images/logo.png"/>" width="125" height="105"/>
 					</div>
 					<hr color = "#34495e" size = "3"/>
 				</header>
@@ -62,7 +62,7 @@
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseOne text-left">
-									<a href="#">Lecture Material</a>
+									<a href="<c:url value='/board/cat/1'/>">Lecture Material</a>
 								</div>
 								<div class="collapse collapseOne text-left">
 									<a href="#">Report</a>

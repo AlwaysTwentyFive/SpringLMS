@@ -6,15 +6,15 @@
 	<select id="selectMember" parameterType="string" resultType="com.oti.myuniversity.member.model.Member">
 		<![CDATA[
 			SELECT 
-				memberId,
-				memberPassword,
-				memberName,
-				memberEmail,
-				memberPhoneNumber,
-				memberBirthday,
-				memberType
+				MEMBERID,
+				MEMBERPASSWORD,
+				MEMBERNAME,
+				MEMBEREMAIL,
+				MEMBERPHONENUMBER,
+				MEMBERBIRTHDAY,
+				MEMBERTYPE
 			FROM 
-				MEMBERS
+				members
 			WHERE memberid=#{memberId}
 		]]>
 	</select>
