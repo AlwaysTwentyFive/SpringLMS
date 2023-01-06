@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.oti.myuniversity.board.model.Board;
+import com.oti.myuniversity.board.model.BoardFile;
+import com.oti.myuniversity.board.repository.IBoardFileRepository;
 import com.oti.myuniversity.board.repository.IBoardRepository;
 
 @Service
@@ -13,6 +15,9 @@ public class BoardService implements IBoardService {
 
 	@Autowired
 	IBoardRepository boardRepository;
+	
+	@Autowired
+	IBoardFileRepository boardFileRepository;
 	
 	//게시판 리스트 가져오기
 	@Override
@@ -26,6 +31,15 @@ public class BoardService implements IBoardService {
 	@Override
 	public int selectTotalArticleCount(int categoryType) {
 		return boardRepository.selectTotalArticleCountByCategoryType(categoryType);
+	}
+
+	@Override
+	public Board selectArticle(int boardId) {
+		Board board = boardRepository.selectArticle(boardId);
+		List<BoardFile> fileList = boardFileRepository.selectfileList(boardId);
+		board.setFileList(fileList);
+		
+		return board;
 	}
 
 }

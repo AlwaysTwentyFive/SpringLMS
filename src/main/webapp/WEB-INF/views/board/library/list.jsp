@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="/WEB-INF/views/include/header.jsp"/>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='css/style.css'/>">
   	<!-- content -->
   	<form action="<c:url value='/board/library/write/1'/>" method="GET">
 	<div class="d-flex mb-3">
@@ -28,7 +28,11 @@
 			<tbody>
 				<c:forEach var="board" items="${libraryList}">
 					<tr>
-						<td class="col-6">${board.boardTitle}</td>
+						<td class="col-6">
+							<a href="<c:url value='/board/${board.boardId}/${pageNo}'/>">
+								${board.boardTitle}
+							</a>
+						</td>
 						<td class="col-3">${board.boardDate}</td>
 						<td class="col-3">${board.memberId}</td>
 					</tr>

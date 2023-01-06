@@ -1,17 +1,21 @@
 package com.oti.myuniversity.board.model;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Board {
 	private int boardId;
 	private String boardTitle;
 	private String boardContent;
 	private Date boardDate;
-	private String boardCategory;
+	private int boardCategory;
 	private Date reportDeadline;
 	private Date submissionSubmitDate;
 	private int submissionScore;
 	private String memberId;
+	
+	private String memberName;
+	private List<BoardFile> fileList;
 	
 	public int getBoardId() {
 		return boardId;
@@ -37,10 +41,10 @@ public class Board {
 	public void setBoardDate(Date boardDate) {
 		this.boardDate = boardDate;
 	}
-	public String getBoardCategory() {
+	public int getBoardCategory() {
 		return boardCategory;
 	}
-	public void setBoardCategory(String boardCategory) {
+	public void setBoardCategory(int boardCategory) {
 		this.boardCategory = boardCategory;
 	}
 	public Date getReportDeadline() {
@@ -67,13 +71,17 @@ public class Board {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-	
-	@Override
-	public String toString() {
-		return "Board [boardId=" + boardId + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
-				+ ", boardDate=" + boardDate + ", boardCategory=" + boardCategory + ", reportDeadline=" + reportDeadline
-				+ ", submissionSubmitDate=" + submissionSubmitDate + ", submissionScore=" + submissionScore
-				+ ", memberId=" + memberId + "]";
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
+	public List<BoardFile> getFileList() {
+		return fileList;
+	}
+	public void setFileList(List<BoardFile> fileList) {
+		this.fileList = fileList;
 	}
 	
 }
