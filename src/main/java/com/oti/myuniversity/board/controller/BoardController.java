@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.oti.myuniversity.board.model.Board;
 import com.oti.myuniversity.board.service.IBoardService;
+import com.oti.myuniversity.common.Pager;
 
 @Controller
 public class BoardController {
