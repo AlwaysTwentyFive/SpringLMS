@@ -2,7 +2,7 @@ package com.oti.myuniversity.component;
 
 import org.springframework.stereotype.Component;
 
-import com.oti.myuniversity.attendance.model.Attendance;
+import com.oti.myuniversity.domain.attendance.model.Attendance;
 
 @Component
 public class OneDayPolicy implements AttendPolicy {
