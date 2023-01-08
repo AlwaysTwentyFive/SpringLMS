@@ -3,6 +3,7 @@ package com.oti.myuniversity.component;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,12 @@ public class DateConverter {
 	private String formattedTime = timeFormat.format(now);
 	private Date sqlDate = Date.valueOf(formattedDate);
 	private Timestamp sqlTime = Timestamp.valueOf(formattedTime);
+	
+	public int getDayOfWeek() {
+		Calendar rightNow = Calendar.getInstance();
+		int day = rightNow.get(Calendar.DAY_OF_WEEK);
+		return day;
+	}
 	
 	public Timestamp getNow() {
 		return now;

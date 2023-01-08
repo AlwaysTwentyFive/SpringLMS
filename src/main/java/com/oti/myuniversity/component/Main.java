@@ -2,6 +2,7 @@ package com.oti.myuniversity.component;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Main {
@@ -24,9 +25,18 @@ public class Main {
 		int start = departTime.compareTo(startTime);
 		//System.out.println(start);
 		
+		int r = getDayOfWeek();
+		System.out.println(r);
+		
 		
 		
 
+	}
+	
+	public static int getDayOfWeek() {
+		Calendar rightNow = Calendar.getInstance();
+		int day = rightNow.get(Calendar.DAY_OF_WEEK);
+		return day;
 	}
 
 }

@@ -33,7 +33,7 @@ public class AttendanceController {
 	@Autowired
 	DateConverter dateConverter;
 
-	@RequestMapping(value = "/attendance/attend", method = RequestMethod.POST)
+
 	public String attend(HttpSession session, RedirectAttributes redirectAttrs, String memberid) {
 		// select where = 날짜 비교, 아이디 비교
 		Attendance attendance = new Attendance();
@@ -53,7 +53,6 @@ public class AttendanceController {
 		return "redirect:/home";
 	}
 	
-
 	public String leave(HttpSession session, RedirectAttributes redirectAttrs, String memberid) {
 		// 있다면
 		// update(퇴근) 진행
@@ -73,15 +72,39 @@ public class AttendanceController {
 	}
 	
 
+//	public String check(HttpSession session, RedirectAttributes redirectAttrs) {
+//		Member member = (Member) session.getAttribute("member");
+//		System.out.println(dateConverter.getDayOfWeek());
+//		if(dateConverter.getDayOfWeek()!=1 && dateConverter.getDayOfWeek()!=7) {
+//			if (attendanceService.checkAttendance(member.getMemberId(), dateConverter.getSqlDate()) == 1) {
+//				return leave(session, redirectAttrs, member.getMemberId());
+//			} else {
+//				return attend(session, redirectAttrs,member.getMemberId());
+//			}
+//			
+//		} else {
+//			return "redirect:/home";
+//		}
+//		
+//
+//	}
+	
+	@RequestMapping(value = "/attendance/attend", method = RequestMethod.POST)
 	public String check(HttpSession session, RedirectAttributes redirectAttrs) {
-		Member member = (Member) session.getAttribute("member");
-		if (attendanceService.checkAttendance(member.getMemberId(), dateConverter.getSqlDate()) == 1) {
-			return leave(session, redirectAttrs, member.getMemberId());
-
+		Member member = (Member) session.getAttribute("member");		
+		if(dateConverter.getDayOfWeek()!=1 && dateConverter.getDayOfWeek()!=7) {
+			if (attendanceService.checkAttendance(member.getMemberId(), dateConverter.getSqlDate()) == 1) {
+				return leave(session, redirectAttrs, member.getMemberId());
+			} else {
+				return attend(session, redirectAttrs,member.getMemberId());
+			}
 		} else {
-			return attend(session, redirectAttrs,member.getMemberId());
-
+			return "redirect:/member/login";
 		}
+		
+			
+	
+		
 
 	}
 
