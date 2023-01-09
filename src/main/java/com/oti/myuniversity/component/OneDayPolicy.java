@@ -2,7 +2,7 @@ package com.oti.myuniversity.component;
 
 import org.springframework.stereotype.Component;
 
-import com.oti.myuniversity.attendance.model.Attendance;
+import com.oti.myuniversity.domain.attendance.model.Attendance;
 
 @Component
 public class OneDayPolicy implements AttendPolicy {
@@ -25,6 +25,19 @@ public class OneDayPolicy implements AttendPolicy {
 				return "결석";
 			}
 			
+	}
+
+	@Override
+	public String evaluateAttendTemp(Attendance attendance) {
+		String startTime = "09:00:00";
+		String arriveTime = attendance.getAttendanceArriveTime().toString().substring(11,19);
+		int startSuccess = arriveTime.compareTo(startTime);
+		if(startSuccess<=0) {
+			return "출근";
+		} else {
+			return "지각";
+		}
+	
 	}
 
 }

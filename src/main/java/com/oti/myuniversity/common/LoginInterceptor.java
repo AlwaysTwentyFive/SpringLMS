@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.oti.myuniversity.member.model.Member;
+import com.oti.myuniversity.domain.member.model.Member;
 
 public class LoginInterceptor implements HandlerInterceptor{
 
@@ -27,7 +27,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 		
 		Member member = (Member) session.getAttribute("member");
 		String memberId = member.getMemberId();
-		if (memberId != null || "".equals(memberId)) {
+		if (memberId != null || !("".equals(memberId))) {
 			response.sendRedirect(request.getContextPath() + "/member/login");
 			return false;
 		}

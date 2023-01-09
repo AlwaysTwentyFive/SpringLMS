@@ -4,9 +4,11 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
@@ -14,6 +16,12 @@
 		<property name="url" value="${jdbc.url}"/>
 		<property name="username" value="${jdbc.username}"/>
 		<property name="password" value="${jdbc.password}"/>
+		
+		<!-- Connection Handling Setting (Our team has 3 members!)-->
+		<property name="initialSize" value="3"/>
+		<property name="maxTotal" value="3"/>
+		<property name="maxIdle" value="3"/>
+		<property name="minIdle" value="3"/>
 	</bean>
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -62,13 +70,15 @@
 		<property name="password" value="12345"/>
 	</bean>
 	
+	<!-- AOP -->
+	<aop:aspectj-autoproxy/>
 	
-	<mybatis-spring:scan base-package="com.oti.myuniversity.member.repository"/>
-	<mybatis-spring:scan base-package="com.oti.myuniversity.attendance.repository"/>
-	<mybatis-spring:scan base-package="com.oti.myuniversity.board.repository"/>
-	<context:component-scan base-package="com.oti.myuniversity.member.service"/>
-	<context:component-scan base-package="com.oti.myuniversity.attendance.service"/>
-	<context:component-scan base-package="com.oti.myuniversity.board.service"/>
-	<context:component-scan base-package="com.oti.myuniversity.common"/>
+	<mybatis-spring:scan base-package="com.oti.myuniversity.domain.member.repository"/>
+	<mybatis-spring:scan base-package="com.oti.myuniversity.domain.attendance.repository"/>
+	<mybatis-spring:scan base-package="com.oti.myuniversity.domain.board.repository"/>
+	<context:component-scan base-package="com.oti.myuniversity.domain.member.service"/>
+	<context:component-scan base-package="com.oti.myuniversity.domain.attendance.service"/>
+	<context:component-scan base-package="com.oti.myuniversity.domain.board.service"/>
 	<context:component-scan base-package="com.oti.myuniversity.component"/>
+	<context:component-scan base-package="com.oti.myuniversity.config"/>
 </beans>
