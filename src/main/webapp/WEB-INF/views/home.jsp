@@ -127,16 +127,41 @@
 	                        style="width: 210px; text-align: center;"></div>
 	                        <!-- 만약에 출근을 했다면 (c:if) 출근시간 el로 뽑기 안했다면 -로 시간 나타냄-->
 	                     <div class="clock w-btn-outline w-btn-yellow-outline mb-3 mr-2"
-	                        style="width: 210px; text-align: center;">출근시간 : 8:47</div>
+	                        style="width: 210px; text-align: center;">출근시간 : 
+	                        <c:if test="${arriveTime != null}">
+	                        <fmt:formatDate pattern="hh:mm:ss" value="${arriveTime}"/>
+	                        </c:if>
+	                        <c:if test="${arriveTime == null}">
+	                        -
+	                        </c:if>
+	                        </div>
 	                     <div class="clock w-btn-outline w-btn-yellow-outline mb-3 "
-	                        style="width: 210px; text-align: center;">퇴근시간 : 18:20</div>
+	                        style="width: 210px; text-align: center;">퇴근시간 : 
+	                        <c:if test="${departTime != null}">
+	                        <fmt:formatDate pattern="hh:mm:ss" value="${departTime}"/>
+	                        </c:if>
+	                        <c:if test="${departTime == null}">
+	                        -
+	                        </c:if>
+	                        </div>
 	                  </div>
-	                  <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
+	                
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
-		                     <button class="w-btn w-btn-attendance" type="submit">출근하기</button>
+		                  	<c:if test="${day != 1 and day != 7 and departTime == null}">
+			                  	<c:if test="${isAttend == false}">
+				                  	 <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
+				                    	<button class="w-btn w-btn-attendance" type="submit">출근하기</button>
+				                     </form>
+			                  	</c:if>
+			                  	<c:if test="${isAttend == true}">
+			                  	    <form class="bttn" action="<c:url value='/attendance/leave'/>" method="post">
+			                    		<button class="w-btn w-btn-attendance" type="submit">퇴근하기</button>
+			                    	</form>
+			                  	</c:if>
+		                  	</c:if>
 		                  </div>
-	                  </form>
+	                 
 	               </div>
 	               <!-- 카드 내용 -->				
 				</div> <!-- divcontentWrapper -->
