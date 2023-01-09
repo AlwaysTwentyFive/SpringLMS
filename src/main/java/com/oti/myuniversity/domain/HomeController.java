@@ -26,13 +26,22 @@ public class HomeController {
 		String memberId = member.getMemberId();
 		
 		Attendance attendance = attendanceService.selectAttendance(memberId, ServerTimeSupplier.getDate());
-		Date arriveTime = attendance.getAttendanceArriveTime();
-		Date departTime = attendance.getAttendanceDepartTime();
-		model.addAttribute("arriveTime", arriveTime);
-		model.addAttribute("departTime", departTime);
 		
-		boolean isAttend = attendanceService.checkAttendance(memberId, attendance.getAttendanceDate());
-		model.addAttribute("isAttend", isAttend);
+		if (attendance != null) {
+			Date arriveTime = attendance.getAttendanceArriveTime();
+			Date departTime = attendance.getAttendanceDepartTime();
+			boolean isAttend = attendanceService.checkAttendance(memberId, attendance.getAttendanceDate());
+			model.addAttribute("arriveTime", arriveTime);
+			model.addAttribute("departTime", departTime);
+			model.addAttribute("isAttend", isAttend);
+		}
+		else {
+			Date arriveTime = null;
+			Date departTime = null;
+			model.addAttribute("arriveTime", arriveTime);
+			model.addAttribute("departTime", departTime);
+			model.addAttribute("isAttend", false);
+		}
 		
 		return "home";
 	} 
