@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 <link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<!-- content -->
-  	<form action="#">
+  	<form action="<>">
 	<div class="d-flex mb-3">
 		<div class="col-7">
 			<h1>과제</h1>

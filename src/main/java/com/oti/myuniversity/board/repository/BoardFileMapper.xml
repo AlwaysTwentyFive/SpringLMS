@@ -22,6 +22,26 @@
 			where fileid=#{fileId}
 		]]>
 	</select>
-	
+	<insert id="insertFileData" parameterType="com.oti.myuniversity.board.model.BoardFile">
+		<![CDATA[
+			insert into boards_files
+				(
+				BOARDFILEID,
+				BOARDFILENAME,
+				BOARDFILESIZE,
+				BOARDFILEDATA,
+				BOARDFILECONTENTTYPE,
+				BOARDID
+				)
+			values(
+				SEQ_BOARDFILEID.NEXTVAL,
+				#{boardFileName},
+				#{boardFileSize},
+				#{boardFileData},
+				#{boardFileContentType},
+				seq_boardid.currval
+			)
+		]]>
+	</insert>
 	
 </mapper>

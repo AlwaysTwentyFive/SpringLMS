@@ -6,6 +6,7 @@ public class BoardFile {
 	private long boardFileSize;
 	private byte[] boardFileData;
 	private String boardFileContentType;
+	private int boardId;
 	
 	public int getBoardFileId() {
 		return boardFileId;
@@ -38,6 +39,12 @@ public class BoardFile {
 		this.boardFileContentType = boardFileContentType;
 	}
 	
+	public int getBoardId() {
+		return boardId;
+	}
+	public void setBoardId(int boardId) {
+		this.boardId = boardId;
+	}
 	
 	@Override
 	public String toString() {
