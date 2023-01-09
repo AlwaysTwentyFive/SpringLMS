@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.oti.myuniversity.attendance.model.Attendance;
 import com.oti.myuniversity.attendance.repository.IAttendanceRepository;
 import com.oti.myuniversity.attendance.service.IAttendanceService;
+import com.oti.myuniversity.common.Pager;
 import com.oti.myuniversity.component.AttendPolicy;
 import com.oti.myuniversity.component.DateConverter;
 import com.oti.myuniversity.member.model.Member;
@@ -32,6 +35,9 @@ public class AttendanceController {
 
 	@Autowired
 	DateConverter dateConverter;
+	
+	@Autowired 
+	Pager pager;
 
 
 	public String attend(HttpSession session, RedirectAttributes redirectAttrs, String memberid) {
@@ -71,23 +77,6 @@ public class AttendanceController {
 		return "redirect:/home";
 	}
 	
-
-//	public String check(HttpSession session, RedirectAttributes redirectAttrs) {
-//		Member member = (Member) session.getAttribute("member");
-//		System.out.println(dateConverter.getDayOfWeek());
-//		if(dateConverter.getDayOfWeek()!=1 && dateConverter.getDayOfWeek()!=7) {
-//			if (attendanceService.checkAttendance(member.getMemberId(), dateConverter.getSqlDate()) == 1) {
-//				return leave(session, redirectAttrs, member.getMemberId());
-//			} else {
-//				return attend(session, redirectAttrs,member.getMemberId());
-//			}
-//			
-//		} else {
-//			return "redirect:/home";
-//		}
-//		
-//
-//	}
 	
 	@RequestMapping(value = "/attendance/attend", method = RequestMethod.POST)
 	public String check(HttpSession session, RedirectAttributes redirectAttrs) {
@@ -101,11 +90,13 @@ public class AttendanceController {
 		} else {
 			return "redirect:/member/login";
 		}
-		
-			
-	
-		
-
 	}
+	
+	public String getListException(@PathVariable int pageNo, HttpSession session, Model model) {
+		session.setAttribute("page", pageNo);
+		return "";
+	}
+	
+	
 
 }
