@@ -1,20 +1,22 @@
 package com.oti.myuniversity.component;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
+		SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		
 		String formattedDate = dateFormat.format(now);
 		String formattedTime = timeFormat.format(now);
 		
+		Date sqlDate = Date.valueOf(formattedDate);
 		Timestamp sqlTime = Timestamp.valueOf(formattedTime);
 
 		
@@ -24,7 +26,8 @@ public class Main {
 		int start = departTime.compareTo(startTime);
 		//System.out.println(start);
 		
-		
+		System.out.println(sqlDate);
+		System.out.println(sqlTime);
 		
 
 	}

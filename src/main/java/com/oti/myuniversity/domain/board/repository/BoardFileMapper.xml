@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.oti.myuniversity.domain.board.repository.IBoardFileRepository">
+	
+	<select id="selectfileList" resultType="com.oti.myuniversity.domain.board.model.BoardFile" parameterType="int">
+		<![CDATA[
+			select
+				boardFileId, boardFileName, boardFileContentType
+			from boards_files
+			where boardid=#{boardId}
+		]]>
+	</select>
+	
+	
+	<select id="getFile" parameterType="int" resultType="com.oti.myuniversity.domain.board.model.BoardFile">
+		<![CDATA[
+			select 
+				BOARDFILEID, BOARDFILENAME, BOARDFILESIZE, BOARDFILEDATA, BOARDFILECONTENTTYPE
+			from 
+				boards_files
+			where fileid=#{fileId}
+		]]>
+	</select>
+	
+	
+</mapper>

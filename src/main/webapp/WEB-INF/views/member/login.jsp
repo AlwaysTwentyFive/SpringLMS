@@ -6,11 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-
-
-
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <style>
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
@@ -135,7 +134,7 @@ body {
 </style>
 </head>
 <body>
-	<div class="login-page">
+	<div class="login-page d-flex flex-column">
 		<div class="form">	
 			<form action="<c:url value='/member/login'/>" method="post" class="login-form">
 				<input name="memberId" type="text" placeholder="아이디를 입력해주세요" /> 
@@ -146,6 +145,32 @@ body {
 		<div style="text-align:center">
 			<img src="<c:url value="/images/logo.png"/>" width="300px" class="mx-auto"/>
 		</div>
+		
+		<c:if test="${message != null}">
+		<script type="text/javascript">
+		   $( function(){ 
+		    	$('#errorModal').modal('show');
+		    } )
+		</script>
+		<div>
+		<div id="errorModal" class="modal">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content bg-white">
+					<div class="modal-header">
+						<h3 class="modal-title">로그인에 실패하셨습니다</h3>
+					</div>
+					<div class="modal-body">
+						<h1>${message}</h1>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		</c:if>
+		
 	</div>
 </body>
 </html>

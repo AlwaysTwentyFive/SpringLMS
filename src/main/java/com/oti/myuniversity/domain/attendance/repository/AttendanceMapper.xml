@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.oti.myuniversity.domain.attendance.repository.IAttendanceRepository">
+	
+	<insert id="insertAttendance" parameterType="com.oti.myuniversity.domain.attendance.model.Attendance">
+		<![CDATA[
+			insert into 
+				attendances (attendanceid, memberid, attendancearrivetime, ATTENDANCEDATE, ATTENDANCESTATUS
+				)
+			values (seq_attendanceid.nextval, #{memberId}, 
+					#{attendanceArriveTime}, #{attendanceDate}, #{attendanceStatus})
+		]]>	
+	</insert>
+	
+	<select id="checkAttendance" resultType="int">
+		<![CDATA[
+			select count(*) 
+			from attendances
+			where ATTENDANCEDATE = #{sqlDate} and memberid = #{memberId}		
+		]]>
+	</select>
+	
+	<select id="selectAttendance" resultType="com.oti.myuniversity.domain.attendance.model.Attendance">
+		<![CDATA[
+			select ATTENDANCEID, MEMBERID, ATTENDANCEDATE, ATTENDANCEARRIVETIME, ATTENDANCEDEPARTTIME, ATTENDANCESTATUS
+			from attendances
+			where ATTENDANCEDATE = #{sqlDate} and memberid = #{memberId}	
+		]]>
+	</select>
+	
+	<update id="updateTimeStatus" parameterType="com.oti.myuniversity.domain.attendance.model.Attendance">
+		<![CDATA[
+			update attendances
+			set ATTENDANCEDEPARTTIME = #{attendanceDepartTime}, ATTENDANCESTATUS = #{attendanceStatus}
+			where ATTENDANCEDATE = #{attendanceDate} and memberid = #{memberId}
+		]]>
+	</update>
+	
+	<select id="getTotalAttendance" parameterType="com.oti.myuniversity.component.Pager" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				MEMBERNAME AS "memberName", 
+				ATTENDANCEDATE AS "attendanceDate",
+				ATTENDANCEARRIVETIME AS "attendanceArriveTime",
+				ATTENDANCEDEPARTTIME AS "attendanceDepartTime",
+				ATTENDANCESTATUS AS "attendanceStatus"
+			FROM
+				MEMBERS, ATTENDANCES
+			WHERE
+				MEMBERS.MEMBERID = ATTENDANCES.MEMBERID
+			ORDER BY
+				ATTENDANCEDATE DESC
+			OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
+			FETCH NEXT #{rowsPerPage} ROWS ONLY
+		]]>
+	</select>
+	
+	<select id="getTotalAttendanceCount" resultType="int">
+			<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM
+				ATTENDANCES
+		]]>
+	</select>
+	
+</mapper>
