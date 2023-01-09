@@ -38,30 +38,56 @@ input[type=text], select, textarea {
   padding: 20px;
 }
 </style>
-
+<script>
+	$(document).ready(function() {
+	    $(".file-delete").on("click", function(e) {
+	        e.preventDefault();
+	        deleteFile($(this));
+	    });
+	})
+	 function addFile() {
+        var str = "<div class='file-group'><input type='file' name='files'><a href='#this' name='file-delete'>삭제</a></div>";
+        $("#file-list").append(str);
+        $("a[name='file-delete']").on("click", function(e) {
+            e.preventDefault();
+            deleteFile($(this));
+        });
+    }
+ 
+    function deleteFile(obj) {
+        obj.parent().remove();
+    }
+</script>
 
 <div class="container" id="writeContainer">
 	<h5>과제실 작성하기</h5>
-	<input type="hidden" name="boardCategory" value="${categoryType}">
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
-	    	<form action="<c:url value='/board/write/'/>" method="POST" enctype="multipart/form-data">
+	    	<form action="<c:url value='/board/write'/>" method="POST" enctype="multipart/form-data">
+				<input type="hidden" name="boardCategory" value="${categoryType}">
 	        	<label for="boardTitle">제목</label>
 		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
 		        <label for="boardContent">내용</label>
 		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px"></textarea>
-				<label for="fileList">첨부 파일:</label>
- 				<input class="btn btn-sm fileList" type="file" name="fileList">
- 				<c:if test="">
- 					<input class-"">
- 				</c:if>
- 				<br><br>
+				<!-- 파일 태그 -->
+				<div class="form-group" id="file-list">
+			        <a href="#this" onclick="addFile()">파일추가</a>
+			        <div class="file-group">
+			            <input type="file" name="files"><a href='#this' class='file-delete'>삭제</a>
+			        </div>
+			    </div>				
+				<!-- 파일 태그 -->
+ 				<br>
+ 				<input type="hidden" name ="memberId" value="${member.memberId}">
+ 				
  				<label for="reportDeadline">제출 기한:</label>
  				<input name="reportDeadline" type="date">
 				<input name="reportDeadlineTime" type="time">
+				
+				
 				<div class="d-flex justify-content-center">
-			        <input class="ml-3 btn btn-md" id="register" type="reset" value="취소">
-			        <input class="ml-3 btn btn-md" id="register" type="submit" value="등록">
+			        <input class="ml-3 btn btn-md " id="cancle" type="reset" value="취소">
+			        <input class="ml-3 btn btn-md " id="register" type="submit" value="등록">
 				</div>
 	    	</form>
 	    </div>

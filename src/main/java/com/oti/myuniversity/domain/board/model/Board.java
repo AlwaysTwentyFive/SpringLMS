@@ -1,5 +1,6 @@
 package com.oti.myuniversity.domain.board.model;
 
+import java.security.Timestamp;
 import java.sql.Date;
 import java.util.List;
 
@@ -15,11 +16,11 @@ public class Board {
 	private Date submissionSubmitDate;
 	private int submissionScore;
 	private String memberId;
-	private Date reportDeadLineTime;
+	private Timestamp reportDeadLineTime;
 	
 	private String memberName;
 	
-	//private MultipartFile[] files; //해야 할까 말까 모르겠음.
+//	private List<MultipartFile> files; 
 	private List<BoardFile> fileList;
 	
 	public int getBoardId() {
@@ -88,17 +89,18 @@ public class Board {
 	public void setFileList(List<BoardFile> fileList) {
 		this.fileList = fileList;
 	}
-	public Date getReportDeadLineTime() {
+	public Timestamp getReportDeadLineTime() {
 		return reportDeadLineTime;
 	}
-	public void setReportDeadLineTime(Date reportDeadLineTime) {
+	public void setReportDeadLineTime(Timestamp reportDeadLineTime) {
 		this.reportDeadLineTime = reportDeadLineTime;
 	}
-//	public MultipartFile[] getFiles() {
+//	public List<MultipartFile> getFiles() {
 //		return files;
 //	}
-//	public void setFiles(MultipartFile[] files) {
+//	public void setFiles(List<MultipartFile> files) {
 //		this.files = files;
 //	}
-//	
+	
+	
 }

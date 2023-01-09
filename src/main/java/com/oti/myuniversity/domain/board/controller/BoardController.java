@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,8 +41,8 @@ public class BoardController {
 	public String getListByCategoryType(@PathVariable int categoryType, @PathVariable int pageNo, HttpSession session, Model model) {
 		
 		model.addAttribute("categoryType", categoryType);
-		List<Board> libraryList = boardService.selectArticleListByCatoryType(categoryType, pageNo);
-		model.addAttribute("libraryList", libraryList);
+		List<Board> boardList = boardService.selectArticleListByCatoryType(categoryType, pageNo);
+		model.addAttribute("boardList", boardList);
 		
 		//paging start
 		int totalRows = boardService.selectTotalArticleCount(categoryType);
@@ -63,7 +64,7 @@ public class BoardController {
 	
 	//글 상세 보기
 	@RequestMapping("/board/{boardId}/{pageNo}")
-	public String getBoardDetails(@PathVariable int pageNo,@PathVariable int boardId, Model model) {
+	public String getBoardDetails(@PathVariable int pageNo,@PathVariable int boardId,HttpSession session, Model model) {
 		Board board = boardService.selectArticle(boardId);
 		model.addAttribute("board", board);
 		model.addAttribute("pageNo", pageNo);
@@ -72,20 +73,29 @@ public class BoardController {
 		if(board.getBoardCategory()==1) {
 			return "board/library/viewdetail";
 		} else {
-			return "board/report/viewdetail";
+			String memberId = ((Member)session.getAttribute("member")).getMemberId();
+			if(memberId.equals("admin")) {
+				//관리자
+				return "board/report/admindetail";
+			} else {
+				//학생
+				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달 해야 함. 
+				Board reportBoard = boardService.selectStudentReport(boardId,memberId);
+				model.addAttribute("reportBoard", reportBoard);
+				return "board/report/studentdetail";
+			}
 		}
 	}
 	
 	@RequestMapping("/board/{boardId}")
-	public String  getBoardDetails(@PathVariable int boardId, Model model) {
-		return getBoardDetails(1, boardId, model);
+	public String  getBoardDetails(@PathVariable int boardId,HttpSession session, Model model) {
+		return getBoardDetails(1, boardId, session, model);
 	}
 	
 	
 	//글 작성하기
 	@RequestMapping(value= "/board/{categoryType}/write", method=RequestMethod.GET)
 	public String writeBoard(@PathVariable int categoryType, Model model) {
-		logger.info("/board/write: get");
 
 		model.addAttribute("categoryType", categoryType);
 		
@@ -97,17 +107,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value= "/board/write", method=RequestMethod.POST)
-	public String writeBoard(String boardTitle, String boardContent, @RequestParam("fileList") MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
-		
-		Board board = new Board();
-		board.setBoardTitle(boardTitle);
-		board.setBoardContent(boardContent);
-		Member member = (Member)session.getAttribute("member");
-		
-		board.setMemberId(member.getMemberId());
-		System.out.println(board.toString());
-		System.out.println(files);
-		
+	public String writeBoard(Board board, @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
 		
 		logger.info("/board/write: " + board.toString());
 		
@@ -134,7 +134,6 @@ public class BoardController {
 				boardService.insertArticle(board);
 			}
 			
-
 		}catch(Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());

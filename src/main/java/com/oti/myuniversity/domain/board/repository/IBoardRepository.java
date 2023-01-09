@@ -22,5 +22,8 @@ public interface IBoardRepository {
 	
 	//글의 마지막 번호 알기
 //	public int selectMaxBoardId();
+	
+	//학생의 과제글 조회
+	public Board selectStudentReport(@Param("boardId")int boardId, @Param("memberId") String memberId);
 
 }

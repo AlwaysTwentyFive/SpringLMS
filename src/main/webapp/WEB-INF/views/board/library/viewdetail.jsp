@@ -44,8 +44,8 @@
 	<hr/>
 	<div id="attachment" class="d-flex flex-column">
 		<c:if test="${!empty board.fileList}">
-			<c:forEach var="file" items="${boards.fileList}">
-					<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardddFileSize}</fmt:formatNumber>byte)</a>
+			<c:forEach var="file" items="${board.fileList}">
+					<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 			</c:forEach>
 		</c:if>
 	</div>

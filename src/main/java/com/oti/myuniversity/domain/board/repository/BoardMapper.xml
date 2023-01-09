@@ -71,7 +71,22 @@
 </insert>
 
 
-
+<select id="selectStudentReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="map">
+	select
+		BOARDID,
+		BOARDTITLE,
+		BOARDCONTENT,
+		BOARDDATE,
+		BOARDCATEGORY,
+		REPORTDEADLINE,
+		SUBMISSIONSUBMITDATE,
+		SUBMISSIONSCORE,
+		MEMBERID,
+		REPORTDEADLINETIME,
+		REPORTNOTICEID
+	from boards
+	where memberId=#{memberId}, boardId=#{boardId}
+</select>
 
 
 

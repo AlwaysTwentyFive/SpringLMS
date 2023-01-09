@@ -65,4 +65,9 @@ public class BoardService implements IBoardService {
 		
 	}
 
+	@Override
+	public Board selectStudentReport(int boardId, String memberId) {
+		return boardRepository.selectStudentReport(boardId,memberId);
+	}
+
 }

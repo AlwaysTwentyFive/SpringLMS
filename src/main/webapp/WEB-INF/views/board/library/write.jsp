@@ -49,7 +49,7 @@ input[type=text], select, textarea {
 	    });
 	})
 	 function addFile() {
-        var str = "<div class='file-group'><input type='file' name='file'><a href='#this' name='file-delete'>삭제</a></div>";
+        var str = "<div class='file-group'><input type='file' name='files'><a href='#this' name='file-delete'>삭제</a></div>";
         $("#file-list").append(str);
         $("a[name='file-delete']").on("click", function(e) {
             e.preventDefault();
@@ -65,10 +65,10 @@ input[type=text], select, textarea {
 
 <div class="container" id="writeContainer">
 	<h5>자료실 작성하기</h5>
-	<input type="hidden" name="boardCategory" value="${categoryType}">
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
 	    	<form action="<c:url value='/board/write'/>"  method="POST" enctype="multipart/form-data">
+				<input type="hidden" name="boardCategory" value="${categoryType}">
 		        <label for="boardTitle">제목</label>
 		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
 		
@@ -78,12 +78,14 @@ input[type=text], select, textarea {
 				<div class="form-group" id="file-list">
 			        <a href="#this" onclick="addFile()">파일추가</a>
 			        <div class="file-group">
-			            <input type="file" name="fileList"><a href='#this' class='file-delete'>삭제</a>
+			            <input type="file" name="files"><a href='#this' class='file-delete'>삭제</a>
 			        </div>
 			    </div>				
 				
 				<!-- 파일 태그 -->
 				<br>
+				<input type="hidden" name ="memberId" value="${member.memberId}">
+				
 				<div class="d-flex justify-content-center">
 			        <input class="ml-3 btn btn-md " id="cancle" type="reset" value="취소">
 			        <input class="ml-3 btn btn-md " id="register" type="submit" value="등록">
