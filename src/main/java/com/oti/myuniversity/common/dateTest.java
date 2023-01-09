@@ -1,19 +1,15 @@
-package com.oti.myuniversity.component;
+package com.oti.myuniversity.common;
 
 import static com.oti.myuniversity.common.Consts.DATE_FORMAT;
 import static com.oti.myuniversity.common.Consts.TIME_FORMAT;
 
-
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public class ServerTimeSupplier {
-	private static Timestamp record;
+public class dateTest {
+	
+	private static Date record;
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 	private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
 	
@@ -23,17 +19,13 @@ public class ServerTimeSupplier {
 		return day;
 	}
 	
-	public ServerTimeSupplier() {
-		setTime();
-	}
-
 	public static void setTime() {
-		record = new Timestamp(System.currentTimeMillis());
+		record = new Date(System.currentTimeMillis());
 	}
 	
 	public static String checkTime() {
 		if (record == null) {
-			record = new Timestamp(System.currentTimeMillis());
+			record = new Date(System.currentTimeMillis());
 		}
 		return record.toString();
 	}
@@ -42,7 +34,14 @@ public class ServerTimeSupplier {
 		return Date.valueOf(dateFormat.format(record));
 	}
 	
-	public static Timestamp getTime() {
-		return Timestamp.valueOf(timeFormat.format(record));
+	public static Date getTime() {
+		return Date.valueOf(timeFormat.format(record));
 	}
+
+	public static void main(String[] args) {
+		setTime();
+		Date date = getTime();
+		System.out.println(date);
+	}
+
 }

@@ -1,6 +1,6 @@
 package com.oti.myuniversity.domain;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,18 +26,18 @@ public class HomeController {
 		String memberId = member.getMemberId();
 		
 		Attendance attendance = attendanceService.selectAttendance(memberId, ServerTimeSupplier.getDate());
-		
+		model.addAttribute("day", ServerTimeSupplier.getDayOfWeek());
 		if (attendance != null) {
-			Date arriveTime = attendance.getAttendanceArriveTime();
-			Date departTime = attendance.getAttendanceDepartTime();
+			Timestamp arriveTime = attendance.getAttendanceArriveTime();
+			Timestamp departTime = attendance.getAttendanceDepartTime();
 			boolean isAttend = attendanceService.checkAttendance(memberId, attendance.getAttendanceDate());
 			model.addAttribute("arriveTime", arriveTime);
 			model.addAttribute("departTime", departTime);
 			model.addAttribute("isAttend", isAttend);
 		}
 		else {
-			Date arriveTime = null;
-			Date departTime = null;
+			Timestamp arriveTime = null;
+			Timestamp departTime = null;
 			model.addAttribute("arriveTime", arriveTime);
 			model.addAttribute("departTime", departTime);
 			model.addAttribute("isAttend", false);

@@ -20,6 +20,7 @@ import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.attendance.model.Attendance;
 import com.oti.myuniversity.domain.attendance.repository.IAttendanceRepository;
 import com.oti.myuniversity.domain.attendance.service.IAttendanceService;
+import com.oti.myuniversity.domain.member.model.Member;
 
 @Controller
 public class AttendanceController {
@@ -44,23 +45,25 @@ public class AttendanceController {
 	@RequestMapping(value = "/attendance/attend", method = RequestMethod.POST)
 	public String attend(HttpSession session, RedirectAttributes redirectAttrs) {
 		initializedAttendance.setAttendanceStatus("출근");
-
+		Member member = (Member) session.getAttribute("member");
+		initializedAttendance.setMemberId(member.getMemberId());
 		attendanceService.insertAttendance(initializedAttendance);
 		
 		return "redirect:/home";
 	}
 	
-	@RequestMapping(value="/attend/leave", method = RequestMethod.POST)
+	@RequestMapping(value="/attendance/leave", method = RequestMethod.POST)
 	public String leave(HttpSession session, RedirectAttributes redirectAttrs) {
+		Member member = (Member) session.getAttribute("member");
+		initializedAttendance.setMemberId(member.getMemberId());
 		String check = oneDayPolicy.evaluateAttend(initializedAttendance);
 		initializedAttendance.setAttendanceStatus(check);
-		
 		attendanceService.updateTimeStatus(initializedAttendance);
 
 		return "redirect:/home";
 	}
 	
-	@RequestMapping(value="/attend/list/{pageNo}")
+	@RequestMapping(value="/attendance/list/{pageNo}")
 	public String getAttendanceList(HttpSession session, Model model, @PathVariable int pageNo) {
 		pager.init(ROWS_PER_PAGE, PAGES_PER_GROUP, attendanceService.getTotalAttendanceCount(), pageNo);
 		model.addAttribute("attendanceList", attendanceService.getTotalAttendance(pager));

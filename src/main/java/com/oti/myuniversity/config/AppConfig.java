@@ -27,8 +27,8 @@ public class AppConfig {
 		ServerTimeSupplier.setTime();
 		Attendance attendance = new Attendance();
 		attendance.setAttendanceDate(ServerTimeSupplier.getDate());
-		attendance.setAttendanceArriveTime(ServerTimeSupplier.getDate());
-		attendance.setAttendanceDepartTime(ServerTimeSupplier.getDate());
+		attendance.setAttendanceArriveTime(ServerTimeSupplier.getTime());
+		attendance.setAttendanceDepartTime(ServerTimeSupplier.getTime());
 		return attendance;
 	}
 

@@ -145,17 +145,23 @@
 	                        </c:if>
 	                        </div>
 	                  </div>
-	                  <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
+	                
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
-		                  	<c:if test="${isAttend == true}">
-		                    <button class="w-btn w-btn-attendance" type="submit">출근하기</button>
-		                  	</c:if>
-		                  	<c:if test="${isAttend == false}">
-		                    <button class="w-btn w-btn-attendance" type="submit">퇴근하기</button>
+		                  	<c:if test="${day != 1 and day != 7 and departTime == null}">
+			                  	<c:if test="${isAttend == false}">
+				                  	 <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
+				                    	<button class="w-btn w-btn-attendance" type="submit">출근하기</button>
+				                     </form>
+			                  	</c:if>
+			                  	<c:if test="${isAttend == true}">
+			                  	    <form class="bttn" action="<c:url value='/attendance/leave'/>" method="post">
+			                    		<button class="w-btn w-btn-attendance" type="submit">퇴근하기</button>
+			                    	</form>
+			                  	</c:if>
 		                  	</c:if>
 		                  </div>
-	                  </form>
+	                 
 	               </div>
 	               <!-- 카드 내용 -->				
 				</div> <!-- divcontentWrapper -->
