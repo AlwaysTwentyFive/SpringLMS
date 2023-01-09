@@ -42,8 +42,52 @@
 		from boards left join members on boards.memberid = members.memberid
 		where boards.BOARDID=#{boardId}
 	]]>
-
-
 </select>
+
+<!-- <select id="selectMaxBoardId" resultType="int">
+	<![CDATA[
+		select nvl(max(boards.boardid),0) as boardid FROM boards
+	]]>
+</select> -->
+
+<insert id="insertLibrary" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		insert into boards
+				(BOARDID,
+				BOARDTITLE,
+				BOARDCONTENT,
+				BOARDDATE,
+				BOARDCATEGORY,
+				MEMBERID)
+		VALUES (
+				SEQ_BOARDID.NEXTVAL,
+				#{boardTitle},
+				#{boardContent},
+				sysdate, 
+				#{boardCategory}, 
+				#{memberId})
+	]]>
+	
+</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </mapper>

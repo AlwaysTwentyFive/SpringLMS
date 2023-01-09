@@ -79,7 +79,7 @@
 	<br/>
 	<div class="bttn">
    		<button class="w-btn w-btn-attendance" type="button">
-   			<a href='<c:url value="/board/cat/1/${page}"/>'>목록으로</a>
+   			<a href='<c:url value="/board/cat/1/${pageNo}"/>'>목록으로</a>
    		</button>
 	</div>
 </div>

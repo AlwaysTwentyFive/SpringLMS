@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="<c:url value='css/style.css'/>">
 
 <style>
 
@@ -41,23 +41,52 @@ input[type=text], select, textarea {
 }
 </style>
 
+<script>
+	$(document).ready(function() {
+	    $(".file-delete").on("click", function(e) {
+	        e.preventDefault();
+	        deleteFile($(this));
+	    });
+	})
+	 function addFile() {
+        var str = "<div class='file-group'><input type='file' name='file'><a href='#this' name='file-delete'>삭제</a></div>";
+        $("#file-list").append(str);
+        $("a[name='file-delete']").on("click", function(e) {
+            e.preventDefault();
+            deleteFile($(this));
+        });
+    }
+ 
+    function deleteFile(obj) {
+        obj.parent().remove();
+    }
+</script>
+
 
 <div class="container" id="writeContainer">
 	<h5>자료실 작성하기</h5>
+	<input type="hidden" name="boardCategory" value="${categoryType}">
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
-	    	<form action="#">
-		        <label for="title">제목</label>
-		        <input type="text" id="writeTitle" name="title" placeholder="title">
+	    	<form action="<c:url value='/board/write'/>"  method="POST" enctype="multipart/form-data">
+		        <label for="boardTitle">제목</label>
+		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
 		
-		        <label for="content">내용</label>
-		        <textarea id="writeContent" name="content" placeholder="content" style="height:200px"></textarea>
-				<label for="myfile">첨부 파일:</label>
- 				<input class="btn btn-sm" type="file" id="myfile" name="myfile"><br><br>
+		        <label for="boardContent">내용</label>
+		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px"></textarea>
+				<!-- 파일 태그 -->
+				<div class="form-group" id="file-list">
+			        <a href="#this" onclick="addFile()">파일추가</a>
+			        <div class="file-group">
+			            <input type="file" name="fileList"><a href='#this' class='file-delete'>삭제</a>
+			        </div>
+			    </div>				
 				
+				<!-- 파일 태그 -->
+				<br>
 				<div class="d-flex justify-content-center">
-			        <a href="#" class="mr-3 btn btn-md" id="cancle">취소</a>
-			        <input class="ml-3 btn btn-md" id="register" type="submit" value="등록">
+			        <input class="ml-3 btn btn-md " id="cancle" type="reset" value="취소">
+			        <input class="ml-3 btn btn-md " id="register" type="submit" value="등록">
 				</div>
 	    	</form>
 	    </div>

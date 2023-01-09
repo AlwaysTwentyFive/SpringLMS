@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <style>
 input[type=text], select, textarea {
@@ -41,20 +42,25 @@ input[type=text], select, textarea {
 
 <div class="container" id="writeContainer">
 	<h5>과제실 작성하기</h5>
+	<input type="hidden" name="boardCategory" value="${categoryType}">
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
-	    	<form action="#">
-	        	<label for="title">제목</label>
-		        <input type="text" id="writeTitle" name="title" placeholder="title">
-		        <label for="content">내용</label>
-		        <textarea id="writeContent" name="content" placeholder="content" style="height:200px"></textarea>
-				<label for="myfile">첨부 파일:</label>
- 				<input class="btn btn-sm" type="file" id="myfile" name="myfile"><br><br>
- 				<label>제출 기한:</label>
- 				<input name="deadlineDate" type="date">
-				<input name="deadlineTime" type="time">
+	    	<form action="<c:url value='/board/write/'/>" method="POST" enctype="multipart/form-data">
+	        	<label for="boardTitle">제목</label>
+		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
+		        <label for="boardContent">내용</label>
+		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px"></textarea>
+				<label for="fileList">첨부 파일:</label>
+ 				<input class="btn btn-sm fileList" type="file" name="fileList">
+ 				<c:if test="">
+ 					<input class-"">
+ 				</c:if>
+ 				<br><br>
+ 				<label for="reportDeadline">제출 기한:</label>
+ 				<input name="reportDeadline" type="date">
+				<input name="reportDeadlineTime" type="time">
 				<div class="d-flex justify-content-center">
-			        <a href="#" class="mr-3 btn btn-md" id="cancle">취소</a>
+			        <input class="ml-3 btn btn-md" id="register" type="reset" value="취소">
 			        <input class="ml-3 btn btn-md" id="register" type="submit" value="등록">
 				</div>
 	    	</form>

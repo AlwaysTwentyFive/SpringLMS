@@ -9,7 +9,7 @@
 			<h1>강의자료실</h1>
 		</div>
 		<div class="d-flex align-items-end justify-content-end col-5">
-			<button type="submit" name="writeReport" value="writeReport" class="btn btn-sm btn-warning">자료 등록</button>
+			<button type="submit" formaction="<c:url value='/board/1/write'/>" class="btn btn-sm btn-warning">자료 등록</button>
 		</div>
 	</div>
   	</form>
@@ -29,7 +29,7 @@
 				<c:forEach var="board" items="${libraryList}">
 					<tr>
 						<td class="col-6">
-							<a href="<c:url value='/board/${board.boardId}/${pageNo}'/>">
+							<a href="<c:url value='/board/${board.boardId}/${pager.pageNo}'/>">
 								${board.boardTitle}
 							</a>
 						</td>
