@@ -82,7 +82,8 @@ input[type=text], select, textarea {
  				
  				<label for="reportDeadline">제출 기한:</label>
  				<input name="reportDeadline" type="date">
-				<input name="reportDeadlineTime" type="time">
+				<input name="time"  type="time">
+<!-- 				<input name="reportDeadlineTime"  type="time"> -->
 				
 				
 				<div class="d-flex justify-content-center">

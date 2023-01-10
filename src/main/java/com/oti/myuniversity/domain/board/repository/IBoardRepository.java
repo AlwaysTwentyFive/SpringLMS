@@ -17,13 +17,22 @@ public interface IBoardRepository {
 	//글 상세 보기
 	public Board selectArticle(int boardId);
 	
-	//글 추가하기
+	//자료실 관리자 글 추가하기
 	public void insertLibrary(Board board);
 	
+	//과제실 관리자 글 추가하기
+	public void insertNoticeReport(Board board);
+
 	//글의 마지막 번호 알기
-//	public int selectMaxBoardId();
+	public int selectMaxBoardId();
 	
 	//학생의 과제글 조회
-	public Board selectStudentReport(@Param("boardId")int boardId, @Param("memberId") String memberId);
+	public Board selectReport(@Param("boardId")int boardId, @Param("memberId")String memberId);
+	
+	//학생들의 제출한 과제 리스트 뽑기
+	public List<Board> selectStudentsReport(int BoardId);
+	
+	//학생 과제물 입력하기
+	public void insertReport(Board board);
 
 }

@@ -1,5 +1,7 @@
 package com.oti.myuniversity.domain.board.controller;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -70,18 +71,27 @@ public class BoardController {
 		model.addAttribute("pageNo", pageNo);
 		logger.info("getBoardDetails: " + board.toString());
 		
+		
 		if(board.getBoardCategory()==1) {
 			return "board/library/viewdetail";
+
 		} else {
 			String memberId = ((Member)session.getAttribute("member")).getMemberId();
+			System.out.println("getBoardDetails 핸들러: memberId : " + memberId);
 			if(memberId.equals("admin")) {
 				//관리자
+				//과제를 제출한 학생들의 board객체..
+				List<Board> studentsBoard = boardService.selectStudentsReport(boardId);
+				System.out.println("studentsBoard" + studentsBoard);
+				model.addAttribute("studentsBoard", studentsBoard);
 				return "board/report/admindetail";
 			} else {
 				//학생
-				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달 해야 함. 
-				Board reportBoard = boardService.selectStudentReport(boardId,memberId);
+				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달
+				Board reportBoard = boardService.selectReport(boardId, memberId);
+				System.out.println(reportBoard);
 				model.addAttribute("reportBoard", reportBoard);
+				
 				return "board/report/studentdetail";
 			}
 		}
@@ -91,6 +101,8 @@ public class BoardController {
 	public String  getBoardDetails(@PathVariable int boardId,HttpSession session, Model model) {
 		return getBoardDetails(1, boardId, session, model);
 	}
+	
+	
 	
 	
 	//글 작성하기
@@ -106,10 +118,91 @@ public class BoardController {
 		}
 	}
 	
-	@RequestMapping(value= "/board/write", method=RequestMethod.POST)
-	public String writeBoard(Board board, @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
-		
+	@RequestMapping(value= "/board/report/write", method=RequestMethod.POST)
+	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files,
+			HttpSession session, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
+		System.out.println("getBoardDate 함: "+ board.getReportDeadline());
+		//string -> Timestamp
+		if(time!=null && !time.equals("")) {
+			String timeStamptool = board.getReportDeadline() + " " + time + ":00.0";
+			board.setReportDeadlineTime(Timestamp.valueOf(timeStamptool));
+			System.out.println("getReportDeadLineTime함" + board.getReportDeadlineTime());
+		}
+		try {
+			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
+			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
+
+			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+			for(int i = 0; i<files.length; i++) {
+				logger.info("/board/write: " + files[i].getOriginalFilename());
+				BoardFile file = new BoardFile();
+				file.setBoardFileName(files[i].getOriginalFilename());
+				file.setBoardFileSize(files[i].getSize());
+				file.setBoardFileContentType(files[i].getContentType());
+				file.setBoardFileData(files[i].getBytes());
+				fileList.add(file);
+				logger.info("/board/write : " + file.toString());
+			}
+			//categoryType=1 인 자료실 파일 및 게시글 업로드
+			if(board.getBoardCategory()==1) {
+				if(fileList!=null && !fileList.isEmpty() ) {
+					boardService.insertLibrary(board, fileList);
+				}else {
+					boardService.insertLibrary(board);
+				}
+			//categoryType=2 인 자료실 파일 및 게시글 업로드
+			} else {
+				if(fileList!=null && !fileList.isEmpty()) {
+					boardService.insertNoticeReport(board, fileList);
+				} else {
+					boardService.insertNoticeReport(board);
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			redirectAttrs.addFlashAttribute("message", e.getMessage());
+		}
+		
+		//해당 게시글의 1페이지 목록으로 이동
+			return "redirect:/board/cat/" + board.getBoardCategory(); 		
+	}
+	//aop쓸 수 있을까??
+	@RequestMapping(value= "/board/libary/write", method=RequestMethod.POST)
+	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
+		logger.info("/board/write: " + board.toString());
+		try {
+			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
+			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
+
+			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+			for(int i = 0; i<files.length; i++) {
+				logger.info("/board/write: " + files[i].getOriginalFilename());
+				BoardFile file = new BoardFile();
+				file.setBoardFileName(files[i].getOriginalFilename());
+				file.setBoardFileSize(files[i].getSize());
+				file.setBoardFileContentType(files[i].getContentType());
+				file.setBoardFileData(files[i].getBytes());
+				fileList.add(file);
+				logger.info("/board/write : " + file.toString());
+			}
+			if(fileList!=null && !fileList.isEmpty() ) {
+				boardService.insertLibrary(board, fileList);
+			}else {
+				boardService.insertLibrary(board);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			redirectAttrs.addFlashAttribute("message", e.getMessage());
+		}
+		
+		//해당 게시글의 1페이지 목록으로 이동
+			return "redirect:/board/cat/" + board.getBoardCategory(); 		
+	}
+	
+	//학생의 과제 제출 
+	@RequestMapping(value="/board/report/submit", method=RequestMethod.POST)
+	public String submitReport(Board board,@RequestParam int pageNo ,@RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs ) {
 		
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
@@ -126,23 +219,20 @@ public class BoardController {
 				fileList.add(file);
 				logger.info("/board/write : " + file.toString());
 			}
-			
-			if(fileList!=null && !fileList.isEmpty() ) {
-				boardService.insertArticle(board, fileList);
-				
-			}else {
-				boardService.insertArticle(board);
-			}
-			
-		}catch(Exception e) {
+					if(fileList!=null && !fileList.isEmpty() ) {
+						boardService.insertReport(board, fileList);
+					} else {
+						boardService.insertReport(board);
+					}
+		
+		}catch(Exception e){
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
 		
-		//해당 게시글의 1페이지 목록으로 이동
-		return "redirect:/board/cat/" + board.getBoardCategory(); 		
-		
+		return "redirect:/board/"+ board.getReportNoticeId() + "/" + pageNo;
 	}
+	
 	
 	
 }

@@ -67,7 +67,7 @@ input[type=text], select, textarea {
 	<h5>자료실 작성하기</h5>
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
-	    	<form action="<c:url value='/board/write'/>"  method="POST" enctype="multipart/form-data">
+	    	<form action="<c:url value='/board/libary/write'/>"  method="POST" enctype="multipart/form-data">
 				<input type="hidden" name="boardCategory" value="${categoryType}">
 		        <label for="boardTitle">제목</label>
 		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">

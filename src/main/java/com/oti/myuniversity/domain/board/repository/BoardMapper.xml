@@ -11,7 +11,7 @@
 			BOARDDATE,
 			MEMBERID
 		FROM BOARDS
-		WHERE boards.boardcategory = #{categoryType}
+		WHERE boards.boardcategory = #{categoryType} and reportnoticeid is null
 		ORDER BY BOARDDATE
 		OFFSET (#{end} - #{start})*(#{pageNo}-1) ROWS
 		FETCH NEXT 10 ROWS ONLY
@@ -44,11 +44,11 @@
 	]]>
 </select>
 
-<!-- <select id="selectMaxBoardId" resultType="int">
+<select id="selectMaxBoardId" resultType="int">
 	<![CDATA[
 		select nvl(max(boards.boardid),0) as boardid FROM boards
 	]]>
-</select> -->
+</select>
 
 <insert id="insertLibrary" parameterType="com.oti.myuniversity.domain.board.model.Board">
 	<![CDATA[
@@ -71,7 +71,7 @@
 </insert>
 
 
-<select id="selectStudentReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="map">
+<select id="selectReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="map">
 	select
 		BOARDID,
 		BOARDTITLE,
@@ -85,16 +85,81 @@
 		REPORTDEADLINETIME,
 		REPORTNOTICEID
 	from boards
-	where memberId=#{memberId}, boardId=#{boardId}
+	where memberId=#{memberId} and REPORTNOTICEID=#{boardId}
 </select>
 
 
+<select id="selectStudentsReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="int">
+	select
+		BOARDID,
+		BOARDTITLE,
+		BOARDCONTENT,
+		BOARDDATE,
+		BOARDCATEGORY,
+		REPORTDEADLINE,
+		SUBMISSIONSUBMITDATE,
+		SUBMISSIONSCORE,
+		boards.MEMBERID,
+		REPORTDEADLINETIME,
+		REPORTNOTICEID,
+		MEMBERNAME
+	from boards left join members on boards.memberid = members.memberid
+	where REPORTNOTICEID=#{boardId}
+</select>
 
 
+<insert id="insertReport" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		insert into boards
+				(
+				BOARDID,
+				BOARDTITLE,
+				BOARDCONTENT,
+				BOARDDATE,
+				BOARDCATEGORY,
+				SUBMISSIONSUBMITDATE,
+				MEMBERID,
+				REPORTNOTICEID
+				)
+		VALUES (
+				SEQ_BOARDID.NEXTVAL,
+				#{boardTitle},
+				#{boardContent},
+				sysdate, 
+				#{boardCategory}, 
+				sysdate,
+				#{memberId},
+				#{reportNoticeId}
+				)
+	]]>		
 
+</insert>
 
-
-
+<insert id="insertNoticeReport" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+			insert into boards
+				(
+				BOARDID,
+				BOARDTITLE,
+				BOARDCONTENT,
+				BOARDDATE,
+				BOARDCATEGORY,
+				REPORTDEADLINE,
+				MEMBERID,
+				REPORTDEADLINETIME
+				)
+		VALUES (
+				SEQ_BOARDID.NEXTVAL,
+				#{boardTitle},
+				#{boardContent},
+				sysdate, 
+				#{boardCategory},
+				#{reportDeadline},
+				#{memberId},
+				#{reportDeadlineTime}
+				)		
+	]]>
+</insert>
 
 
 

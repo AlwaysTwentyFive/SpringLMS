@@ -1,7 +1,7 @@
 package com.oti.myuniversity.domain.board.model;
 
-import java.security.Timestamp;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -16,11 +16,11 @@ public class Board {
 	private Date submissionSubmitDate;
 	private int submissionScore;
 	private String memberId;
-	private Timestamp reportDeadLineTime;
+	private Timestamp reportDeadlineTime;
+	private int reportNoticeId;
 	
 	private String memberName;
 	
-//	private List<MultipartFile> files; 
 	private List<BoardFile> fileList;
 	
 	public int getBoardId() {
@@ -89,18 +89,19 @@ public class Board {
 	public void setFileList(List<BoardFile> fileList) {
 		this.fileList = fileList;
 	}
-	public Timestamp getReportDeadLineTime() {
-		return reportDeadLineTime;
+	
+	public int getReportNoticeId() {
+		return reportNoticeId;
 	}
-	public void setReportDeadLineTime(Timestamp reportDeadLineTime) {
-		this.reportDeadLineTime = reportDeadLineTime;
+	public void setReportNoticeId(int reportNoticeId) {
+		this.reportNoticeId = reportNoticeId;
 	}
-//	public List<MultipartFile> getFiles() {
-//		return files;
-//	}
-//	public void setFiles(List<MultipartFile> files) {
-//		this.files = files;
-//	}
+	public Timestamp getReportDeadlineTime() {
+		return reportDeadlineTime;
+	}
+	public void setReportDeadlineTime(Timestamp reportDeadlineTime) {
+		this.reportDeadlineTime = reportDeadlineTime;
+	}
 	
 	
 }

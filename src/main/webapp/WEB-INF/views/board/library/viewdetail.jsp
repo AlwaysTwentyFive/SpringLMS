@@ -56,12 +56,14 @@
 			<div class="col-2">ReplyWriter</div>
 			<div class="col-10">ReplyContent</div>
 		</div>
-		<form action="#">
-		<div class="d-flex justify-content-end">
-			<button type="submit" name="update" value="update" class="btn btn-sm btn-primary mx-2">수정</button>
-			<button type="submit" name="delete" value="delete" class="btn btn-sm btn-danger">삭제</button>
-		</div>
-		</form>
+		<c:if test="${board.memberId eq member.memberId}">
+			<form action="#">
+			<div class="d-flex justify-content-end">
+				<button type="submit" name="update" value="update" class="btn btn-sm btn-primary mx-2">수정</button>
+				<button type="submit" name="delete" value="delete" class="btn btn-sm btn-danger">삭제</button>
+			</div>
+			</form>
+		</c:if>
 	</div>
 	<hr/>
 	<div id="replyWrite" class="mb-5">
