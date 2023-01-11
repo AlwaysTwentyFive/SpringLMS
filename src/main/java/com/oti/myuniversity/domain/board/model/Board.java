@@ -1,6 +1,7 @@
 package com.oti.myuniversity.domain.board.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -15,11 +16,11 @@ public class Board {
 	private Date submissionSubmitDate;
 	private int submissionScore;
 	private String memberId;
-	private Date reportDeadLineTime;
+	private Timestamp reportDeadlineTime;
+	private int reportNoticeId;
 	
 	private String memberName;
 	
-	//private MultipartFile[] files; //해야 할까 말까 모르겠음.
 	private List<BoardFile> fileList;
 	
 	public int getBoardId() {
@@ -88,19 +89,27 @@ public class Board {
 	public void setFileList(List<BoardFile> fileList) {
 		this.fileList = fileList;
 	}
-	public Date getReportDeadLineTime() {
-		return reportDeadLineTime;
+	
+	public int getReportNoticeId() {
+		return reportNoticeId;
 	}
-	public void setReportDeadLineTime(Date reportDeadLineTime) {
-		this.reportDeadLineTime = reportDeadLineTime;
+	public void setReportNoticeId(int reportNoticeId) {
+		this.reportNoticeId = reportNoticeId;
 	}
+	public Timestamp getReportDeadlineTime() {
+		return reportDeadlineTime;
+	}
+	public void setReportDeadlineTime(Timestamp reportDeadlineTime) {
+		this.reportDeadlineTime = reportDeadlineTime;
+	}
+	
 	
 	@Override
 	public String toString() {
 		return "Board [boardId=" + boardId + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
 				+ ", boardDate=" + boardDate + ", boardCategory=" + boardCategory + ", reportDeadline=" + reportDeadline
 				+ ", submissionSubmitDate=" + submissionSubmitDate + ", submissionScore=" + submissionScore
-				+ ", memberId=" + memberId + ", reportDeadLineTime=" + reportDeadLineTime + ", memberName=" + memberName
+				+ ", memberId=" + memberId + ", reportDeadLineTime=" + reportDeadlineTime + ", memberName=" + memberName
 				+ "]";
 	}
 }

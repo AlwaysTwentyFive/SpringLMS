@@ -46,13 +46,13 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
-	public void insertArticle(Board board) {
-		//board.setBoardId(boardRepository.selectMaxBoardId() + 1); //시퀀스 설정해서 문제 없을 것 같은데
+	public void insertLibrary(Board board) {
 		boardRepository.insertLibrary(board);
 	}
-
+	
+	@Override
 	@Transactional
-	public void insertArticle(Board board, ArrayList<BoardFile> fileList) {
+	public void insertLibrary(Board board, ArrayList<BoardFile> fileList) {
 		boardRepository.insertLibrary(board);
 		if(fileList.size() != 0) {
 			for(int i = 0; i<fileList.size(); i++) {
@@ -64,15 +64,69 @@ public class BoardService implements IBoardService {
 			}
 		}
 	}
+	
+	@Override
+	@Transactional
+	public void insertNoticeReport(Board board, ArrayList<BoardFile> fileList) {
+		boardRepository.insertNoticeReport(board);
+		if(fileList.size() != 0) {
+			for(int i = 0; i<fileList.size(); i++) {
+				if(fileList.get(i).getBoardFileName() != null 
+						&& !fileList.get(i).getBoardFileName().equals("")) {
+					fileList.get(i).setBoardId(board.getBoardId());
+					boardFileRepository.insertFileData(fileList.get(i));
+				}
+			}
+		}
+	}
+
+	
+	@Override
+	public void insertNoticeReport(Board board) {
+		boardRepository.insertNoticeReport(board);		
+	}
+	@Override
+	public Board selectReport(int reportNoticeId, String memberId) {
+		Board reportBoard = null;
+		int countReport = boardRepository.selectCountReport(reportNoticeId,memberId);
+		if(countReport != 0) {
+			reportBoard = boardRepository.selectReport(reportNoticeId,memberId);
+			List<BoardFile> fileList = boardFileRepository.selectfileList(reportBoard.getBoardId());
+			reportBoard.setFileList(fileList);
+		}
+		return reportBoard;
+	}
+	
 
 	@Override
-	public Board getBoard(int boardId) {
-		return boardRepository.getBoard(boardId);
+	public List<Board> selectStudentsReport(int boardId) {
+		return boardRepository.selectStudentsReport(boardId);
+	}
+	
+	@Override
+	public int selectMaxBoardId() {
+		return boardRepository.selectMaxBoardId();
 	}
 
 	@Override
-	public int getMaxBoardId() {
-		return boardRepository.getMaxBoardId();
+	public void insertReport(Board board) {
+		boardRepository.insertReport(board);
 	}
+	
+	@Transactional
+	@Override
+	public void insertReport(Board board, ArrayList<BoardFile> fileList) {
+		boardRepository.insertReport(board);
+		if(fileList.size() != 0) {
+			for(int i = 0; i<fileList.size(); i++) {
+				if(fileList.get(i).getBoardFileName() != null 
+						&& !fileList.get(i).getBoardFileName().equals("")) {
+					fileList.get(i).setBoardId(board.getBoardId());
+					boardFileRepository.insertFileData(fileList.get(i));
+				}
+			}
+		}
+	}
+
 
 }

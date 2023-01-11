@@ -44,35 +44,37 @@
 	<hr/>
 	<div id="attachment" class="d-flex flex-column">
 		<c:if test="${!empty board.fileList}">
-			<c:forEach var="file" items="${boards.fileList}">
-					<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardddFileSize}</fmt:formatNumber>byte)</a>
+			<c:forEach var="file" items="${board.fileList}">
+					<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 			</c:forEach>
+		<hr/>
 		</c:if>
 	</div>
-	<hr/>
 	<hr/>
 	<div id="replyList" class="d-flex flex-column">
 		<div class="d-flex">
 			<div class="col-2">ReplyWriter</div>
 			<div class="col-10">ReplyContent</div>
 		</div>
-		<form action="#">
-		<div class="d-flex justify-content-end">
-			<button type="submit" name="update" value="update" class="btn btn-sm btn-primary mx-2">수정</button>
-			<button type="submit" name="delete" value="delete" class="btn btn-sm btn-danger">삭제</button>
-		</div>
-		</form>
+		<c:if test="${board.memberId eq member.memberId}">
+			<form action="#">
+			<div class="d-flex justify-content-end">
+				<button type="submit" name="update" value="update" class="btn btn-sm btn-primary mx-2">수정</button>
+				<button type="submit" name="delete" value="delete" class="btn btn-sm btn-danger">삭제</button>
+			</div>
+			</form>
+		</c:if>
 	</div>
 	<hr/>
 	<div id="replyWrite" class="mb-5">
 		<form action="#">
-		<div class="d-flex">
-			<div class="col-2">ReplyWriter</div>
-			<textarea name="reportReply" class="col-9" rows="3" cols="150"></textarea>
-		</div>
-		<div class="d-flex justify-content-end">
-			<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning">쓰기</button>
-		</div>
+			<div class="d-flex">
+				<div class="col-2">ReplyWriter</div>
+				<textarea name="reportReply" class="col-9" rows="3" cols="150"></textarea>
+			</div>
+			<div class="d-flex justify-content-end">
+				<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning mt-3">댓글 입력</button>
+			</div>
 		</form>
 	</div>
 	<br/>

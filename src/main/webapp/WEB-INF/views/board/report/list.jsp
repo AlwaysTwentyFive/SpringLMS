@@ -9,9 +9,11 @@
 		<div class="col-7">
 			<h1>과제</h1>
 		</div>
-		<div class="d-flex align-items-end justify-content-end col-5">
-			<button type="submit" name="writeReport" value="writeReport" class="btn btn-sm btn-warning">과제 등록</button>
-		</div>
+		<c:if test="${member.memberId == 'admin'}">
+			<div class="d-flex align-items-end justify-content-end col-5">
+				<button formaction="<c:url value='/board/2/write'/>" name="writeReport" value="writeReport" class="btn btn-sm btn-warning">과제 등록</button>
+			</div>
+		</c:if>
 	</div>
   	</form>
 	
@@ -28,12 +30,36 @@
 		</table>
 		<table class="table table-bordered table-hover">
 			<tbody>
-				<tr>
-					<td class="col-5">Assginment</td>
-					<td class="col-3">2023-01-10 23:59:59</td>
-					<td class="col-2">미제출</td>
-					<td class="col-2">0</td>
-				</tr>
+				<c:forEach var="board" items="${boardList}">
+					<tr>
+						<td class="col-5">
+							<a href="<c:url value='/board/${board.boardId}/${pager.pageNo}'/>">
+								${board.boardTitle}
+							</a>
+						</td>
+						<c:if test="${!empty board.reportDeadline} ">
+							<td class="col-3">${board.reportDeadline}${board.reportDeadLineTime} 23:59:59</td>
+						</c:if>
+						<c:if test="${empty board.reportDeadline}">
+							<td class="col-3"> - </td>
+						</c:if>
+						<c:if test="${!empty board.submissionSubmitDate}">
+							<td class="col-2">${board.submissionSubmitDate}</td>
+						</c:if>
+						<c:if test="${empty board.submissionSubmitDate}">
+							<td class="col-2">미제출</td>
+						</c:if>
+						<c:if test="${board.submissionScore != 0}">
+							<td class="col-2">${board.submissionScore}점</td>
+						</c:if>
+						<c:if test="${empty board.submissionSubmitDate && board.submissionScore==0}">
+							<td class="col-2">미확정</td>
+						</c:if>
+						<c:if test="${!empty board.submissionSubmitDate && board.submissionScore==0}">
+							<td class="col-2">0점</td>
+						</c:if>
+					</tr>
+				</c:forEach>	
 			</tbody>
 		</table>
 	</div>
@@ -41,27 +67,27 @@
 	<div class="pager d-flex justify-content-center my-3">
 		<div class="flex-fulfill"></div>
 		<div class="pagingButtonSet d-flex justify-content-center col-5">
-			<!-- <c:if test="${pager.pageNo > 1}"> -->
-				<a href="Admin?pageNo=1" type="button" class="btn btn-muted shadow">처음으로</a>
-			<!-- </c:if> -->
+			<c:if test="${pager.pageNo > 1}">
+				<a href="<c:url value='/board/cat/1'/>" type="button" class="btn btn-muted shadow">처음으로</a>
+			</c:if>
 			
-			<!-- <c:if test = "${pager.groupNo > 1}"> -->
-				<a href="Admin?pageNo=${pager.startPageNo-1}" type="button" class="btn btn-muted shadow">앞으로</a>
-			<!-- </c:if> -->
+			<c:if test = "${pager.groupNo > 1}">
+				<a href="<c:url value='/board/cat/1/${pager.startPageNo-1}'/>" type="button" class="btn btn-muted shadow">앞으로</a>
+			</c:if>
 			
-			<!-- <c:forEach var="i" begin="${pager.startPageNo}" end ="${pager.endPageNo}"> -->
-				<!-- <c:if test="${pager.pageNo != i}"> -->
-					<a href="Admin?pageNo=${i}" type="button" class="btn btn-dark shadow">${i}</a>
-				<!-- </c:if> -->
-				<!-- <c:if test="${pager.pageNo == i}"> -->
-					<!-- <a href="Admin?pageNo=${i}" type="button" class="btn btn-white shadow">${i}</a> -->
-				<!-- </c:if> -->
-			<!-- </c:forEach> -->
+			<c:forEach var="i" begin="${pager.startPageNo}" end ="${pager.endPageNo}">
+				<c:if test="${pager.pageNo != i}">
+						<a href="<c:url value='/board/cat/1/${i}'/>" type="button" class="btn btn-white shadow">${i}</a>
+				</c:if>
+				<c:if test="${pager.pageNo == i}">
+						<a href="<c:url value='/board/cat/1/${i}'/>" type="button" class="btn btn-dark shadow">${i}</a>
+				</c:if>
+			</c:forEach>
 			
-			<!-- <c:if test = "${pager.groupNo < pager.totalGroupNo }"> -->
-				<a href="Admin?pageNo=${pager.endPageNo+1}" type="button" class="btn btn-muted shadow">뒤로</a>
-			<!-- </c:if> -->
-			<a href="Admin?pageNo=${pager.totalPageNo}"type="button" class="btn btn-muted shadow">마지막으로</a>
+			<c:if test = "${pager.groupNo < pager.totalGroupNo }">
+				<a href="<c:url value='/board/cat/1/${pager.endPageNo+1}'/>" type="button" class="btn btn-muted shadow">뒤로</a>
+			</c:if>
+			<a href="<c:url value='/board/cat/1/${pager.totalPageNo}'/>"type="button" class="btn btn-muted shadow">마지막으로</a>
 		</div>
 		<div class="flex-fulfill"></div>
 	</div>

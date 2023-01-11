@@ -2,6 +2,9 @@ package com.oti.myuniversity.domain.board.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.oti.myuniversity.domain.board.model.Board;
 import com.oti.myuniversity.domain.board.model.BoardFile;
 
 public interface IBoardFileRepository {

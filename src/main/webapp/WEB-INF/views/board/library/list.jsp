@@ -8,9 +8,11 @@
 		<div class="col-7">
 			<h1>강의자료실</h1>
 		</div>
-		<div class="d-flex align-items-end justify-content-end col-5">
-			<button type="submit" formaction="<c:url value='/board/1/write'/>" class="btn btn-sm btn-warning">자료 등록</button>
-		</div>
+		<c:if test="${member.memberId == 'admin'}">
+			<div class="d-flex align-items-end justify-content-end col-5">
+				<button type="submit" formaction="<c:url value='/board/1/write'/>" class="btn btn-sm btn-warning">자료 등록</button>
+			</div>
+		</c:if>
 	</div>
   	</form>
 	
@@ -26,7 +28,7 @@
 		</table>
 		<table class="table table-hover">
 			<tbody>
-				<c:forEach var="board" items="${libraryList}">
+				<c:forEach var="board" items="${boardList}">
 					<tr>
 						<td class="col-6">
 							<a href="<c:url value='/board/${board.boardId}/${pager.pageNo}'/>">

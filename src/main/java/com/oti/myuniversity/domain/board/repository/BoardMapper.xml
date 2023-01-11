@@ -11,8 +11,8 @@
 			BOARDDATE,
 			MEMBERID
 		FROM BOARDS
-		WHERE boards.boardcategory = #{categoryType}
-		ORDER BY BOARDDATE
+		WHERE boards.boardcategory = #{categoryType} and reportnoticeid is null
+		ORDER BY BOARDDATE DESC
 		OFFSET (#{end} - #{start})*(#{pageNo}-1) ROWS
 		FETCH NEXT 10 ROWS ONLY
 	]]>
@@ -44,6 +44,11 @@
 	]]>
 </select>
 
+<select id="selectMaxBoardId" resultType="int">
+	<![CDATA[
+		select nvl(max(boards.boardid),0) as boardid FROM boards
+	]]>
+</select>
 
 <insert id="insertLibrary" parameterType="com.oti.myuniversity.domain.board.model.Board">
 	<![CDATA[
@@ -71,17 +76,102 @@
 	]]>
 </select>
 
-<select id="getBoard" parameterType="int" resultType="com.oti.myuniversity.domain.board.model.Board">
-<![CDATA[
-	SELECT
+<select id="selectReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="map">
+	select
+		BOARDID,
 		BOARDTITLE,
 		BOARDCONTENT,
-		BOARDDATE
-	FROM
-		BOARDS
-	WHERE
-		BOARDID=#{boardId}
-]]>
+		BOARDDATE,
+		BOARDCATEGORY,
+		REPORTDEADLINE,
+		SUBMISSIONSUBMITDATE,
+		SUBMISSIONSCORE,
+		MEMBERID,
+		REPORTDEADLINETIME,
+		REPORTNOTICEID
+	from boards
+	where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
 </select>
+
+
+<select id="selectStudentsReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="int">
+	select
+		BOARDID,
+		BOARDTITLE,
+		BOARDCONTENT,
+		BOARDDATE,
+		BOARDCATEGORY,
+		REPORTDEADLINE,
+		SUBMISSIONSUBMITDATE,
+		SUBMISSIONSCORE,
+		boards.MEMBERID,
+		REPORTDEADLINETIME,
+		REPORTNOTICEID,
+		MEMBERNAME
+	from boards left join members on boards.memberid = members.memberid
+	where REPORTNOTICEID=#{boardId}
+</select>
+
+
+<insert id="insertReport" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		insert into boards
+				(
+				BOARDID,
+				BOARDTITLE,
+				BOARDCONTENT,
+				BOARDDATE,
+				BOARDCATEGORY,
+				SUBMISSIONSUBMITDATE,
+				MEMBERID,
+				REPORTNOTICEID
+				)
+		VALUES (
+				SEQ_BOARDID.NEXTVAL,
+				#{boardTitle},
+				#{boardContent},
+				sysdate, 
+				#{boardCategory}, 
+				sysdate,
+				#{memberId},
+				#{reportNoticeId}
+				)
+	]]>		
+
+</insert>
+
+<insert id="insertNoticeReport" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+			insert into boards
+				(
+				BOARDID,
+				BOARDTITLE,
+				BOARDCONTENT,
+				BOARDDATE,
+				BOARDCATEGORY,
+				REPORTDEADLINE,
+				MEMBERID,
+				REPORTDEADLINETIME
+				)
+		VALUES (
+				SEQ_BOARDID.NEXTVAL,
+				#{boardTitle},
+				#{boardContent},
+				sysdate, 
+				#{boardCategory},
+				#{reportDeadline},
+				#{memberId},
+				#{reportDeadlineTime}
+				)		
+	]]>
+</insert>
+
+
+<select id="selectCountReport" parameterType="map" resultType="int">
+   	select COUNT(*) from boards where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
+</select>
+
+
+
 
 </mapper>

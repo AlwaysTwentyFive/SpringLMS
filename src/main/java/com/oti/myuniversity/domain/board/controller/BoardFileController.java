@@ -23,12 +23,14 @@ public class BoardFileController {
 	@RequestMapping("/boardfile/{fileId}")
 	public ResponseEntity<byte[]> getFile(@PathVariable int fileId){
 		BoardFile file = boardFileService.getFile(fileId);
+		
 		final HttpHeaders headers = new HttpHeaders();
 		String[] mtypes = file.getBoardFileContentType().split("/");
 		headers.setContentType(new MediaType(mtypes[0], mtypes[1]));
 		headers.setContentLength(file.getBoardFileSize());
 		headers.setContentDispositionFormData("attachment",
 				file.getBoardFileName(), Charset.forName("UTF-8"));
+		
 		return new ResponseEntity<byte[]>(file.getBoardFileData(), headers, HttpStatus.OK);
 	}
 	

@@ -78,7 +78,7 @@
 									<a href="<c:url value='/board/cat/1'/>">Lecture Material</a>
 								</div>
 								<div class="collapse collapseOne text-left">
-									<a href="#" style="color: black;">Report</a>
+									<a href="<c:url value='/board/cat/2'/>" style="color: black;">Report</a>
 								</div>
 							</div>
 						</div>

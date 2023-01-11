@@ -1,5 +1,7 @@
 package com.oti.myuniversity.domain.board.controller;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +42,8 @@ public class BoardController {
 	public String getListByCategoryType(@PathVariable int categoryType, @PathVariable int pageNo, HttpSession session, Model model) {
 		
 		model.addAttribute("categoryType", categoryType);
-		List<Board> libraryList = boardService.selectArticleListByCatoryType(categoryType, pageNo);
-		model.addAttribute("libraryList", libraryList);
+		List<Board> boardList = boardService.selectArticleListByCatoryType(categoryType, pageNo);
+		model.addAttribute("boardList", boardList);
 		
 		//paging start
 		int totalRows = boardService.selectTotalArticleCount(categoryType);
@@ -63,29 +65,51 @@ public class BoardController {
 	
 	//글 상세 보기
 	@RequestMapping("/board/{boardId}/{pageNo}")
-	public String getBoardDetails(@PathVariable int pageNo,@PathVariable int boardId, Model model) {
+	public String getBoardDetails(@PathVariable int pageNo,@PathVariable int boardId,HttpSession session, Model model) {
 		Board board = boardService.selectArticle(boardId);
 		model.addAttribute("board", board);
 		model.addAttribute("pageNo", pageNo);
 		logger.info("getBoardDetails: " + board.toString());
 		
+		
 		if(board.getBoardCategory()==1) {
 			return "board/library/viewdetail";
+
 		} else {
-			return "board/report/viewdetail";
+			String memberId = ((Member)session.getAttribute("member")).getMemberId();
+			System.out.println("getBoardDetails 핸들러: memberId : " + memberId);
+			if(memberId.equals("admin")) {
+				//관리자
+				//과제를 제출한 학생들의 board객체..
+				List<Board> studentsBoard = boardService.selectStudentsReport(boardId);
+				for(Board student:studentsBoard) {
+					System.out.println("student 이름 출력 시도: "+student.getMemberName());
+				}
+				model.addAttribute("studentsBoard", studentsBoard);
+				return "board/report/admindetail";
+			} else {
+				//학생
+				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달
+				Board reportBoard = boardService.selectReport(boardId, memberId);
+				System.out.println("reportBoard : " + reportBoard);
+				model.addAttribute("reportBoard", reportBoard);
+				
+				return "board/report/studentdetail";
+			}
 		}
 	}
 	
 	@RequestMapping("/board/{boardId}")
-	public String  getBoardDetails(@PathVariable int boardId, Model model) {
-		return getBoardDetails(1, boardId, model);
+	public String  getBoardDetails(@PathVariable int boardId,HttpSession session, Model model) {
+		return getBoardDetails(1, boardId, session, model);
 	}
+	
+	
 	
 	
 	//글 작성하기
 	@RequestMapping(value= "/board/{categoryType}/write", method=RequestMethod.GET)
 	public String writeBoard(@PathVariable int categoryType, Model model) {
-		logger.info("/board/write: get");
 
 		model.addAttribute("categoryType", categoryType);
 		
@@ -96,25 +120,21 @@ public class BoardController {
 		}
 	}
 	
-	@RequestMapping(value= "/board/write", method=RequestMethod.POST)
-	public String writeBoard(String boardTitle, String boardContent, @RequestParam("fileList") MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
-		
-		Board board = new Board();
-		board.setBoardTitle(boardTitle);
-		board.setBoardContent(boardContent);
-		Member member = (Member)session.getAttribute("member");
-		
-		board.setMemberId(member.getMemberId());
-		System.out.println(board.toString());
-		System.out.println(files);
-		
-		
+	@RequestMapping(value= "/board/report/write", method=RequestMethod.POST)
+	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files,
+			HttpSession session, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
-		
+		System.out.println("getBoardDate 함: "+ board.getReportDeadline());
+		//string -> Timestamp
+		if(time!=null && !time.equals("")) {
+			String timeStamptool = board.getReportDeadline() + " " + time + ":00.0";
+			board.setReportDeadlineTime(Timestamp.valueOf(timeStamptool));
+			System.out.println("getReportDeadLineTime함" + board.getReportDeadlineTime());
+		}
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
-			
+
 			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
 			for(int i = 0; i<files.length; i++) {
 				logger.info("/board/write: " + files[i].getOriginalFilename());
@@ -126,24 +146,89 @@ public class BoardController {
 				fileList.add(file);
 				logger.info("/board/write : " + file.toString());
 			}
-			
-			if(fileList!=null && !fileList.isEmpty() ) {
-				boardService.insertArticle(board, fileList);
-				
-			}else {
-				boardService.insertArticle(board);
+		
+			if(fileList!=null && !fileList.isEmpty()) {
+				boardService.insertNoticeReport(board, fileList);
+			} else {
+				boardService.insertNoticeReport(board);
 			}
-			
-
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
 		
 		//해당 게시글의 1페이지 목록으로 이동
-		return "redirect:/board/cat/" + board.getBoardCategory(); 		
-		
+			return "redirect:/board/cat/" + board.getBoardCategory(); 		
 	}
+	//aop쓸 수 있을까??
+	@RequestMapping(value= "/board/libary/write", method=RequestMethod.POST)
+	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
+		logger.info("/board/write: " + board.toString());
+		try {
+			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
+			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
+			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+			for(int i = 0; i<files.length; i++) {
+				BoardFile file = new BoardFile();
+				file.setBoardFileName(files[i].getOriginalFilename());
+				file.setBoardFileSize(files[i].getSize());
+				file.setBoardFileContentType(files[i].getContentType());
+				file.setBoardFileData(files[i].getBytes());
+				fileList.add(file);
+				logger.info("/board/write : " + file.toString());
+			}
+			if(fileList!=null && !fileList.isEmpty() ) {
+				boardService.insertLibrary(board, fileList);
+			}else {
+				boardService.insertLibrary(board);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			redirectAttrs.addFlashAttribute("message", e.getMessage());
+		}
+		
+		//해당 게시글의 1페이지 목록으로 이동
+			return "redirect:/board/cat/" + board.getBoardCategory(); 		
+	}
+	
+	//학생의 과제 제출 
+	@RequestMapping(value="/board/report/submit", method=RequestMethod.POST)
+	public String submitReport(Board board,@RequestParam int pageNo ,@RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs ) {
+		
+		try {
+			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
+			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
+			
+			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+			System.out.println("멀티파드파일[] files 길이 :" + files.length);
+
+			for(int i = 0; i<files.length; i++) {
+				logger.info("/board/write: " + files[i].getOriginalFilename());
+				BoardFile file = new BoardFile();
+				file.setBoardFileName(files[i].getOriginalFilename());
+				file.setBoardFileSize(files[i].getSize());
+				file.setBoardFileContentType(files[i].getContentType());
+				file.setBoardFileData(files[i].getBytes());
+				System.out.println("file"+ i + "번째 파일의 fileName:" +  files[i].getOriginalFilename());
+				fileList.add(file);
+				logger.info("/board/write : " + file.toString());
+			}
+			System.out.println("fileList 개수: " + fileList.size());
+			if(fileList!=null && !fileList.isEmpty() ) {
+				boardService.insertReport(board, fileList);
+			} else {
+				boardService.insertReport(board);
+			}
+		
+		}catch(Exception e){
+			e.printStackTrace();
+			redirectAttrs.addFlashAttribute("message", e.getMessage());
+		}
+		
+		return "redirect:/board/"+ board.getReportNoticeId() + "/" + pageNo;
+	}
+	
 	
 	
 }

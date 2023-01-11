@@ -19,7 +19,7 @@
 				BOARDFILEID, BOARDFILENAME, BOARDFILESIZE, BOARDFILEDATA, BOARDFILECONTENTTYPE
 			from 
 				boards_files
-			where fileid=#{fileId}
+			where BOARDFILEID=#{fileId}
 		]]>
 	</select>
 	<insert id="insertFileData" parameterType="com.oti.myuniversity.domain.board.model.BoardFile">
