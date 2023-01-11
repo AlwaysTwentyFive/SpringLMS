@@ -47,9 +47,9 @@
 			<c:forEach var="file" items="${board.fileList}">
 					<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 			</c:forEach>
+		<hr/>
 		</c:if>
 	</div>
-	<hr/>
 	<hr/>
 	<div id="replyList" class="d-flex flex-column">
 		<div class="d-flex">
@@ -57,10 +57,11 @@
 			<div class="col-10">ReplyContent</div>
 		</div>
 		<c:if test="${board.memberId eq member.memberId}">
-			<form action="#">
+			<form>
+			<input type="hidden" name="pageNo" value="${pageNo}">
 			<div class="d-flex justify-content-end">
-				<button type="submit" name="update" value="update" class="btn btn-sm btn-primary mx-2">수정</button>
-				<button type="submit" name="delete" value="delete" class="btn btn-sm btn-danger">삭제</button>
+				<button name="boardId" class="btn btn-sm btn-primary mx-2" onclick="location.href='<c:url value="/board/library/update/${board.boardId}"/>'">수정</button>
+				<button name="delete" class="btn btn-sm btn-danger" onclick="location.href='<c:url value="/board/library/delete"/>'">삭제</button>
 			</div>
 			</form>
 		</c:if>
@@ -68,13 +69,13 @@
 	<hr/>
 	<div id="replyWrite" class="mb-5">
 		<form action="#">
-		<div class="d-flex">
-			<div class="col-2">ReplyWriter</div>
-			<textarea name="reportReply" class="col-9" rows="3" cols="150"></textarea>
-		</div>
-		<div class="d-flex justify-content-end">
-			<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning">쓰기</button>
-		</div>
+			<div class="d-flex">
+				<div class="col-2">ReplyWriter</div>
+				<textarea name="reportReply" class="col-9" rows="3" cols="150"></textarea>
+			</div>
+			<div class="d-flex justify-content-end">
+				<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning mt-3">댓글 입력</button>
+			</div>
 		</form>
 	</div>
 	<br/>

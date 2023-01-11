@@ -26,6 +26,11 @@
 	   background-color: #34495e;
 	   color: white;
 	   display: inline-block;
+	}
+	.submitFile{
+		width: 300px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}	
 </style>
 
@@ -49,6 +54,16 @@
 					<td class="col-6">제출 기간</td>
 					<td class="col-6">${board.reportDeadline} ${board.reportDeadlineTime}</td>
 				</tr>
+				<tr>
+					<td class="col-6">참고 파일</td>
+					<td id="attachment" class="d-flex flex-column">
+						<c:if test="${!empty board.fileList}">
+							<c:forEach var="file" items="${board.fileList}">
+									<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
+							</c:forEach>
+						</c:if>
+					</td>
+				</tr>
 				<tr id="reportBoardList">
 					<tr class="reportBoard mt-3">
 					<form action="#">
@@ -71,31 +86,32 @@
 									</tr>
 								</c:if>
 								<c:if test="${!empty studentsBoard}">
-									<c:forEach var="student" items="studentsBoard">
+									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
-											<td>
+											<td class="submitFile">
 												<c:if test="${!empty student.fileList}">
 													<c:forEach var="file" items="${student.fileList}">
 															<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 													</c:forEach>
 												</c:if>
 											</td>
-											<td>${student.submissionSubmitDate} ${student.reportDeadlineTime}</td>
+											<td>${student.submissionSubmitDate}</td>
 											<td><input type="text"></td>
+											<td><button type="submit" class="btn btn-sm btn-warning mt-2">입력</button></td>
 										</tr>
 									</c:forEach>
 								</c:if>
 							</tbody>
 						</table>
+					</form>
 						
 						
-						<br><br><h4>Feedback</h4><br>
+						<!-- <br><br><h4>Feedback</h4><br>
 						<textarea name="reportFeedback" placeholder="피드백 작성란" class="col-12" rows="3" cols="150"></textarea>
 						<div class="d-flex justify-content-end">
 							<button type="submit" class="btn btn-sm btn-warning mt-2">과제 평가 완료하기</button>
-						</div>
-					</form>
+						</div> -->
 					</tr>
 					<hr>
 					<tr class="reportBoard mt-3">
@@ -118,10 +134,10 @@
 									</tr>
 								</c:if>
 								<c:if test="${!empty studentsBoard}">
-									<c:forEach var="student" items="studentsBoard">
+									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
-											<td>
+											<td class="submitFile">
 												<c:if test="${!empty student.fileList}">
 													<c:forEach var="file" items="${student.fileList}">
 															<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
@@ -135,19 +151,17 @@
 								</c:if>
 							</tbody>
 						</table>
-						<h5>Feedback</h5>
+						<!-- <h5>Feedback</h5>
 						<p id="reportBoardContent" class="border">
 						~~학생의 과제는 ~~고 ~~해서 ~~점수를 주었습니다<br/>
 						***교수
-						</p>
+						</p> -->
 					</tr>
 				<!-- For Admin -->
 			</tbody>
 		</table>
 		<div class="bttn">
-	   		<button class="w-btn w-btn-attendance" type="button">
-	   			<a href='<c:url value="/board/cat/2/${pageNo}"/>'>목록으로</a>
-	   		</button>
+	   		<button class="w-btn w-btn-attendance" type="button" onclick="location.href='<c:url value="/board/cat/2/${pageNo}"/>'" style="color: white;">목록</button>
 		</div>		
 	</div>
 </div>

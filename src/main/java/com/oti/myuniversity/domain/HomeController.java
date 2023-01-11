@@ -25,7 +25,7 @@ public class HomeController {
 		Member member = (Member) session.getAttribute("member");
 		String memberId = member.getMemberId();
 		
-		Attendance attendance = attendanceService.selectAttendance(memberId, ServerTimeSupplier.getDate());
+		Attendance attendance = attendanceService.selectAttendanceByDate(memberId, ServerTimeSupplier.getDate());
 		model.addAttribute("day", ServerTimeSupplier.getDayOfWeek());
 		if (attendance != null) {
 			Timestamp arriveTime = attendance.getAttendanceArriveTime();

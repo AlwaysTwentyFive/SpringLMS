@@ -12,7 +12,7 @@
 			MEMBERID
 		FROM BOARDS
 		WHERE boards.boardcategory = #{categoryType} and reportnoticeid is null
-		ORDER BY BOARDDATE
+		ORDER BY BOARDDATE DESC
 		OFFSET (#{end} - #{start})*(#{pageNo}-1) ROWS
 		FETCH NEXT 10 ROWS ONLY
 	]]>
@@ -70,6 +70,11 @@
 	
 </insert>
 
+<select id="getMaxBoardId" resultType="int">
+	<![CDATA[
+		select nvl(max(boards.boardid),0) as boardid FROM boards
+	]]>
+</select>
 
 <select id="selectReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="map">
 	select
@@ -85,7 +90,7 @@
 		REPORTDEADLINETIME,
 		REPORTNOTICEID
 	from boards
-	where memberId=#{memberId} and REPORTNOTICEID=#{boardId}
+	where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
 </select>
 
 
@@ -162,10 +167,9 @@
 </insert>
 
 
-
-
-
-
+<select id="selectCountReport" parameterType="map" resultType="int">
+   	select COUNT(*) from boards where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
+</select>
 
 
 

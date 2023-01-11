@@ -1,11 +1,11 @@
 package com.oti.myuniversity.domain.board.controller;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.board.model.Board;
 import com.oti.myuniversity.domain.board.model.BoardFile;
+import com.oti.myuniversity.domain.board.service.IBoardFileService;
 import com.oti.myuniversity.domain.board.service.IBoardService;
 import com.oti.myuniversity.domain.member.model.Member;
 
@@ -33,6 +34,9 @@ public class BoardController {
 	
 	@Autowired
 	IBoardService boardService;
+	
+	@Autowired
+	IBoardFileService boardFileService;
 	
 	@Autowired
 	Pager pager;
@@ -77,19 +81,20 @@ public class BoardController {
 
 		} else {
 			String memberId = ((Member)session.getAttribute("member")).getMemberId();
-			System.out.println("getBoardDetails 핸들러: memberId : " + memberId);
+
 			if(memberId.equals("admin")) {
 				//관리자
 				//과제를 제출한 학생들의 board객체..
 				List<Board> studentsBoard = boardService.selectStudentsReport(boardId);
-				System.out.println("studentsBoard" + studentsBoard);
+				for(Board student:studentsBoard) {
+					System.out.println("student 이름 출력 시도: "+student.getMemberName());
+				}
 				model.addAttribute("studentsBoard", studentsBoard);
 				return "board/report/admindetail";
 			} else {
 				//학생
 				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달
 				Board reportBoard = boardService.selectReport(boardId, memberId);
-				System.out.println(reportBoard);
 				model.addAttribute("reportBoard", reportBoard);
 				
 				return "board/report/studentdetail";
@@ -101,8 +106,6 @@ public class BoardController {
 	public String  getBoardDetails(@PathVariable int boardId,HttpSession session, Model model) {
 		return getBoardDetails(1, boardId, session, model);
 	}
-	
-	
 	
 	
 	//글 작성하기
@@ -132,7 +135,9 @@ public class BoardController {
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
-
+			
+			
+			
 			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
 			for(int i = 0; i<files.length; i++) {
 				logger.info("/board/write: " + files[i].getOriginalFilename());
@@ -144,21 +149,13 @@ public class BoardController {
 				fileList.add(file);
 				logger.info("/board/write : " + file.toString());
 			}
-			//categoryType=1 인 자료실 파일 및 게시글 업로드
-			if(board.getBoardCategory()==1) {
-				if(fileList!=null && !fileList.isEmpty() ) {
-					boardService.insertLibrary(board, fileList);
-				}else {
-					boardService.insertLibrary(board);
-				}
-			//categoryType=2 인 자료실 파일 및 게시글 업로드
+		
+			if(fileList!=null && !fileList.isEmpty()) {
+				boardService.insertNoticeReport(board, fileList);
 			} else {
-				if(fileList!=null && !fileList.isEmpty()) {
-					boardService.insertNoticeReport(board, fileList);
-				} else {
-					boardService.insertNoticeReport(board);
-				}
+				boardService.insertNoticeReport(board);
 			}
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
@@ -167,27 +164,18 @@ public class BoardController {
 		//해당 게시글의 1페이지 목록으로 이동
 			return "redirect:/board/cat/" + board.getBoardCategory(); 		
 	}
+	
 	//aop쓸 수 있을까??
 	@RequestMapping(value= "/board/libary/write", method=RequestMethod.POST)
 	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
+
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
-
-			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-			for(int i = 0; i<files.length; i++) {
-				logger.info("/board/write: " + files[i].getOriginalFilename());
-				BoardFile file = new BoardFile();
-				file.setBoardFileName(files[i].getOriginalFilename());
-				file.setBoardFileSize(files[i].getSize());
-				file.setBoardFileContentType(files[i].getContentType());
-				file.setBoardFileData(files[i].getBytes());
-				fileList.add(file);
-				logger.info("/board/write : " + file.toString());
-			}
-			if(fileList!=null && !fileList.isEmpty() ) {
-				boardService.insertLibrary(board, fileList);
+			
+			if(files!=null) {
+				boardService.insertLibrary(board, files);
 			}else {
 				boardService.insertLibrary(board);
 			}
@@ -209,6 +197,8 @@ public class BoardController {
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
 			
 			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+			System.out.println("멀티파드파일[] files 길이 :" + files.length);
+
 			for(int i = 0; i<files.length; i++) {
 				logger.info("/board/write: " + files[i].getOriginalFilename());
 				BoardFile file = new BoardFile();
@@ -216,14 +206,16 @@ public class BoardController {
 				file.setBoardFileSize(files[i].getSize());
 				file.setBoardFileContentType(files[i].getContentType());
 				file.setBoardFileData(files[i].getBytes());
+				System.out.println("file"+ i + "번째 파일의 fileName:" +  files[i].getOriginalFilename());
 				fileList.add(file);
 				logger.info("/board/write : " + file.toString());
 			}
-					if(fileList!=null && !fileList.isEmpty() ) {
-						boardService.insertReport(board, fileList);
-					} else {
-						boardService.insertReport(board);
-					}
+			System.out.println("fileList 개수: " + fileList.size());
+			if(fileList!=null && !fileList.isEmpty() ) {
+				boardService.insertReport(board, fileList);
+			} else {
+				boardService.insertReport(board);
+			}
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -233,5 +225,57 @@ public class BoardController {
 		return "redirect:/board/"+ board.getReportNoticeId() + "/" + pageNo;
 	}
 	
+	//자료실 글 수정하기
+	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.GET)
+	public String updateLibary(@PathVariable int boardId, @RequestParam int pageNo, Model model) {
+		Board board = boardService.selectArticle(boardId);
+		int categoryType = board.getBoardCategory();
+		
+		model.addAttribute("categoryType", categoryType);
+		model.addAttribute("board", board);
+		
+		if(categoryType ==1) {
+			return "board/libarary/update";
+		} else {
+			return "board/report/update";
+		}
+	}
+	
+	@RequestMapping(value="board/library/update", method=RequestMethod.POST)
+	public String updateLibrary(Board newBoard, @RequestParam int pageNo, @RequestParam MultipartFile[] files,
+			HttpSession session, RedirectAttributes redirectAttrs) {
+		logger.info("/board/library/update " + newBoard.toString());
+		try {
+			newBoard.setBoardTitle(Jsoup.clean(newBoard.getBoardTitle(), Whitelist.basic()));
+			newBoard.setBoardContent(Jsoup.clean(newBoard.getBoardContent(), Whitelist.basic()));
+			
+			//기존 boardId의 데이터 가져오기
+			Board existedBoard = boardService.selectArticle(newBoard.getBoardId());
+			List<BoardFile> existedFiles = existedBoard.getFileList();
+			int existedBoardId = newBoard.getBoardId();
+			
+			// <case-1> 기존 파일 O, 새로운 파일 O
+			if(existedFiles != null && files !=null) {
+				boardService.updateExistToNew(newBoard, files);
+			}
+			// <case-2> 기존 파일 O, 새로운 파일 x
+			else if(existedFiles != null && files == null) {
+				boardService.updateLibrary(newBoard);
+			}
+			// <case-3> 기존 파일 X, 새로운 파일 O
+			else if(existedFiles == null && files != null) {
+				boardService.updateNothingtoNew(newBoard, files);
+			} else{
+				boardService.updateLibrary(newBoard);
+			}
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			redirectAttrs.addFlashAttribute("message", e.getMessage());
+		}
+		
+		return "redirect:/board/"+ newBoard.getBoardId() + "/" + pageNo;
+	}
 	
 }
