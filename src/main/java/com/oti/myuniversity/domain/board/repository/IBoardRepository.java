@@ -23,6 +23,8 @@ public interface IBoardRepository {
 	//과제실 관리자 글 추가하기
 	public void insertNoticeReport(Board board);
 
+	public int getMaxBoardId();
+
 	//글의 마지막 번호 알기
 	public int selectMaxBoardId();
 	

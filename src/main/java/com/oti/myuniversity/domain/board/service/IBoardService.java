@@ -10,6 +10,7 @@ public interface IBoardService {
 	public List<Board> selectArticleListByCatoryType(int categoryType,int pageNo);
 	public int selectTotalArticleCount(int categoryType);
 	public Board selectArticle(int boardId);
+
 	//자료실 관리자 글 입력
 	public void insertLibrary(Board board);
 	public void insertLibrary(Board board, ArrayList<BoardFile> fileList);
@@ -24,4 +25,5 @@ public interface IBoardService {
 	public Board selectReport(int boardId, String memberId);
 	public List<Board> selectStudentsReport (int boardId);
 	int selectMaxBoardId();
+
 }

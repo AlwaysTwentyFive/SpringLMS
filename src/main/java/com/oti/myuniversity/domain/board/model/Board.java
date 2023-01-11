@@ -104,4 +104,12 @@ public class Board {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "Board [boardId=" + boardId + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
+				+ ", boardDate=" + boardDate + ", boardCategory=" + boardCategory + ", reportDeadline=" + reportDeadline
+				+ ", submissionSubmitDate=" + submissionSubmitDate + ", submissionScore=" + submissionScore
+				+ ", memberId=" + memberId + ", reportDeadLineTime=" + reportDeadlineTime + ", memberName=" + memberName
+				+ "]";
+	}
 }

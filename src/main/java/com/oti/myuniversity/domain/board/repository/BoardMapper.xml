@@ -70,6 +70,11 @@
 	
 </insert>
 
+<select id="getMaxBoardId" resultType="int">
+	<![CDATA[
+		select nvl(max(boards.boardid),0) as boardid FROM boards
+	]]>
+</select>
 
 <select id="selectReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="map">
 	select
@@ -165,9 +170,6 @@
 <select id="selectCountReport" parameterType="map" resultType="int">
    	select COUNT(*) from boards where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
 </select>
-
-
-
 
 
 

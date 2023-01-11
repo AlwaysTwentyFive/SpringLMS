@@ -36,6 +36,7 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
+	@Transactional
 	public Board selectArticle(int boardId) {
 		Board board = boardRepository.selectArticle(boardId);
 		List<BoardFile> fileList = boardFileRepository.selectfileList(boardId);
@@ -44,12 +45,12 @@ public class BoardService implements IBoardService {
 		return board;
 	}
 
-	@Transactional
+	@Override
 	public void insertLibrary(Board board) {
-		//board.setBoardId(boardRepository.selectMaxBoardId() + 1); //시퀀스 설정해서 문제 없을 것 같은데
 		boardRepository.insertLibrary(board);
 	}
-
+	
+	@Override
 	@Transactional
 	public void insertLibrary(Board board, ArrayList<BoardFile> fileList) {
 		boardRepository.insertLibrary(board);
@@ -63,6 +64,8 @@ public class BoardService implements IBoardService {
 			}
 		}
 	}
+	
+	@Override
 	@Transactional
 	public void insertNoticeReport(Board board, ArrayList<BoardFile> fileList) {
 		boardRepository.insertNoticeReport(board);
@@ -76,7 +79,9 @@ public class BoardService implements IBoardService {
 			}
 		}
 	}
-	@Transactional
+
+	
+	@Override
 	public void insertNoticeReport(Board board) {
 		boardRepository.insertNoticeReport(board);		
 	}
@@ -89,9 +94,9 @@ public class BoardService implements IBoardService {
 			List<BoardFile> fileList = boardFileRepository.selectfileList(reportBoard.getBoardId());
 			reportBoard.setFileList(fileList);
 		}
-		
 		return reportBoard;
 	}
+	
 
 	@Override
 	public List<Board> selectStudentsReport(int boardId) {
@@ -107,7 +112,8 @@ public class BoardService implements IBoardService {
 	public void insertReport(Board board) {
 		boardRepository.insertReport(board);
 	}
-
+	
+	@Transactional
 	@Override
 	public void insertReport(Board board, ArrayList<BoardFile> fileList) {
 		boardRepository.insertReport(board);
@@ -121,8 +127,6 @@ public class BoardService implements IBoardService {
 			}
 		}
 	}
-
-	
 
 
 }
