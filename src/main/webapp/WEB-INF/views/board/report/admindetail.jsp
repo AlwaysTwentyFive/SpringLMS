@@ -49,6 +49,16 @@
 					<td class="col-6">제출 기간</td>
 					<td class="col-6">${board.reportDeadline} ${board.reportDeadlineTime}</td>
 				</tr>
+				<tr>
+					<td class="col-6">참고 파일</td>
+					<td id="attachment" class="d-flex flex-column">
+						<c:if test="${!empty board.fileList}">
+							<c:forEach var="file" items="${board.fileList}">
+									<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
+							</c:forEach>
+						</c:if>
+					</td>
+				</tr>
 				<tr id="reportBoardList">
 					<tr class="reportBoard mt-3">
 					<form action="#">
@@ -71,7 +81,7 @@
 									</tr>
 								</c:if>
 								<c:if test="${!empty studentsBoard}">
-									<c:forEach var="student" items="studentsBoard">
+									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
 											<td>
@@ -118,7 +128,7 @@
 									</tr>
 								</c:if>
 								<c:if test="${!empty studentsBoard}">
-									<c:forEach var="student" items="studentsBoard">
+									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
 											<td>

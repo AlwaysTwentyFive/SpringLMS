@@ -82,14 +82,16 @@ public class BoardController {
 				//관리자
 				//과제를 제출한 학생들의 board객체..
 				List<Board> studentsBoard = boardService.selectStudentsReport(boardId);
-				System.out.println("studentsBoard" + studentsBoard);
+				for(Board student:studentsBoard) {
+					System.out.println("student 이름 출력 시도: "+student.getMemberName());
+				}
 				model.addAttribute("studentsBoard", studentsBoard);
 				return "board/report/admindetail";
 			} else {
 				//학생
 				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달
 				Board reportBoard = boardService.selectReport(boardId, memberId);
-				System.out.println(reportBoard);
+				System.out.println("reportBoard : " + reportBoard);
 				model.addAttribute("reportBoard", reportBoard);
 				
 				return "board/report/studentdetail";
@@ -144,21 +146,13 @@ public class BoardController {
 				fileList.add(file);
 				logger.info("/board/write : " + file.toString());
 			}
-			//categoryType=1 인 자료실 파일 및 게시글 업로드
-			if(board.getBoardCategory()==1) {
-				if(fileList!=null && !fileList.isEmpty() ) {
-					boardService.insertLibrary(board, fileList);
-				}else {
-					boardService.insertLibrary(board);
-				}
-			//categoryType=2 인 자료실 파일 및 게시글 업로드
+		
+			if(fileList!=null && !fileList.isEmpty()) {
+				boardService.insertNoticeReport(board, fileList);
 			} else {
-				if(fileList!=null && !fileList.isEmpty()) {
-					boardService.insertNoticeReport(board, fileList);
-				} else {
-					boardService.insertNoticeReport(board);
-				}
+				boardService.insertNoticeReport(board);
 			}
+		
 		}catch(Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
@@ -174,10 +168,8 @@ public class BoardController {
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
-
 			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
 			for(int i = 0; i<files.length; i++) {
-				logger.info("/board/write: " + files[i].getOriginalFilename());
 				BoardFile file = new BoardFile();
 				file.setBoardFileName(files[i].getOriginalFilename());
 				file.setBoardFileSize(files[i].getSize());
@@ -209,6 +201,8 @@ public class BoardController {
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
 			
 			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
+			System.out.println("멀티파드파일[] files 길이 :" + files.length);
+
 			for(int i = 0; i<files.length; i++) {
 				logger.info("/board/write: " + files[i].getOriginalFilename());
 				BoardFile file = new BoardFile();
@@ -216,14 +210,16 @@ public class BoardController {
 				file.setBoardFileSize(files[i].getSize());
 				file.setBoardFileContentType(files[i].getContentType());
 				file.setBoardFileData(files[i].getBytes());
+				System.out.println("file"+ i + "번째 파일의 fileName:" +  files[i].getOriginalFilename());
 				fileList.add(file);
 				logger.info("/board/write : " + file.toString());
 			}
-					if(fileList!=null && !fileList.isEmpty() ) {
-						boardService.insertReport(board, fileList);
-					} else {
-						boardService.insertReport(board);
-					}
+			System.out.println("fileList 개수: " + fileList.size());
+			if(fileList!=null && !fileList.isEmpty() ) {
+				boardService.insertReport(board, fileList);
+			} else {
+				boardService.insertReport(board);
+			}
 		
 		}catch(Exception e){
 			e.printStackTrace();

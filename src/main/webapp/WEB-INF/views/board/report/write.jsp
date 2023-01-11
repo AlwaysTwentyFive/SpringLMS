@@ -63,9 +63,8 @@ input[type=text], select, textarea {
 	<h5>과제실 작성하기</h5>
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
-	    	<form action="<c:url value='/board/write'/>" method="POST" enctype="multipart/form-data">
+	    	<form  method="POST" enctype="multipart/form-data" name="form">
 				<input type="hidden" name="boardCategory" value="${categoryType}">
-	        	<label for="boardTitle">제목</label>
 		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
 		        <label for="boardContent">내용</label>
 		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px"></textarea>
@@ -88,7 +87,7 @@ input[type=text], select, textarea {
 				
 				<div class="d-flex justify-content-center">
 			        <input class="ml-3 btn btn-md " id="cancle" type="reset" value="취소">
-			        <input class="ml-3 btn btn-md " id="register" type="submit" value="등록">
+			        <input class="ml-3 btn btn-md " id="register" type="submit" value="등록"  formaction='<c:url value="/board/report/write"/>'>
 				</div>
 	    	</form>
 	    </div>

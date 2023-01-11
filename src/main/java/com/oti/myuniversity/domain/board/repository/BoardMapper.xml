@@ -85,7 +85,7 @@
 		REPORTDEADLINETIME,
 		REPORTNOTICEID
 	from boards
-	where memberId=#{memberId} and REPORTNOTICEID=#{boardId}
+	where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
 </select>
 
 
@@ -162,7 +162,9 @@
 </insert>
 
 
-
+<select id="selectCountReport" parameterType="map" resultType="int">
+   	select COUNT(*) from boards where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
+</select>
 
 
 

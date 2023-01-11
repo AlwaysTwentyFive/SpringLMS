@@ -81,8 +81,16 @@ public class BoardService implements IBoardService {
 		boardRepository.insertNoticeReport(board);		
 	}
 	@Override
-	public Board selectReport(int boardId, String memberId) {
-		return boardRepository.selectReport(boardId,memberId);
+	public Board selectReport(int reportNoticeId, String memberId) {
+		Board reportBoard = null;
+		int countReport = boardRepository.selectCountReport(reportNoticeId,memberId);
+		if(countReport != 0) {
+			reportBoard = boardRepository.selectReport(reportNoticeId,memberId);
+			List<BoardFile> fileList = boardFileRepository.selectfileList(reportBoard.getBoardId());
+			reportBoard.setFileList(fileList);
+		}
+		
+		return reportBoard;
 	}
 
 	@Override

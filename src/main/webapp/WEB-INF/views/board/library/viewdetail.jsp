@@ -47,9 +47,9 @@
 			<c:forEach var="file" items="${board.fileList}">
 					<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 			</c:forEach>
+		<hr/>
 		</c:if>
 	</div>
-	<hr/>
 	<hr/>
 	<div id="replyList" class="d-flex flex-column">
 		<div class="d-flex">
@@ -68,13 +68,13 @@
 	<hr/>
 	<div id="replyWrite" class="mb-5">
 		<form action="#">
-		<div class="d-flex">
-			<div class="col-2">ReplyWriter</div>
-			<textarea name="reportReply" class="col-9" rows="3" cols="150"></textarea>
-		</div>
-		<div class="d-flex justify-content-end">
-			<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning">쓰기</button>
-		</div>
+			<div class="d-flex">
+				<div class="col-2">ReplyWriter</div>
+				<textarea name="reportReply" class="col-9" rows="3" cols="150"></textarea>
+			</div>
+			<div class="d-flex justify-content-end">
+				<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning mt-3">댓글 입력</button>
+			</div>
 		</form>
 	</div>
 	<br/>
