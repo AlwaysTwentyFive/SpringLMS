@@ -12,7 +12,7 @@
 			MEMBERID
 		FROM BOARDS
 		WHERE boards.boardcategory = #{categoryType} and reportnoticeid is null
-		ORDER BY BOARDDATE
+		ORDER BY BOARDDATE DESC
 		OFFSET (#{end} - #{start})*(#{pageNo}-1) ROWS
 		FETCH NEXT 10 ROWS ONLY
 	]]>

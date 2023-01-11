@@ -161,10 +161,8 @@
 				</c:if>
 			</div>
 		</form>
-		<div class="bttn">
-	   		<button class="w-btn w-btn-attendance" type="button">
-	   			<a href='<c:url value="/board/cat/2/${pageNo}"/>'>목록으로</a>
-	   		</button>
+   		<div class="bttn">
+   			<button class="w-btn w-btn-attendance" type="button" onclick="location.href='<c:url value="/board/cat/2/${pageNo}"/>'" style="color: white;">목록</button>
 		</div>
 	</div>
 

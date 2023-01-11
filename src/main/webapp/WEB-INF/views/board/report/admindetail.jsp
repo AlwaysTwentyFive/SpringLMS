@@ -93,19 +93,20 @@
 											</td>
 											<td>${student.submissionSubmitDate} ${student.reportDeadlineTime}</td>
 											<td><input type="text"></td>
+											<td><button type="submit" class="btn btn-sm btn-warning mt-2">과제 평가 완료하기</button></td>
 										</tr>
 									</c:forEach>
 								</c:if>
 							</tbody>
 						</table>
+					</form>
 						
 						
-						<br><br><h4>Feedback</h4><br>
+						<!-- <br><br><h4>Feedback</h4><br>
 						<textarea name="reportFeedback" placeholder="피드백 작성란" class="col-12" rows="3" cols="150"></textarea>
 						<div class="d-flex justify-content-end">
 							<button type="submit" class="btn btn-sm btn-warning mt-2">과제 평가 완료하기</button>
-						</div>
-					</form>
+						</div> -->
 					</tr>
 					<hr>
 					<tr class="reportBoard mt-3">
@@ -145,19 +146,17 @@
 								</c:if>
 							</tbody>
 						</table>
-						<h5>Feedback</h5>
+						<!-- <h5>Feedback</h5>
 						<p id="reportBoardContent" class="border">
 						~~학생의 과제는 ~~고 ~~해서 ~~점수를 주었습니다<br/>
 						***교수
-						</p>
+						</p> -->
 					</tr>
 				<!-- For Admin -->
 			</tbody>
 		</table>
 		<div class="bttn">
-	   		<button class="w-btn w-btn-attendance" type="button">
-	   			<a href='<c:url value="/board/cat/2/${pageNo}"/>'>목록으로</a>
-	   		</button>
+	   		<button class="w-btn w-btn-attendance" type="button" onclick="location.href='<c:url value="/board/cat/2/${pageNo}"/>'" style="color: white;">목록</button>
 		</div>		
 	</div>
 </div>
