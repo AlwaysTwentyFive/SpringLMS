@@ -43,5 +43,10 @@
 			)
 		]]>
 	</insert>
-	
+	<delete id="deleteFiles" parameterType="int">
+		<![CDATA[
+			DELETE FROM boards_files
+			WHERE EXISTS (SELECT boardid from boards where boards.boardid = #{boardId} and boards.boardid.boardid = boards_files.boardId)
+		]]>
+	</delete>
 </mapper>

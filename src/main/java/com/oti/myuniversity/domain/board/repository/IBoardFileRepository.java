@@ -14,4 +14,5 @@ public interface IBoardFileRepository {
 	 public BoardFile getFile(int fileId);
 	//파일 넣기
 	 public void insertFileData(BoardFile boardFile);
+	public void deleteFiles(int boardId);
 }

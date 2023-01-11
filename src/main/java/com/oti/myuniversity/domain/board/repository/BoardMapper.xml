@@ -171,7 +171,18 @@
    	select COUNT(*) from boards where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
 </select>
 
-
+<update id="updateLibrary" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		update boards
+		set 
+			BOARDTITLE =#{boardTitle},
+			BOARDCONTENT =#{boardContent},
+			BOARDDATE = sysdate,
+			BOARDCATEGORY = #{boardCategory},
+			MEMBERID =#{memberId}
+		WHERE boardid=#{boardId}
+	]]>
+</update>
 
 
 </mapper>

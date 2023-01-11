@@ -38,6 +38,8 @@ public interface IBoardRepository {
 	//학생 과제물 입력하기
 	public void insertReport(Board board);
 
+	public void updateLibrary(Board newBoard);
+
 	
 	
 }
