@@ -21,11 +21,19 @@
 		]]>
 	</select>
 	
-	<select id="selectAttendance" resultType="com.oti.myuniversity.domain.attendance.model.Attendance">
+	<select id="selectAttendanceByDate" resultType="com.oti.myuniversity.domain.attendance.model.Attendance">
 		<![CDATA[
 			select ATTENDANCEID, MEMBERID, ATTENDANCEDATE, ATTENDANCEARRIVETIME, ATTENDANCEDEPARTTIME, ATTENDANCESTATUS
 			from attendances
 			where ATTENDANCEDATE = #{sqlDate} and memberid = #{memberId}	
+		]]>
+	</select>
+	
+	<select id="selectAttendanceById" resultType="com.oti.myuniversity.domain.attendance.model.Attendance">
+		<![CDATA[
+			select ATTENDANCEID, MEMBERID, ATTENDANCEDATE, ATTENDANCEARRIVETIME, ATTENDANCEDEPARTTIME, ATTENDANCESTATUS
+			from attendances
+			where ATTENDANCEID = #{attendanceId}	
 		]]>
 	</select>
 	
@@ -63,6 +71,34 @@
 			FROM
 				ATTENDANCES
 		]]>
+	</select>
+	
+	<select id="getPersonalAttendanceList" resultType="com.oti.myuniversity.domain.attendance.model.Attendance">
+		<![CDATA[
+			SELECT
+				ATTENDANCEID AS "attendanceId",
+				MEMBERNAME AS "memberName", 
+				ATTENDANCEDATE AS "attendanceDate",
+				ATTENDANCEARRIVETIME AS "attendanceArriveTime",
+				ATTENDANCEDEPARTTIME AS "attendanceDepartTime",
+				ATTENDANCESTATUS AS "attendanceStatus"
+			FROM
+				MEMBERS, ATTENDANCES
+			WHERE
+				MEMBERS.MEMBERID = ATTENDANCES.MEMBERID AND ATTENDANCES.MEMBERID = #{memberId}
+			ORDER BY
+				ATTENDANCEDATE 
+		
+		]]>
+	</select>
+	
+	<select id="getAttendanceCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM ATTENDANCES
+			WHERE ATTENDANCESTATUS = #{status} and MEMBERID = #{memberId}
+		]]>
+
 	</select>
 	
 </mapper>

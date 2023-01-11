@@ -34,8 +34,8 @@ public class AttendanceService implements IAttendanceService {
 	}
 
 	@Override
-	public Attendance selectAttendance(String memberId, Date sqlDate) {
-		return attendanceRepository.selectAttendance(memberId, sqlDate);
+	public Attendance selectAttendanceById(int attendanceId) {
+		return attendanceRepository.selectAttendanceById(attendanceId);
 		
 	}
 
@@ -52,6 +52,21 @@ public class AttendanceService implements IAttendanceService {
 	@Override
 	public int getTotalAttendanceCount() {
 		return attendanceRepository.getTotalAttendanceCount();
+	}
+
+	@Override
+	public List<Attendance> getPersonalAttendanceList(String memberId) {
+		return attendanceRepository.getPersonalAttendanceList(memberId);
+	}
+
+	@Override
+	public int getAttendanceCount(String memberId, String status) {
+		return attendanceRepository.getAttendanceCount(memberId, status);
+	}
+
+	@Override
+	public Attendance selectAttendanceByDate(String studentId, Date sqlDate) {
+		return attendanceRepository.selectAttendanceByDate(studentId, sqlDate);
 	}
 
 

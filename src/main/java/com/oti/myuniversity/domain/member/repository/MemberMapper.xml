@@ -37,7 +37,7 @@
 	<select id="selectMemberList" parameterType="com.oti.myuniversity.component.Pager" resultType="com.oti.myuniversity.domain.member.model.Member">
 	<![CDATA[
 		SELECT
-			memberName, memberEmail, memberPhoneNumber
+			memberId, memberName, memberEmail, memberPhoneNumber
 		FROM
 			MEMBERS
 		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS

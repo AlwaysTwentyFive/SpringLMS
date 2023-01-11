@@ -1,6 +1,7 @@
 package com.oti.myuniversity.domain.attendance.repository;
 
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +13,12 @@ import com.oti.myuniversity.domain.attendance.model.Attendance;
 public interface IAttendanceRepository {
 	void insertAttendance(Attendance attendance);
 	int checkAttendance(@Param("memberId") String memberId, @Param("sqlDate") Date sqlDate);
-	Attendance selectAttendance(@Param("memberId") String memberId, @Param("sqlDate") Date sqlDate);
+	Attendance selectAttendanceById(@Param("attendanceId") int attendanceId);
+	Attendance selectAttendanceByDate(@Param("memberId") String memberId, @Param("sqlDate") Date sqlDate);
 	void updateTimeStatus(Attendance attendance);
 	List<Map<String , Object>> getTotalAttendance(Pager pager);
 	int getTotalAttendanceCount();
+	LinkedList<Attendance> getPersonalAttendanceList(String memberId);
+	int getAttendanceCount(@Param("memberId")String memberId, @Param("status")String status);
 
 }
