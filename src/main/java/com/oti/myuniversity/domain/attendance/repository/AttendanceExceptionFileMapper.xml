@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.oti.myuniversity.domain.attendance.repository.IAttendanceExceptionFileRepository">
+	
+	<select id="getAttendanceExceptionFilesByExceptionId" parameterType="int" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONFILENAME,
+			ATTENDANCEEXCEPTIONFILESIZE,
+			ATTENDANCEEXCEPTIONFILEDATA,
+			ATTENDANCEEXCEPTIONFILECONTENTTYPE
+		FROM
+			ATTENDANCES_EXCEPTIONS_FILES
+		WHERE
+			ATTENDANCEEXCEPTIONID=#{attendanceExceptionId}
+	]]>
+	</select>
+	
+	<insert id="insertAttendanceExceptionFile" parameterType="com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile">
+	<![CDATA[
+		INSERT INTO ATTENDANCES_EXCEPTIONS_FILES 
+		(
+			ATTENDANCEEXCEPTIONFILEID,
+			ATTENDANCEEXCEPTIONFILENAME,
+			ATTENDANCEEXCEPTIONFILESIZE,
+			ATTENDANCEEXCEPTIONFILEDATA,
+			ATTENDANCEEXCEPTIONFILECONTENTTYPE,
+			ATTENDANCEEXCEPTIONID
+		) 
+		VALUES 
+		(
+			SEQ_ATTENDANCEEXCEPTIONFILEID.NEXTVAL,
+			#{attendanceExceptionFileName},
+			#{attendanceExceptionFileSize},
+			#{attendanceExceptionFileData},
+			#{attendanceExceptionFileContentType},
+			#{attendanceExceptionId}
+		)
+	]]>
+	</insert>
+	
+	<update id="updateAttendanceExceptionFile" parameterType="com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile">
+	<![CDATA[
+		UPDATE
+			ATTENDANCES_EXCEPTIONS_FILES
+		SET
+			ATTENDANCEEXCEPTIONFILENAME=#{attendanceExceptionFileName},
+			ATTENDANCEEXCEPTIONFILESIZE=#{attendanceExceptionFileSize},
+			ATTENDANCEEXCEPTIONFILEDATA=#{attendanceExceptionFileData},
+			ATTENDANCEEXCEPTIONFILECONTENTTYPE=#{attendanceExceptionFileContentType}
+		WHERE
+			ATTENDANCEEXCEPTIONFILEID=#{attendanceExceptionFileId}
+	]]>
+	</update>
+	
+	<delete id="deleteAttendanceExceptionFile" parameterType="int">
+	<![CDATA[
+		DELETE FROM
+			ATTENDANCES_EXCEPTIONS_FILES
+		WHERE
+			ATTENDANCEEXCEPTIONFILEID=#{attendanceExceptionFileId}
+	]]>
+	</delete>
+</mapper>

@@ -1,34 +1,36 @@
 package com.oti.myuniversity.common;
 
+import java.util.Map;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.oti.myuniversity.domain.member.model.Member;
-
-public class LoginInterceptor implements HandlerInterceptor{
-
+public class RequestInterceptor implements HandlerInterceptor{
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String contextName = request.getContextPath();
-		String url = request.getRequestURI().replaceFirst(contextName, "");
-		String param = request.getQueryString();
-		HttpSession session = request.getSession();
-		Member member = (Member) session.getAttribute("member");
-		
-		if (member == null) {
-			session.setAttribute("url", url);
-			session.setAttribute("param", param);
-			response.sendRedirect(request.getContextPath() + "/member/login");
-			return false;
+		Map<String, String[]> map = request.getParameterMap();
+		if (map != null) {
+			Set<String> keyset = map.keySet();
+			for (String key : keyset) {
+				System.out.println("========================================");
+				System.out.println("key:" + key);
+				String[] values = map.get(key);
+				for (String value : values) {
+					System.out.println("value:" + value);
+				}
+				System.out.println("========================================");
+			}
 		}
 		else {
-			System.out.println("[Session]: " + member);
+			System.out.println("ParamterMap doesn't exist");
 		}
+		
 		return true;
 	}
 

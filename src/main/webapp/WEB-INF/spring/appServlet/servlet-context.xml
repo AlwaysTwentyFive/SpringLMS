@@ -50,8 +50,13 @@
 	<!-- interceptor -->
 	<interceptors>
 		<interceptor>
-			<mapping path="/myuniversity/**"/>
+			<mapping path="/**"/>
+			<exclude-mapping path="/member/login"/>
 			<beans:bean class="com.oti.myuniversity.common.LoginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/**"/>
+			<beans:bean class="com.oti.myuniversity.common.RequestInterceptor"/>
 		</interceptor>
 	</interceptors>
 </beans:beans>

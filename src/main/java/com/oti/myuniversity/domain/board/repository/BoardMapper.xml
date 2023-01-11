@@ -44,11 +44,6 @@
 	]]>
 </select>
 
-<!-- <select id="selectMaxBoardId" resultType="int">
-	<![CDATA[
-		select nvl(max(boards.boardid),0) as boardid FROM boards
-	]]>
-</select> -->
 
 <insert id="insertLibrary" parameterType="com.oti.myuniversity.domain.board.model.Board">
 	<![CDATA[
@@ -70,24 +65,23 @@
 	
 </insert>
 
+<select id="getMaxBoardId" resultType="int">
+	<![CDATA[
+		select nvl(max(boards.boardid),0) as boardid FROM boards
+	]]>
+</select>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<select id="getBoard" parameterType="int" resultType="com.oti.myuniversity.domain.board.model.Board">
+<![CDATA[
+	SELECT
+		BOARDTITLE,
+		BOARDCONTENT,
+		BOARDDATE
+	FROM
+		BOARDS
+	WHERE
+		BOARDID=#{boardId}
+]]>
+</select>
 
 </mapper>

@@ -36,6 +36,7 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
+	@Transactional
 	public Board selectArticle(int boardId) {
 		Board board = boardRepository.selectArticle(boardId);
 		List<BoardFile> fileList = boardFileRepository.selectfileList(boardId);
@@ -44,7 +45,7 @@ public class BoardService implements IBoardService {
 		return board;
 	}
 
-	@Transactional
+	@Override
 	public void insertArticle(Board board) {
 		//board.setBoardId(boardRepository.selectMaxBoardId() + 1); //시퀀스 설정해서 문제 없을 것 같은데
 		boardRepository.insertLibrary(board);
@@ -62,7 +63,16 @@ public class BoardService implements IBoardService {
 				}
 			}
 		}
-		
+	}
+
+	@Override
+	public Board getBoard(int boardId) {
+		return boardRepository.getBoard(boardId);
+	}
+
+	@Override
+	public int getMaxBoardId() {
+		return boardRepository.getMaxBoardId();
 	}
 
 }
