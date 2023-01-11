@@ -112,12 +112,27 @@ public class AttendanceService implements IAttendanceService {
 		}
 		return attendanceExceptionId;
 	}
+	
+	@Override
+	@Transactional
+	public int applyException(Attendance attendance, AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException {
+		attendanceRepository.insertAttendance(attendance);
+		attendanceException.setAttendanceId(attendanceRepository.getMaxAttendanceId());
+		attendanceExceptionRepository.insertAttendanceException(attendanceException);
+		int attendanceExceptionId = attendanceExceptionRepository.getMaxAttendanceExceptionId();
+		List<AttendanceExceptionFile> attendanceExceptionFileList = multipartFileResovler.getAttendanceExceptionFileList(attendanceExceptionFiles, attendanceExceptionId);
+		for(AttendanceExceptionFile attendanceExceptionFile : attendanceExceptionFileList) {
+			attendanceExceptionFileRepository.insertAttendanceExceptionFile(attendanceExceptionFile);
+		}
+		return attendanceExceptionId;
+	}
 
 	@Override
 	@Transactional
 	public Model getAttendance(int attendanceExceptionId, Model model) {
 		int attendanceId = attendanceRepository.getMaxAttendanceId();
 		AttendanceException attendanceException = attendanceExceptionRepository.getAttendanceExceptionByAttendanceId(attendanceId);
+		attendanceException.setAttendanceExceptionId(attendanceExceptionId);
 		model.addAttribute("attendanceException", attendanceException);
 		
 		List<AttendanceExceptionFile> attendanceExceptionFiles = attendanceExceptionFileRepository.getAttendanceExceptionFilesByExceptionId(attendanceExceptionId);

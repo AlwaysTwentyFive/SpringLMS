@@ -1,5 +1,6 @@
 package com.oti.myuniversity.common;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +15,14 @@ public class RequestInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		String url = request.getRequestURI();
+		String queryString = request.getQueryString();
+		String method = request.getMethod();
+		if (queryString == null) {
+			queryString = "";
+		}
+		System.out.println("========================================");
+		System.out.println("[Request] " + url + queryString + " (" + method + ")");
 		Map<String, String[]> map = request.getParameterMap();
 		if (map != null) {
 			Set<String> keyset = map.keySet();
@@ -24,13 +33,13 @@ public class RequestInterceptor implements HandlerInterceptor{
 				for (String value : values) {
 					System.out.println("value:" + value);
 				}
-				System.out.println("========================================");
 			}
+			System.out.println("========================================");
 		}
 		else {
 			System.out.println("ParamterMap doesn't exist");
 		}
-		
+		System.out.println("========================================");
 		return true;
 	}
 

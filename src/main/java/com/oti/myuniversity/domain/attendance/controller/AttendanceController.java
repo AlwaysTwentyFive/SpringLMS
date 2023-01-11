@@ -5,6 +5,7 @@ import static com.oti.myuniversity.common.Consts.ROWS_PER_PAGE;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -206,8 +207,11 @@ public class AttendanceController {
 	@PostMapping("/attendance/write")
 	public String applyException(HttpSession session, AttendanceException attendanceException, String date, String time, MultipartFile[] attendanceExceptionFiles) throws IOException {
 		ServerTimeSupplier.setTime();
+		Member member = (Member) session.getAttribute("member");
+		attendanceException.setMemberId(member.getMemberId());
+		attendanceException.setMemberName(member.getMemberName());
 		attendanceException.setAttendanceExceptionDate(ServerTimeSupplier.getDate());
-		attendanceException.setAttendanceExceptionApplyDate(Date.valueOf(date + " " + time + ":00"));
+		attendanceException.setAttendanceExceptionApplyDate(Timestamp.valueOf(date + " " + time + ":00"));
 		
 		if (attendanceException.getAttendanceId() > 0) {
 			int attendanceExceptionId = attendanceService.applyException(attendanceException, attendanceExceptionFiles);
@@ -215,16 +219,14 @@ public class AttendanceController {
 		}
 		else {
 			Attendance attendance = new Attendance();
-			Member member = (Member) session.getAttribute("member");
 			attendance.setMemberId(member.getMemberId());
 			attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
-			attendance.setAttendanceDate(attendanceException.getAttendanceExceptionApplyDate());
-			attendanceService.insertAttendance(attendance);
+			attendance.setAttendanceDate(Date.valueOf(date));
+			attendance.setAttendanceArriveTime(Timestamp.valueOf(date + " " + time + ":00"));
 			attendanceException.setAttendanceId(attendanceService.getMaxAttendanceId() + 1);
-			int attendanceExceptionId = attendanceService.applyException(attendanceException, attendanceExceptionFiles);
+			int attendanceExceptionId = attendanceService.applyException(attendance, attendanceException, attendanceExceptionFiles);
 			return "redirect:/attendance/exception/" + attendanceExceptionId;
 		}
-
 	}
 	
 	@GetMapping("/attendance/exception/{attendanceExceptionId}")
@@ -234,24 +236,25 @@ public class AttendanceController {
 	}
 	
 	@PostMapping("/attendance/manage")
-	public String manageException(HttpSession session, AttendanceException attendanceException, String memberId, int boardId) {
+	public String manageException(HttpSession session, AttendanceException attendanceException, int attendanceExceptionId, Date attendanceExceptionDate) {
 		Attendance attendance = new Attendance();
-		attendance.setMemberId(memberId);
-		attendance.setAttendanceDate(attendanceException.getAttendanceExceptionApplyDate());
+		attendance.setMemberId(attendanceException.getMemberId());
+		attendance.setAttendanceDate(attendanceExceptionDate);
+		attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
 		attendanceService.manageAttendance(attendance, attendanceException);
-		return "redirect:/attendance/exception/" + boardId;
+		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}
 	
-	@GetMapping("/attendance/exception")
+	@GetMapping("/attendance/exceptionlist")
 	public String getExceptionList() {
-		return "redirect:/attendance/exception/1";
+		return "redirect:/attendance/exceptionlist/1";
 	}
 	
-	@GetMapping("/attendance/exception/{pageNo}")
+	@GetMapping("/attendance/exceptionlist/{pageNo}")
 	public String getExceptionList(Model model, @PathVariable int pageNo) {
 		pager.init(ROWS_PER_PAGE, PAGES_PER_GROUP, attendanceExceptionService.getTotalAttendanceExceptionCount(), pageNo);
 		model.addAttribute("attendanceExceptionList", attendanceExceptionService.getTotalAttendanceException(pager));
 		model.addAttribute("pager", pager);
-		return "attendance/excpetionlist";
+		return "attendance/exceptionlist";
 	}
 }

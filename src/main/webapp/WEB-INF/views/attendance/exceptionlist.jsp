@@ -17,13 +17,13 @@
 		</thead>
 		<tbody>
 			<c:forEach var="attendanceException" items="${attendanceExceptionList}">
-			</c:forEach>
 			<tr>
 				<td>1</td>
-				<td style="text-align: center;">2022년 1월 10일 공가 신청합니다.<img src="images/paperclip.png" width="18" class="mb-2"/></td>
-				<td>강지성</td>
-				<td>2022-01-04</td>
+				<td style="text-align: center;"><a href="<c:url value='/attendance/exception/${attendanceException.attendanceExceptionId}'/>">${attendanceException.attendanceExceptionTitle}</a><img src="images/paperclip.png" width="18" class="mb-2"/></td>
+				<td>${attendanceException.memberName}</td>
+				<td>${attendanceException.attendanceExceptionDate}</td>
 			</tr>
+			</c:forEach>
 		</tbody>
 	</table>
 </div>
@@ -32,27 +32,25 @@
 <div class="pager d-flex justify-content-center my-3">
 	<div class="flex-fulfill"></div>
 	<div class="pagingButtonSet d-flex justify-content-center col-5">
-	<c:if test="${pager.pageNo > 1}"> 
-	<a href="attendance/exception/1" type="button" class="btn btn-muted shadow">처음으로</a>
-	</c:if>  
+	<a href="<c:url value='/attendance/exceptionlist/1'/>" type="button" class="btn btn-muted shadow">처음으로</a>
 	
 	<c:if test = "${pager.groupNo > 1}">
-	<a href="attendance/exception/${pager.startPageNo-1}" type="button" class="btn btn-muted shadow">앞으로</a>
+	<a href="<c:url value='/attendance/exceptionlist/${pager.startPageNo-1}'/>" type="button" class="btn btn-muted shadow">앞으로</a>
 	</c:if> 
 	
 	<c:forEach var="i" begin="${pager.startPageNo}" end ="${pager.endPageNo}">
 	<c:if test="${pager.pageNo != i}">
-	<a href="attendance/exception/${i}" type="button" class="btn btn-dark shadow">${i}</a>
+	<a href="<c:url value='/attendance/exceptionlist/${i}'/>" type="button" class="btn btn-white shadow">${i}</a>
 	</c:if>
 	<c:if test="${pager.pageNo == i}">
-	<a href="attendance/exception/${i}" type="button" class="btn btn-white shadow">${i}</a>
+	<a href="<c:url value='/attendance/exceptionlist/${i}'/>" type="button" class="btn btn-dark shadow">${i}</a>
 	</c:if>
 	</c:forEach>
 	
 	<c:if test = "${pager.groupNo < pager.totalGroupNo }">
-	<a href="attendance/exception/${pager.endPageNo+1}" type="button" class="btn btn-muted shadow">뒤로</a>
+	<a href="<c:url value='/attendance/exceptionlist/${pager.endPageNo+1}'/>" type="button" class="btn btn-muted shadow">뒤로</a>
 	</c:if>
-	<a href="attendance/exception/${pager.totalPageNo}"type="button" class="btn btn-muted shadow">마지막으로</a>
+	<a href="<c:url value='/attendance/exceptionlist/${pager.totalPageNo}'/>"type="button" class="btn btn-muted shadow">마지막으로</a>
 	</div>
 	<div class="flex-fulfill"></div>
 </div>

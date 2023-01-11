@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
-<link rel="stylesheet" type="text/css" href="css/style.css">
 <style>
 #writeContainer {
   border-radius: 5px;
@@ -73,16 +72,22 @@
 			<div id="box">${attendanceException.attendanceExceptionContent}</div>	
 			<br/><br/>
 			<div class="d-flex justify-content-end">
-				<img class="mt-1 mr-2" src="<c:url value='images/deny.png'/>" height="34px"> 
+				<img class="mt-1 mr-2" src="<c:url value='/images/deny.png'/>" height="34px"> 
 				<div class="w-btn-outline w-btn-yellow-outline mr-2" style="width: 150px; text-align: center;">
 					<c:if test="${attendanceException.attendanceExceptionApproved != null}">
-					${attendanceException.attendanceExceptionApproved}
+						<c:if test="${attendanceException.attendanceExceptionApproved == true}">
+						승인됨
+						</c:if>
 					</c:if>
 					<c:if test="${attendanceException.attendanceExceptionApproved == null}">
 					결재 중
 					</c:if>
 				</div>
-				<form action="<c:url value='/attendance/manage'/>">
+				<form action="<c:url value='/attendance/manage'/>" method="post">				
+				<input type="hidden" name="memberId" value="${attendanceException.memberId}"/>
+				<input type="hidden" name="attendanceExceptionStatus" value="${attendanceException.attendanceExceptionStatus}"/>
+				<input type="hidden" name="attendanceExceptionId" value="${attendanceException.attendanceExceptionId}"/>
+				<input type="hidden" name="attendanceExceptionDate" value="${attendanceException.attendanceExceptionDate}"/>
 				<button type="submit" name="attendanceExceptionApproved" value="true"  class="btn btn-sm btn-primary mx-2">승인</button>
 				<button type="submit" name="attendanceExceptionApproved" value="false" class="btn btn-sm btn-danger">거절</button>
 				</form>

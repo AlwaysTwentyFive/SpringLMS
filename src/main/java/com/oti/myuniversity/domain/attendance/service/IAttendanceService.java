@@ -25,6 +25,7 @@ public interface IAttendanceService {
 	int getAttendanceCount(String memberId, String status);
 	int getMaxAttendanceId();
 	int applyException(AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException;
+	int applyException(Attendance attendance, AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException;
 	Model getAttendance(int boardId, Model model);
 	void manageAttendance(Attendance attendance, AttendanceException attendanceException);
 }
