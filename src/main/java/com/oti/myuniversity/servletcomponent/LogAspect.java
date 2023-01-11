@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class LogAspect {
 	//private static int logCount = 0;
 
-	@Pointcut(value="execution(* com.oti.myuniversity..*.*Controller.*(..)) && execution(* com.oti.myuniversity.domain.HomeController.*(..))")
+	@Pointcut(value="execution(* com.oti.myuniversity.domain..*.*Controller.*(..)) || execution(* com.oti.myuniversity.domain.HomeController.*(..))")
 	private void logPointcut() {}
 	
 	@Before("logPointcut()")
@@ -34,4 +34,5 @@ public class LogAspect {
 		System.out.println("[Method] " + signature.getName() + "() - executed");
 		System.out.println("----------------------------------------");
 	}
+
 }

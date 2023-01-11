@@ -12,4 +12,6 @@ public interface IBoardService {
 	public Board selectArticle(int boardId);
 	public void insertArticle(Board board);
 	public void insertArticle(Board board, ArrayList<BoardFile> fileList);
+	public Board getBoard(int boardId);
+	int getMaxBoardId();
 }

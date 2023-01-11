@@ -16,9 +16,10 @@ public interface IAttendanceRepository {
 	Attendance selectAttendanceById(@Param("attendanceId") int attendanceId);
 	Attendance selectAttendanceByDate(@Param("memberId") String memberId, @Param("sqlDate") Date sqlDate);
 	void updateTimeStatus(Attendance attendance);
+	void updateAttendanceStatus(Attendance attendance);
 	List<Map<String , Object>> getTotalAttendance(Pager pager);
 	int getTotalAttendanceCount();
 	LinkedList<Attendance> getPersonalAttendanceList(String memberId);
 	int getAttendanceCount(@Param("memberId")String memberId, @Param("status")String status);
-
+	int getMaxAttendanceId();
 }

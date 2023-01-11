@@ -39,30 +39,51 @@
   padding: 20px;
 }
 </style>
-
+<script>
+   $(document).ready(function() {
+       $(".file-delete").on("click", function(e) {
+           e.preventDefault();
+           deleteFile($(this));
+       });
+   })
+    function addFile() {
+        var str = "<div class='file-group'><input type='file' name='attendanceExceptionFiles'><a href='#this' name='file-delete'>삭제</a></div>";
+        $("#file-list").append(str);
+        $("a[name='file-delete']").on("click", function(e) {
+            e.preventDefault();
+            deleteFile($(this));
+        });
+    }
+ 
+    function deleteFile(obj) {
+        obj.parent().remove();
+    }
+</script>
 <div class="container" id="writeContainer">
 	<h5>결석 사유 작성</h5>
 	<div class="card-body shadow bg-white rounded">
-    	<form action="#">
+    	<form action="<c:url value='/attendance/write'/>" method="post" enctype="multipart/form-data">
+    		<input type="hidden" name="attendanceId" value="${attendanceId}">
     		<div class="row">
-	        	<label class="col-sm-2" for="title">제목</label>
+	        	<label class="col-sm-2" for="attendanceExceptionTitle">제목</label>
 	        	<div class="col-sm-4"></div>
-	        	<label class="col-sm-2 ml-4" for="exceptionType" >신청 타입</label>
-				<select class="col-sm-3 mb-1" name="exceptionType" id="exceptionType">
-				    <option value="absent">공가</option>
-				    <option value="earlyLive">조퇴</option>
-				    <option value="outside">외출</option>
+	        	<label class="col-sm-2 ml-4" for="attendanceExceptionStatus" >신청 타입</label>
+				<select class="col-sm-3 mb-1" name="attendanceExceptionStatus" id="attendanceExceptionStatus">
+				    <option value="공가">공가</option>
+				    <option value="조퇴">조퇴</option>
+				    <option value="외출">외출</option>
+				    <option value="병가">병가</option>
 				</select>
 	        
 	        </div>
-	        <input type="text" id="writeTitle" name="title" placeholder="title">
+	        <input type="text" id="attendanceExceptionTitle" name="attendanceExceptionTitle" placeholder="title">
 	
-	        <label for="content">내용</label>
-	        <textarea id="writeContent" name="content" placeholder="content" style="height:200px"></textarea>
+	        <label for="boardContent">내용</label>
+	        <textarea id="attendanceExceptionContent" name="attendanceExceptionContent" placeholder="content" style="height:200px"></textarea>
 			<div class="d-flex">
 				<div>
-					<label for="appointmentDate">신청날짜:</label>
-					<input class="mb-1 ml-1" type="date" id="appointmentDate" name="appointmentDate">
+					<label for="date">신청날짜:</label>
+					<input class="mb-1 ml-1" type="date" id="date" name="date">
 				</div>
 				<div class="d-flex ml-4">
 					<label for="time">시간 선택: </label>
@@ -71,7 +92,12 @@
 			</div>
 			<div class="d-flex mt-2">
 				<div class="d-flex flex-wrap align-content-center"><label for="file">첨부파일:</label></div>
-				<input type="file" id="file" name="file" style="width:230px; margin-left: 10px;">
+				<div class="form-group" id="file-list">
+                	<a href="#this" onclick="addFile()">파일추가</a>
+                <div class="file-group">
+                    <input type="file" name="attendanceExceptionFiles"><a href='#this' class='file-delete'>삭제</a>
+                </div>
+             </div>
 			</div><br><br>
 			
 			<div class="d-flex justify-content-center">

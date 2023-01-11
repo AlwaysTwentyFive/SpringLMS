@@ -15,7 +15,6 @@ public class BoardFileService implements IBoardFileService {
 	@Override
 	public BoardFile getFile(int fileId) {
 		return boardFileRepository.getFile(fileId);
-		
 	}
 
 }

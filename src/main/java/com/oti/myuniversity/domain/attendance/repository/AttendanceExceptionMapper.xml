@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.oti.myuniversity.domain.attendance.repository.IAttendanceExceptionRepository">
+	
+	<select id="getTotalAttendanceExceptionCount" resultType="int">
+	<![CDATA[
+		SELECT 
+			COUNT(*)
+		FROM
+			ATTENDANCES_EXCEPTIONS
+	]]>
+	</select>
+	
+	<select id="getTotalAttendanceException" parameterType="com.oti.myuniversity.component.Pager" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONID,
+			ATTENDANCEID,
+			ATTENDANCEEXCEPTIONAPPLYDATE,
+			ATTENDANCEEXCEPTIONSTATUS,
+			ATTENDANCEEXCEPTIONAPPROVED
+		FROM
+			ATTENDANCES_EXCEPTIONS
+		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
+		FETCH NEXT #{rowsPerPage} ROWS ONLY
+	]]>
+	</select>
+	
+	<select id="getAttendanceExceptionByAttendanceId" parameterType="int" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONID,
+			ATTENDANCEID,
+			ATTENDANCEEXCEPTIONAPPLYDATE,
+			ATTENDANCEEXCEPTIONSTATUS,
+			ATTENDANCEEXCEPTIONAPPROVED
+		FROM
+			ATTENDANCES_EXCEPTIONS
+		WHERE
+			ATTENDANCEID = ${attendanceId}
+	]]>
+	</select>
+	
+	<select id="getAttendanceExceptionsByApplyDate" parameterType="com.oti.myuniversity.component.Pager" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONID,
+			ATTENDANCEID,
+			ATTENDANCEEXCEPTIONAPPLYDATE,
+			ATTENDANCEEXCEPTIONSTATUS,
+			ATTENDANCEEXCEPTIONAPPROVED
+		FROM
+			ATTENDANCES_EXCEPTIONS
+		WHERE
+			ATTENDANCEEXCEPTIONAPPLYDATE = ${attendanceExceptionApplyDate}
+		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
+		FETCH NEXT #{rowsPerPage} ROWS ONLY
+	]]>
+	</select>
+	
+	<select id="getAttendanceExceptionsByStatus" parameterType="com.oti.myuniversity.component.Pager" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONID,
+			ATTENDANCEID,
+			ATTENDANCEEXCEPTIONAPPLYDATE,
+			ATTENDANCEEXCEPTIONSTATUS,
+			ATTENDANCEEXCEPTIONAPPROVED
+		FROM
+			ATTENDANCES_EXCEPTIONS
+		WHERE
+			ATTENDANCEEXCEPTIONSTATUS = ${attendanceExceptionStatus}
+		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
+		FETCH NEXT #{rowsPerPage} ROWS ONLY
+	]]>
+	</select>
+	
+	<select id="getAttendanceExceptionsByApproved" parameterType="com.oti.myuniversity.component.Pager" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONID,
+			ATTENDANCEID,
+			ATTENDANCEEXCEPTIONAPPLYDATE,
+			ATTENDANCEEXCEPTIONSTATUS,
+			ATTENDANCEEXCEPTIONAPPROVED
+		FROM
+			ATTENDANCES_EXCEPTIONS
+		WHERE
+			ATTENDANCEEXCEPTIONAPPROVED = ${attendanceExceptionApproved}
+		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
+		FETCH NEXT #{rowsPerPage} ROWS ONLY
+	]]>
+	</select>
+	
+	<insert id="insertAttendanceException" parameterType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		INSERT INTO ATTENDANCES_EXCEPTIONS 
+		(
+			ATTENDANCEEXCEPTIONID,
+			ATTENDANCEID,
+			ATTENDANCEEXCEPTIONAPPLYDATE,
+			ATTENDANCEEXCEPTIONSTATUS,
+			ATTENDANCEEXCEPTIONAPPROVED
+		)
+		VALUES 
+		(
+			SEQ_ATTENDANCEEXCEPTIONID.NEXTVAL,
+			#{attendanceId},
+			#{attendanceExceptionApplyDate},
+			#{attendanceExceptionStatus},
+			#{attendanceExceptionApproved}
+		)
+	]]>
+	</insert>
+	
+	<update id="updateAttendanceException" parameterType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		UPDATE
+			ATTENDANCES_EXCEPTIONS
+		SET
+			ATTENDANCEEXCEPTIONAPPROVED=#{attendanceExceptionApproved}
+		WHERE
+			ATTENDANCEEXCEPTIONID=#{attendanceExceptionId}
+	]]>
+	</update>
+	
+	<delete id="deleteAttendanceException" parameterType="int">
+	<![CDATA[
+		DELETE FROM
+			ATTENDANCES_EXCEPTIONS
+		WHERE
+			ATTENDANCEEXCEPTIONID=#{attendanceExceptionId}
+	]]>
+	</delete>
+	
+	<select id="getMaxAttendanceExceptionId" resultType="int">
+	<![CDATA[
+		SELECT
+			NVL(MAX(ATTENDANCEEXCEPTIONID),0)
+		FROM ATTENDANCES_EXCEPTIONS
+	]]>
+	</select>
+	
+</mapper>

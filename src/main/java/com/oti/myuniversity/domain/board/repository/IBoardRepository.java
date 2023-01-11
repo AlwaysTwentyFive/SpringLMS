@@ -20,7 +20,8 @@ public interface IBoardRepository {
 	//글 추가하기
 	public void insertLibrary(Board board);
 	
-	//글의 마지막 번호 알기
-//	public int selectMaxBoardId();
+	public Board getBoard(int boardId);
+	
+	public int getMaxBoardId();
 
 }
