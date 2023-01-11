@@ -11,18 +11,19 @@ import org.springframework.web.multipart.MultipartFile;
 import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.attendance.model.Attendance;
 import com.oti.myuniversity.domain.attendance.model.AttendanceException;
-import com.oti.myuniversity.domain.board.model.Board;
 
 public interface IAttendanceService {
-	Attendance selectAttendance(String memberId, Date sqlDate);
+	Attendance selectAttendanceById(int attendanceId);
+	Attendance selectAttendanceByDate(String studentId, Date sqlDate);
 	boolean checkAttendance(String meberid, Date sqlDate);
 	void insertAttendance(Attendance attendance);
 	void updateTimeStatus(Attendance attendance);
 	void updateAttendanceStatus(Attendance attendance);
 	List<Map<String , Object>> getTotalAttendance(Pager pager);
 	int getTotalAttendanceCount();
+	List<Attendance> getPersonalAttendanceList (String memberId);
+	int getAttendanceCount(String memberId, String status);
 	int getMaxAttendanceId();
-	
 	int applyException(AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException;
 	Model getAttendance(int boardId, Model model);
 	void manageAttendance(Attendance attendance, AttendanceException attendanceException);
