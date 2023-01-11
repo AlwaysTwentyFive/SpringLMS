@@ -6,7 +6,6 @@
 tr, th, td {
 	text-align: center;
 }
-
 </style>
 
 <div class="container">
@@ -41,26 +40,26 @@ tr, th, td {
 <div class="pager d-flex justify-content-center my-3">
    	<div class="flex-fulfill"></div>
    		<div class="pagingButtonSet d-flex justify-content-center col-5">
-	        <a href="<c:url value='/member/list/1'/>" type="button" class="btn btn-muted shadow">처음으로</a>
+	        <a href="<c:url value='/attendance/list/1'/>" type="button" class="btn btn-muted shadow">처음으로</a>
 	        
 	      	<c:if test="${pager.groupNo > 1}">
-	        <a href="<c:url value='/member/list/${pager.startPageNo - 1}'/>" type="button" class="btn btn-muted shadow">앞으로</a>
+	        <a href="<c:url value='/attendance/list/${pager.startPageNo - 1}'/>" type="button" class="btn btn-muted shadow">앞으로</a>
 	      	</c:if>
 	      	
 	      	<c:forEach var="i" begin="${pager.startPageNo}" end ="${pager.endPageNo}">
 	        <c:if test="${pager.pageNo != i}">
-	        <a href="<c:url value='/member/list/${i}'/>" type="button" class="btn btn-white shadow">${i}</a>
+	        <a href="<c:url value='/attendance/list/${i}'/>" type="button" class="btn btn-white shadow">${i}</a>
 	        </c:if>
 	        <c:if test="${pager.pageNo == i}">
-	        <a href="<c:url value='/member/list/${i}'/>" type="button" class="btn btn-dark shadow">${i}</a>
+	        <a href="<c:url value='/attendance/list/${i}'/>" type="button" class="btn btn-dark shadow">${i}</a>
 	        </c:if>
 	      	</c:forEach>
 	      	
 	      	<c:if test="${pager.groupNo < pager.totalGroupNo }">
-	        <a href="<c:url value='/member/list/${pager.endPageNo + 1}'/>" type="button" class="btn btn-muted shadow">뒤로</a>
+	        <a href="<c:url value='/attendance/list/${pager.endPageNo + 1}'/>" type="button" class="btn btn-muted shadow">뒤로</a>
 	      	</c:if>
 	      	
-	   		<a href="<c:url value='/member/list/${pager.totalPageNo}'/>"type="button" class="btn btn-muted shadow">마지막으로</a>
+	   		<a href="<c:url value='/attendance/list/${pager.totalPageNo}'/>"type="button" class="btn btn-muted shadow">마지막으로</a>
 		</div>
 	<div class="flex-fulfill"></div>
 </div>

@@ -14,7 +14,8 @@ public interface IAttendanceRepository {
 	int checkAttendance(@Param("memberId") String memberId, @Param("sqlDate") Date sqlDate);
 	Attendance selectAttendance(@Param("memberId") String memberId, @Param("sqlDate") Date sqlDate);
 	void updateTimeStatus(Attendance attendance);
+	void updateAttendanceStatus(Attendance attendance);
 	List<Map<String , Object>> getTotalAttendance(Pager pager);
 	int getTotalAttendanceCount();
-
+	int getMaxAttendanceId();
 }

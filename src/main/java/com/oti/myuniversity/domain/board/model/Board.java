@@ -94,11 +94,13 @@ public class Board {
 	public void setReportDeadLineTime(Date reportDeadLineTime) {
 		this.reportDeadLineTime = reportDeadLineTime;
 	}
-//	public MultipartFile[] getFiles() {
-//		return files;
-//	}
-//	public void setFiles(MultipartFile[] files) {
-//		this.files = files;
-//	}
-//	
+	
+	@Override
+	public String toString() {
+		return "Board [boardId=" + boardId + ", boardTitle=" + boardTitle + ", boardContent=" + boardContent
+				+ ", boardDate=" + boardDate + ", boardCategory=" + boardCategory + ", reportDeadline=" + reportDeadline
+				+ ", submissionSubmitDate=" + submissionSubmitDate + ", submissionScore=" + submissionScore
+				+ ", memberId=" + memberId + ", reportDeadLineTime=" + reportDeadLineTime + ", memberName=" + memberName
+				+ "]";
+	}
 }
