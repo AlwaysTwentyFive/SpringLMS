@@ -37,6 +37,8 @@ public interface IBoardService {
 	
 	//여러 학생의 과제 게시글 가져오기
 	public List<Board> selectStudentsReport (int boardId);
+	//게시글 삭제
+	public void deleteArticleByBoardId(int boardId);
 	
 	
 

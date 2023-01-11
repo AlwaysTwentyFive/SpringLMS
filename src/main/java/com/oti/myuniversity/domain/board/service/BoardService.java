@@ -204,4 +204,9 @@ public class BoardService implements IBoardService {
 		
 	}
 
+	@Override
+	public void deleteArticleByBoardId(int boardId) {
+		boardRepository.deleteArticleByBoardId(boardId);
+	}
+
 }

@@ -40,6 +40,8 @@ public interface IBoardRepository {
 
 	public void updateLibrary(Board newBoard);
 
+	public void deleteArticleByBoardId(int boardId);
+
 	
 	
 }

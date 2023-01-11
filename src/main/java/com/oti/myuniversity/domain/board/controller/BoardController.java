@@ -268,8 +268,6 @@ public class BoardController {
 			} else{
 				boardService.updateLibrary(newBoard);
 			}
-			
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
@@ -277,5 +275,27 @@ public class BoardController {
 		
 		return "redirect:/board/"+ newBoard.getBoardId() + "/" + pageNo;
 	}
+	
+	
+	@RequestMapping("/boardy/delete")
+	public String deleteBoard(Board board,@RequestParam int pageNo, HttpSession session, Model model) {
+		try {
+			
+			//유저가 일치하는지 확인
+			Member user = (Member)session.getAttribute("member");
+			String userId = user.getMemberId();
+			if(userId.equals(board.getMemberId())) {
+				boardService.deleteArticleByBoardId(board.getBoardId());
+				return "redirect:/board/cat/" + board.getBoardCategory() + "/" + pageNo;
+			} else {
+				model.addAttribute("message", "해당 유저의 게시물이 아닙니다.");
+				return "error/runtime";
+			}
+		} catch(Exception e) {
+			model.addAttribute("message", e.getMessage());
+			return "error/runtime";
+		}
+	}
+	
 	
 }

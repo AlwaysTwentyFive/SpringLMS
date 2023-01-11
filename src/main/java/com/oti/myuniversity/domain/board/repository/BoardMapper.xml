@@ -184,5 +184,10 @@
 	]]>
 </update>
 
+<delete id="deleteArticleByBoardId" parameterType="int">
+	<![CDATA[
+		DELETE from boards where boardid = #{boardId}
+	]]>
+</delete>
 
 </mapper>

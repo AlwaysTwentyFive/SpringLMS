@@ -58,10 +58,13 @@
 		</div>
 		<c:if test="${board.memberId eq member.memberId}">
 			<form>
-			<input type="hidden" name="pageNo" value="${pageNo}">
 			<div class="d-flex justify-content-end">
+				<input type="hidden" name="boardId" value="${board.boardId}">
+				<input type="hidden" name="boardCategory" value="${board.boardCategory}">
+				<input type="hidden" name="memberId" value="${board.memberId}">
+				<input type="hidden" name="pageNo" value="${pageNo}">
 				<button name="boardId" class="btn btn-sm btn-primary mx-2" onclick="location.href='<c:url value="/board/library/update/${board.boardId}"/>'">수정</button>
-				<button name="delete" class="btn btn-sm btn-danger" onclick="location.href='<c:url value="/board/library/delete"/>'">삭제</button>
+				<button name="delete" class="btn btn-sm btn-danger" onclick="location.href='<c:url value="/boardy/delete"/>'">삭제</button>
 			</div>
 			</form>
 		</c:if>
