@@ -57,10 +57,11 @@
 			<div class="col-10">ReplyContent</div>
 		</div>
 		<c:if test="${board.memberId eq member.memberId}">
-			<form action="#">
+			<form>
+			<input type="hidden" name="pageNo" value="${pageNo}">
 			<div class="d-flex justify-content-end">
-				<button type="submit" name="update" value="update" class="btn btn-sm btn-primary mx-2">수정</button>
-				<button type="submit" name="delete" value="delete" class="btn btn-sm btn-danger">삭제</button>
+				<button name="boardId" class="btn btn-sm btn-primary mx-2" onclick="location.href='<c:url value="/board/library/update/${board.boardId}"/>'">수정</button>
+				<button name="delete" class="btn btn-sm btn-danger" onclick="location.href='<c:url value="/board/library/delete"/>'">삭제</button>
 			</div>
 			</form>
 		</c:if>

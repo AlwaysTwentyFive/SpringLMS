@@ -26,6 +26,11 @@
 	   background-color: #34495e;
 	   color: white;
 	   display: inline-block;
+	}
+	.submitFile{
+		width: 300px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}	
 </style>
 
@@ -84,16 +89,16 @@
 									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
-											<td>
+											<td class="submitFile">
 												<c:if test="${!empty student.fileList}">
 													<c:forEach var="file" items="${student.fileList}">
 															<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 													</c:forEach>
 												</c:if>
 											</td>
-											<td>${student.submissionSubmitDate} ${student.reportDeadlineTime}</td>
+											<td>${student.submissionSubmitDate}</td>
 											<td><input type="text"></td>
-											<td><button type="submit" class="btn btn-sm btn-warning mt-2">과제 평가 완료하기</button></td>
+											<td><button type="submit" class="btn btn-sm btn-warning mt-2">입력</button></td>
 										</tr>
 									</c:forEach>
 								</c:if>
@@ -132,7 +137,7 @@
 									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
-											<td>
+											<td class="submitFile">
 												<c:if test="${!empty student.fileList}">
 													<c:forEach var="file" items="${student.fileList}">
 															<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
