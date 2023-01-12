@@ -85,16 +85,24 @@ public class BoardService implements IBoardService {
 	
 	@Override
 	@Transactional
-	public void insertNoticeReport(Board board, ArrayList<BoardFile> fileList) {
+	public void insertNoticeReport(Board board, MultipartFile[] files) {
 		boardRepository.insertNoticeReport(board);
-		if(fileList.size() != 0) {
-			for(int i = 0; i<fileList.size(); i++) {
-				if(fileList.get(i).getBoardFileName() != null 
-						&& !fileList.get(i).getBoardFileName().equals("")) {
-					fileList.get(i).setBoardId(board.getBoardId());
-					boardFileRepository.insertFileData(fileList.get(i));
+		int boardId = boardRepository.selectMaxBoardId();
+		List<BoardFile> fileList = null;
+		
+		try {
+			fileList = multipartFileResolver.getBoardFileList(files, boardId);
+		
+			if(fileList.size() != 0) {
+				for(int i = 0; i<fileList.size(); i++) {
+					if(fileList.get(i).getBoardFileName() != null 
+							&& !fileList.get(i).getBoardFileName().equals("")) {
+						boardFileRepository.insertFileData(fileList.get(i));
+					}
 				}
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -158,10 +166,20 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
+	public void updateReport(Board board) {
+		boardRepository.updateReportNotice(board);
+	}
+
+	@Override
 	@Transactional
-	public void updateExistToNew(Board newBoard, MultipartFile[] files) {
-		//자료실 게시물 업데이트
-		boardRepository.updateLibrary(newBoard);
+	public void updateExistToNew(Board newBoard, MultipartFile[] files){
+		if(newBoard.getBoardCategory()==1) {
+			//자료실 게시물 업데이트
+			boardRepository.updateLibrary(newBoard);
+		} else {
+			//과제실 게시물 업데이트 
+			boardRepository.updateReportNotice(newBoard);
+		}
 		//기존 파일 삭제
 		boardFileRepository.deleteFiles(newBoard.getBoardId());
 		//파일 입력
@@ -183,9 +201,14 @@ public class BoardService implements IBoardService {
 
 	@Override
 	@Transactional
-	public void updateNothingtoNew(Board newBoard, MultipartFile[] files) {
-		//자료실 게시물 업데이트
-		boardRepository.updateLibrary(newBoard);
+	public void updateNothingtoNew(Board newBoard, MultipartFile[] files){
+		if(newBoard.getBoardCategory()==1) {
+			//자료실 게시물 업데이트
+			boardRepository.updateLibrary(newBoard);
+		} else {
+			//과제실 게시물 업데이트 
+			boardRepository.updateReportNotice(newBoard);
+		}
 		//파일 입력
 		List<BoardFile> fileList = null;
 		try {
@@ -208,5 +231,18 @@ public class BoardService implements IBoardService {
 	public void deleteArticleByBoardId(int boardId) {
 		boardRepository.deleteArticleByBoardId(boardId);
 	}
+
+	@Override
+	@Transactional
+	public Board insertReply(Board board) {
+		//댓글 입력
+		boardRepository.insertLibrary(board);
+		//댓글 출력
+		int boardId = boardRepository.selectMaxBoardId();
+		Board reply = boardRepository.selectArticle(boardId);
+		return reply;
+		
+	}
+
 
 }

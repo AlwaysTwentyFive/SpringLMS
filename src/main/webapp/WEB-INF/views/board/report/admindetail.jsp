@@ -34,6 +34,23 @@
 	}	
 </style>
 
+<script>
+	function confirmDelete(){
+		var studentsBoard = $(this).next().val();
+		if(studentsBoard === null){
+			var confirmflag = confirm("삭제 하시겠습니까?");
+			if(confirmflag){
+				form.action = "<c:url value='/board/delete'/>";
+			}else{
+				console.log("취소. 변화 없음");
+			}
+		} else{
+			alert("등록된 과제글이 존재합니다.");
+		}
+	}
+
+</script>
+
 <!-- content -->
 <div class="d-flex flex-column justify-content-center">
 	<div id="reportTitle" class="d-flex">
@@ -63,6 +80,21 @@
 							</c:forEach>
 						</c:if>
 					</td>
+				</tr>
+				<tr>
+					<form name="form">
+						<c:if test="${board.memberId eq member.memberId}">
+							<div class="d-flex justify-content-end">
+								<input type="hidden" name="boardCategory" value="${board.boardCategory}">
+								<input type="hidden" name="boardId" value="${board.boardId}">
+								<input type="hidden" name="memberId" value="${board.memberId}">
+								<input type="hidden" name="pageNo" value="${pageNo}">
+								<button name="update" class="btn btn-sm btn-primary mx-2" formaction='<c:url value="/board/update/${board.boardId}"/>'>수정</button>
+								<button name="delete" class="btn btn-sm btn-danger" onclick="confirmDelete()">삭제</button>
+								<input type="hidden" name="studentsBoard" value="${studentsBoard}">
+							</div>
+						</c:if>
+					</form>
 				</tr>
 				<tr id="reportBoardList">
 					<tr class="reportBoard mt-3">

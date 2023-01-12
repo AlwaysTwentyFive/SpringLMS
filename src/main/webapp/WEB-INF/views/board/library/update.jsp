@@ -65,11 +65,10 @@ input[type=text], select, textarea {
 	<h5>자료실 수정하기</h5>
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
-	    	<form action="<c:url value='/board/libary/update'/>"  method="POST" enctype="multipart/form-data">
+	    	<form action="<c:url value='/board/library/update'/>"  method="POST" enctype="multipart/form-data">
 				<input type="hidden" name="boardCategory" value="${categoryType}">
 		        <label for="boardTitle">제목</label>
-		        <input type="text" name="preview" value="${board.boardTitle}" readonly>
-		        <input type="text" name="boardTitle" placeholder="title" required>
+		        <input type="text" name="boardTitle"  value="${board.boardTitle}"  placeholder="title" required>
 		
 		        <label for="boardContent">내용</label>
 		        <textarea id="writeContent" name="boardContent" style="height:200px">${board.boardContent}</textarea>

@@ -23,30 +23,33 @@
 		]]>
 	</select>
 	<insert id="insertFileData" parameterType="com.oti.myuniversity.domain.board.model.BoardFile">
-		<![CDATA[
-			insert into boards_files
-				(
-				BOARDFILEID,
-				BOARDFILENAME,
-				BOARDFILESIZE,
-				BOARDFILEDATA,
-				BOARDFILECONTENTTYPE,
-				BOARDID
-				)
-			values(
-				SEQ_BOARDFILEID.NEXTVAL,
-				#{boardFileName},
-				#{boardFileSize},
-				#{boardFileData},
-				#{boardFileContentType},
-				seq_boardid.currval
+		insert into boards_files
+			(
+			BOARDFILEID,
+			BOARDFILENAME,
+			BOARDFILESIZE,
+			BOARDFILEDATA,
+			BOARDFILECONTENTTYPE,
+			BOARDID
 			)
-		]]>
+		values(
+			SEQ_BOARDFILEID.NEXTVAL,
+			#{boardFileName},
+			#{boardFileSize},
+			#{boardFileData},
+			#{boardFileContentType},
+			<if test="boardId == null">
+				seq_boardid.currval
+			</if>
+			<if test="boardId != null">
+				#{boardId}
+			</if>
+		)
 	</insert>
 	<delete id="deleteFiles" parameterType="int">
 		<![CDATA[
 			DELETE FROM boards_files
-			WHERE EXISTS (SELECT boardid from boards where boards.boardid = #{boardId} and boards.boardid.boardid = boards_files.boardId)
+			WHERE EXISTS (SELECT boardid from boards where boards.boardid = #{boardId} and boards.boardid = boards_files.boardId)
 		]]>
 	</delete>
 </mapper>

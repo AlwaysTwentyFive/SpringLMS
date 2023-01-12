@@ -52,6 +52,14 @@
     function deleteFile(obj) {
         obj.parent().remove();
     }
+	function confirmDelete(){
+		var confirmflag = confirm("삭제 하시겠습니까?");
+		if(confirmflag){
+			form.action = "<c:url value='/board/delete'/>";
+		}else{
+			console.log("취소. 변화 없음");
+		}
+	}
 </script>
 
 <!-- content -->
@@ -151,13 +159,14 @@
 			<input type="hidden" name="reportNoticeId" value="${board.boardId}">
 			<input type="hidden" name="pageNo" value="${pageNo}">
 			<input type="hidden" name="memberId" value="${member.memberId}">
+			<input type="hidden" name="boardId" value="${reportBoard.boardId}">
 			<div class="d-flex justify-content-end">
 				<c:if test="${empty reportBoard.submissionSubmitDate}">
 					<button name="insert" value="insert" class="btn btn-sm btn-warning mx-2" onclick="javascript: form.action='<c:url value="/board/report/submit"/>'">과제 등록</button>
 				</c:if>
 				<c:if test="${!empty reportBoard.submissionSubmitDate}">
 					<button name="update" value="update" class="btn btn-sm btn-primary mx-2">과제 수정</button>
-					<button name="delete" value="delete" class="btn btn-sm btn-danger">과제 삭제</button>
+					<button name="delete" value="delete" class="btn btn-sm btn-danger" onclick="confirmDelete()">과제 삭제</button>
 				</c:if>
 			</div>
 		</form>

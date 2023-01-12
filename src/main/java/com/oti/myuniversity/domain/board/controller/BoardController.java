@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -86,9 +87,6 @@ public class BoardController {
 				//관리자
 				//과제를 제출한 학생들의 board객체..
 				List<Board> studentsBoard = boardService.selectStudentsReport(boardId);
-				for(Board student:studentsBoard) {
-					System.out.println("student 이름 출력 시도: "+student.getMemberName());
-				}
 				model.addAttribute("studentsBoard", studentsBoard);
 				return "board/report/admindetail";
 			} else {
@@ -125,7 +123,7 @@ public class BoardController {
 	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files,
 			HttpSession session, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
-		System.out.println("getBoardDate 함: "+ board.getReportDeadline());
+
 		//string -> Timestamp
 		if(time!=null && !time.equals("")) {
 			String timeStamptool = board.getReportDeadline() + " " + time + ":00.0";
@@ -136,22 +134,8 @@ public class BoardController {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
 			
-			
-			
-			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-			for(int i = 0; i<files.length; i++) {
-				logger.info("/board/write: " + files[i].getOriginalFilename());
-				BoardFile file = new BoardFile();
-				file.setBoardFileName(files[i].getOriginalFilename());
-				file.setBoardFileSize(files[i].getSize());
-				file.setBoardFileContentType(files[i].getContentType());
-				file.setBoardFileData(files[i].getBytes());
-				fileList.add(file);
-				logger.info("/board/write : " + file.toString());
-			}
-		
-			if(fileList!=null && !fileList.isEmpty()) {
-				boardService.insertNoticeReport(board, fileList);
+			if(files!=null) {
+				boardService.insertNoticeReport(board, files);
 			} else {
 				boardService.insertNoticeReport(board);
 			}
@@ -165,7 +149,7 @@ public class BoardController {
 			return "redirect:/board/cat/" + board.getBoardCategory(); 		
 	}
 	
-	//aop쓸 수 있을까??
+	
 	@RequestMapping(value= "/board/libary/write", method=RequestMethod.POST)
 	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
@@ -183,7 +167,6 @@ public class BoardController {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
-		
 		//해당 게시글의 1페이지 목록으로 이동
 			return "redirect:/board/cat/" + board.getBoardCategory(); 		
 	}
@@ -233,52 +216,90 @@ public class BoardController {
 		
 		model.addAttribute("categoryType", categoryType);
 		model.addAttribute("board", board);
-		
+		model.addAttribute("pageNo", pageNo);
 		if(categoryType ==1) {
-			return "board/libarary/update";
+			return "board/library/update";
 		} else {
 			return "board/report/update";
 		}
 	}
 	
-	@RequestMapping(value="board/library/update", method=RequestMethod.POST)
-	public String updateLibrary(Board newBoard, @RequestParam int pageNo, @RequestParam MultipartFile[] files,
+	@RequestMapping(value="/board/library/update", method=RequestMethod.POST)
+	public String updateLibrary(Board board, @RequestParam int pageNo, @RequestParam MultipartFile[] files,
 			HttpSession session, RedirectAttributes redirectAttrs) {
-		logger.info("/board/library/update " + newBoard.toString());
+		logger.info("/board/library/update " + board.toString());
 		try {
-			newBoard.setBoardTitle(Jsoup.clean(newBoard.getBoardTitle(), Whitelist.basic()));
-			newBoard.setBoardContent(Jsoup.clean(newBoard.getBoardContent(), Whitelist.basic()));
+			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
+			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
 			
 			//기존 boardId의 데이터 가져오기
-			Board existedBoard = boardService.selectArticle(newBoard.getBoardId());
+			Board existedBoard = boardService.selectArticle(board.getBoardId());
 			List<BoardFile> existedFiles = existedBoard.getFileList();
-			int existedBoardId = newBoard.getBoardId();
 			
 			// <case-1> 기존 파일 O, 새로운 파일 O
 			if(existedFiles != null && files !=null) {
-				boardService.updateExistToNew(newBoard, files);
+				boardService.updateExistToNew(board, files);
 			}
 			// <case-2> 기존 파일 O, 새로운 파일 x
 			else if(existedFiles != null && files == null) {
-				boardService.updateLibrary(newBoard);
+				boardService.updateLibrary(board);
 			}
 			// <case-3> 기존 파일 X, 새로운 파일 O
 			else if(existedFiles == null && files != null) {
-				boardService.updateNothingtoNew(newBoard, files);
+				boardService.updateNothingtoNew(board, files);
 			} else{
-				boardService.updateLibrary(newBoard);
+				boardService.updateLibrary(board);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
 		
-		return "redirect:/board/"+ newBoard.getBoardId() + "/" + pageNo;
+		return "redirect:/board/"+ board.getBoardId() + "/" + pageNo;
+	}
+	
+	@RequestMapping(value="/board/report/update", method=RequestMethod.POST)
+	public String updateReport(Board board, @RequestParam int pageNo, @RequestParam String time , @RequestParam MultipartFile[] files,
+			HttpSession session, RedirectAttributes redirectAttrs) {
+		
+		//string -> Timestamp
+		if(time!=null && !time.equals("")) {
+			String timeStamptool = board.getReportDeadline() + " " + time + ":00.0";
+			board.setReportDeadlineTime(Timestamp.valueOf(timeStamptool));
+		}
+	try {
+		board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
+		board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
+		
+		//기존 boardId의 데이터 가져오기
+		Board existedBoard = boardService.selectArticle(board.getBoardId());
+		List<BoardFile> existedFiles = existedBoard.getFileList();
+		
+		// <case-1> 기존 파일 O, 새로운 파일 O
+		if(existedFiles != null && files !=null) {
+			boardService.updateExistToNew(board, files);
+		}
+		// <case-2> 기존 파일 O, 새로운 파일 x
+		else if(existedFiles != null && files == null) {
+			boardService.updateReport(board);
+		}
+		// <case-3> 기존 파일 X, 새로운 파일 O
+		else if(existedFiles == null && files != null) {
+			boardService.updateNothingtoNew(board, files);
+		} else{
+			boardService.updateReport(board);
+		}
+	} catch(Exception e) {
+		e.printStackTrace();
+		redirectAttrs.addFlashAttribute("message", e.getMessage());
+	}
+	
+	return "redirect:/board/"+ board.getBoardId() + "/" + pageNo;
 	}
 	
 	
-	@RequestMapping("/boardy/delete")
-	public String deleteBoard(Board board,@RequestParam int pageNo, HttpSession session, Model model) {
+	@RequestMapping("/board/delete")
+	public String deleteBoard(Board board, @RequestParam int pageNo, HttpSession session, Model model) {
 		try {
 			
 			//유저가 일치하는지 확인
@@ -286,7 +307,19 @@ public class BoardController {
 			String userId = user.getMemberId();
 			if(userId.equals(board.getMemberId())) {
 				boardService.deleteArticleByBoardId(board.getBoardId());
-				return "redirect:/board/cat/" + board.getBoardCategory() + "/" + pageNo;
+				if(board.getBoardCategory()==1) {
+					//자료실 목록으로 리턴
+					return "redirect:/board/cat/" + board.getBoardCategory() + "/" + pageNo;
+				} else {
+					if(userId.equals("admin")) {
+						//관리자일 경우
+						return "redirect:/board/cat/" + board.getBoardCategory() + "/" + pageNo;
+					}else {
+						//학생일 경우
+						return "board/report/studentdetail";
+					}
+				}
+				
 			} else {
 				model.addAttribute("message", "해당 유저의 게시물이 아닙니다.");
 				return "error/runtime";
@@ -296,6 +329,29 @@ public class BoardController {
 			return "error/runtime";
 		}
 	}
-	
-	
+	//댓글 작성
+	@RequestMapping(value="/board/reply", method=RequestMethod.POST)
+	public String replyBoard(Board board, HttpSession session, Model model, RedirectAttributes redirectAttrs) {
+		try {
+			//댓글 입력
+			board.setBoardTitle(board.getBoardTitle());
+			board.setBoardContent(board.getBoardContent());
+			Board reply = boardService.insertReply(board);
+			model.addAttribute("reply", reply);
+		} catch(Exception e) {
+			e.printStackTrace();
+			redirectAttrs.addFlashAttribute("message", e.getMessage());
+		}
+		
+		return "board/library/reply";
+	}
 }
+
+
+
+
+
+
+
+
+
