@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -196,11 +198,7 @@ public class AttendanceController {
 	}
 
 	@GetMapping("/attendance/write")
-	public String applyException(Model model, Integer attendanceId) {
-		if (attendanceId == null) {
-			attendanceId = -1;
-		}
-		model.addAttribute("attendanceId", attendanceId);
+	public String applyException() {
 		return "attendance/write";
 	}
 	
@@ -213,35 +211,19 @@ public class AttendanceController {
 		attendanceException.setAttendanceExceptionDate(ServerTimeSupplier.getDate());
 		attendanceException.setAttendanceExceptionApplyDate(Timestamp.valueOf(date + " " + time + ":00"));
 		
-		if (attendanceException.getAttendanceId() > 0) {
-			int attendanceExceptionId = attendanceService.applyException(attendanceException, attendanceExceptionFiles);
-			return "redirect:/attendance/exception/" + attendanceExceptionId;
-		}
-		else {
-			Attendance attendance = new Attendance();
-			attendance.setMemberId(member.getMemberId());
-			attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
-			attendance.setAttendanceDate(Date.valueOf(date));
-			attendance.setAttendanceArriveTime(Timestamp.valueOf(date + " " + time + ":00"));
-			attendanceException.setAttendanceId(attendanceService.getMaxAttendanceId() + 1);
-			int attendanceExceptionId = attendanceService.applyException(attendance, attendanceException, attendanceExceptionFiles);
-			return "redirect:/attendance/exception/" + attendanceExceptionId;
-		}
+		int attendanceExceptionId = attendanceService.applyException(attendanceException, attendanceExceptionFiles);
+		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}
 	
 	@GetMapping("/attendance/exception/{attendanceExceptionId}")
-	public String getAttendance(Model model, @PathVariable int attendanceExceptionId) {
+	public String getAttendanceException(Model model, @PathVariable int attendanceExceptionId) {
 		attendanceService.getAttendance(attendanceExceptionId, model);
 		return "attendance/view";
 	}
 	
 	@PostMapping("/attendance/manage")
 	public String manageException(HttpSession session, AttendanceException attendanceException, int attendanceExceptionId, Date attendanceExceptionDate) {
-		Attendance attendance = new Attendance();
-		attendance.setMemberId(attendanceException.getMemberId());
-		attendance.setAttendanceDate(attendanceExceptionDate);
-		attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
-		attendanceService.manageAttendance(attendance, attendanceException);
+		attendanceService.manageAttendance(attendanceException, attendanceExceptionDate);
 		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}
 	

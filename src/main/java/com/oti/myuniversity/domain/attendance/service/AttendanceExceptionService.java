@@ -27,8 +27,8 @@ public class AttendanceExceptionService implements IAttendanceExceptionService {
 	}
 	
 	@Override
-	public AttendanceException getAttendanceExceptionByAttendanceId(int attendanceId) {
-		return attendanceExceptionRepository.getAttendanceExceptionByAttendanceId(attendanceId);
+	public AttendanceException getAttendanceExceptionByAttendanceExceptionId(int attendanceId) {
+		return attendanceExceptionRepository.getAttendanceExceptionByAttendanceExceptionId(attendanceId);
 	}
 
 	@Override

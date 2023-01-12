@@ -76,20 +76,34 @@
 				<div class="w-btn-outline w-btn-yellow-outline mr-2" style="width: 150px; text-align: center;">
 					<c:if test="${attendanceException.attendanceExceptionApproved != null}">
 						<c:if test="${attendanceException.attendanceExceptionApproved == true}">
-						승인됨
+						승인
+						</c:if>
+						<c:if test="${attendanceException.attendanceExceptionApproved == false}">
+						반려
 						</c:if>
 					</c:if>
 					<c:if test="${attendanceException.attendanceExceptionApproved == null}">
 					결재 중
 					</c:if>
 				</div>
-				<form action="<c:url value='/attendance/manage'/>" method="post">				
+				<form action="<c:url value='/attendance/manage'/>" method="post">
+				<c:if test="${attendanceId == null}">
+				<input type="hidden" name="attendanceId" value="-1"/>		
+				</c:if>
+				<c:if test="${attendanceId != null}">
+				<input type="hidden" name="attendanceId" value="${attendanceId}"/>		
+				</c:if>
 				<input type="hidden" name="memberId" value="${attendanceException.memberId}"/>
 				<input type="hidden" name="attendanceExceptionStatus" value="${attendanceException.attendanceExceptionStatus}"/>
 				<input type="hidden" name="attendanceExceptionId" value="${attendanceException.attendanceExceptionId}"/>
 				<input type="hidden" name="attendanceExceptionDate" value="${attendanceException.attendanceExceptionDate}"/>
+				<c:if test="${attendanceException.attendanceExceptionApproved == null}">
 				<button type="submit" name="attendanceExceptionApproved" value="true"  class="btn btn-sm btn-primary mx-2">승인</button>
 				<button type="submit" name="attendanceExceptionApproved" value="false" class="btn btn-sm btn-danger">거절</button>
+				</c:if>
+				<c:if test="${attendanceException.attendanceExceptionApproved != null}">
+				<h4 class="ml-4"><span class="badge badge-warning">처리됨</span></h4>
+				</c:if>
 				</form>
 			</div>
 		</div>

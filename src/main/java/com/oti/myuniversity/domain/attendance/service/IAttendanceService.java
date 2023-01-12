@@ -17,6 +17,7 @@ public interface IAttendanceService {
 	Attendance selectAttendanceByDate(String studentId, Date sqlDate);
 	boolean checkAttendance(String meberid, Date sqlDate);
 	void insertAttendance(Attendance attendance);
+	void insertAttendanceWithoutTime(Attendance attendance);
 	void updateTimeStatus(Attendance attendance);
 	void updateAttendanceStatus(Attendance attendance);
 	List<Map<String , Object>> getTotalAttendance(Pager pager);
@@ -25,7 +26,6 @@ public interface IAttendanceService {
 	int getAttendanceCount(String memberId, String status);
 	int getMaxAttendanceId();
 	int applyException(AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException;
-	int applyException(Attendance attendance, AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException;
 	Model getAttendance(int boardId, Model model);
-	void manageAttendance(Attendance attendance, AttendanceException attendanceException);
+	void manageAttendance(AttendanceException attendanceException, Date attendanceExceptionDate);
 }

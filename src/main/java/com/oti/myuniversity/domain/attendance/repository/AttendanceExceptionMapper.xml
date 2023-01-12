@@ -32,7 +32,7 @@
 	]]>
 	</select>
 	
-	<select id="getAttendanceExceptionByAttendanceId" parameterType="int" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<select id="getAttendanceExceptionByAttendanceExceptionId" parameterType="int" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
 	<![CDATA[
 		SELECT
 			ATTENDANCEEXCEPTIONID,
@@ -48,7 +48,7 @@
 		FROM
 			ATTENDANCES_EXCEPTIONS
 		WHERE
-			ATTENDANCEID = ${attendanceId}
+			ATTENDANCEEXCEPTIONID = ${attendanceExceptionId}
 	]]>
 	</select>
 	
@@ -123,7 +123,6 @@
 		INSERT INTO ATTENDANCES_EXCEPTIONS 
 		(
 			ATTENDANCEEXCEPTIONID,
-			ATTENDANCEID,
 			ATTENDANCEEXCEPTIONAPPLYDATE,
 			ATTENDANCEEXCEPTIONSTATUS,
 			ATTENDANCEEXCEPTIONTITLE,
@@ -134,7 +133,6 @@
 		VALUES 
 		(
 			SEQ_ATTENDANCEEXCEPTIONID.NEXTVAL,
-			#{attendanceId},
 			#{attendanceExceptionApplyDate},
 			#{attendanceExceptionStatus},
 			#{attendanceExceptionTitle},
