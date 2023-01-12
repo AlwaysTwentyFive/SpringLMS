@@ -14,13 +14,12 @@ public class LoginInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		String contextName = request.getContextPath();
-		String url = request.getRequestURI().replaceFirst(contextName, "");
-		String param = request.getQueryString();
 		HttpSession session = request.getSession();
 		Member member = (Member) session.getAttribute("member");
-		
 		if (member == null) {
+			String contextName = request.getContextPath();
+			String url = request.getRequestURI().replaceFirst(contextName, "");
+			String param = request.getQueryString();
 			session.setAttribute("url", url);
 			session.setAttribute("param", param);
 			response.sendRedirect(request.getContextPath() + "/member/login");

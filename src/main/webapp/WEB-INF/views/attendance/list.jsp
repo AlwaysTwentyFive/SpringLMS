@@ -39,6 +39,83 @@ function updateStatus(buttonId, attendanceId,date,id){
 			memberId : id
 		},
 		success : function(result){
+			var count = 0;
+			switch($("#attendStatus").text()){
+				case '출근':
+					count = Number($("#attend").text()) - 1;
+					$("#attend").text(count);
+					break;
+				
+				case '지각':
+					count = Number($("#late").text()) - 1;
+					$("#late").text(count);
+					break;
+					
+				case '조퇴':
+					count = Number($("#leave").text()) - 1;
+					$("#leave").text(count);
+					break;
+					
+				case '병가':
+					count = Number($("#sick").text()) - 1;
+					$("#sick").text(count);
+					break;
+					
+				case '외출':
+					count = Number($("#goOut").text()) - 1;
+					$("#goOut").text(count);
+					break;
+					
+				case '공가':
+					count = Number($("#vacation").text()) - 1;
+					$("#vacation").text(count);
+					break;
+					
+				case '결근':
+					count = Number($("#absence").text()) - 1;
+					$("#absence").text(count);
+					break;
+				}
+			
+			switch(result){
+			case '출근':
+				count = Number($("#attend").text()) + 1;
+				$("#attend").text(count);
+				break;
+			
+			case '지각':
+				count = Number($("#late").text()) + 1;
+				$("#late").text(count);
+				break;
+				
+			case '조퇴':
+				count = Number($("#leave").text()) + 1;
+				$("#leave").text(count);
+				break;
+				
+			case '병가':
+				count = Number($("#sick").text()) + 1;
+				$("#sick").text(count);
+				break;
+				
+			case '외출':
+				count = Number($("#goOut").text()) + 1;
+				$("#goOut").text(count);
+				break;
+				
+			case '공가':
+				count = Number($("#vacation").text()) + 1;
+				$("#vacation").text(count);
+				break;
+				
+			case '결근':
+				count = Number($("#absence").text()) + 1;
+				$("#absence").text(count);
+				break;
+			}
+			
+			$("#attendStatus").empty();
+			$("#attendStatus").text(result);
 			console.log(result);		
 			$(button).removeClass('btn-danger');
 			$(button).removeClass('btn-success');
@@ -51,9 +128,8 @@ function updateStatus(buttonId, attendanceId,date,id){
 			} else {
 				$(button).addClass('btn-warning');	
 			}
-			 $("#attendStatus").empty();
-			$("#attendStatus").text(result);
-			} 
+			
+		} 
 		
 		});  
 }
@@ -150,11 +226,13 @@ function modalData(buttonId, attendanceId, attendanceStatus, memberType, attenda
 	</div>
 </form>
 <div class="d-flex align-items-center justify-content-around">
-			<div id="attend">출근 : ${attCount}회</div>
-			<div id="late">지각 : ${lateCount}회</div>
-			<div id="absence">조퇴 : ${leaveCount}회</div>
-			<div id="absence">공가 : ${vacationCount}회</div>
-			<div id="absence">결근 : ${absCount}회</div>
+	<div >출근 : <span id="attend">${attCount}</span>회</div>
+	<div >지각 : <span id="late">${lateCount}</span>회</div>
+	<div>조퇴 : <span  id="leave">${leaveCount}</span>회</div>
+	<div>병가 : <span  id="sick">${sickCount}</span>회</div>
+	<div>외출 : <span  id="goOut">${goOutCount}</span>회</div>
+	<div >공가 : <span id="vacation">${vacationCount}</span>회</div>
+	<div >결근 : <span id="absence">${absCount}</span>회</div>
 </div>
 <br/>
 <table class="table table-bordered table-hover bg-white">

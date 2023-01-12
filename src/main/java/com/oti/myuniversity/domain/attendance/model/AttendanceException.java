@@ -6,13 +6,27 @@ import java.sql.Timestamp;
 public class AttendanceException {
 	private int attendanceExceptionId;
 	private int attendanceId;
-	private Date attendanceExceptionApplyDate;
+	private Timestamp attendanceExceptionApplyDate;
 	private String attendanceExceptionStatus;
 	private Boolean attendanceExceptionApproved;
 	private String attendanceExceptionTitle;
 	private String attendanceExceptionContent;
 	private Date attendanceExceptionDate;
+	private String memberName;
+	private String memberId;
 	
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
+	}
 	public String getAttendanceExceptionTitle() {
 		return attendanceExceptionTitle;
 	}
@@ -37,10 +51,10 @@ public class AttendanceException {
 	public void setAttendanceId(int attendanceId) {
 		this.attendanceId = attendanceId;
 	}
-	public Date getAttendanceExceptionApplyDate() {
+	public Timestamp getAttendanceExceptionApplyDate() {
 		return attendanceExceptionApplyDate;
 	}
-	public void setAttendanceExceptionApplyDate(Date attendanceExceptionApplyDate) {
+	public void setAttendanceExceptionApplyDate(Timestamp attendanceExceptionApplyDate) {
 		this.attendanceExceptionApplyDate = attendanceExceptionApplyDate;
 	}
 	public String getAttendanceExceptionStatus() {
@@ -68,7 +82,8 @@ public class AttendanceException {
 				+ ", attendanceExceptionApplyDate=" + attendanceExceptionApplyDate + ", attendanceExceptionStatus="
 				+ attendanceExceptionStatus + ", attendanceExceptionApproved=" + attendanceExceptionApproved
 				+ ", attendanceExceptionTitle=" + attendanceExceptionTitle + ", attendanceExceptionContent="
-				+ attendanceExceptionContent + ", attendanceExceptionDate=" + attendanceExceptionDate + "]";
+				+ attendanceExceptionContent + ", attendanceExceptionDate=" + attendanceExceptionDate + ", memberName="
+				+ memberName + ", memberId=" + memberId + "]";
 	}
 
 }

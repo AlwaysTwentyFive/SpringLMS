@@ -28,7 +28,7 @@
 		</script>
 		<style>
 			#topHeader {
-				margin-top: 10px;
+			
 				background-color: #34495e;
 				height: 55px;
 			}
@@ -52,6 +52,9 @@
 				<header style="height:155px;">
 					<div id="topHeader">
 						<div class="d-flex justify-content-end">
+							<div class="mb-1 mr-3" style="height:30px;align-self:center">
+								<a class="btn btn-info btn-sm" href="<c:url value="/member/logout"/>">로그아웃</a>
+							</div>
 							<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
 							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${member.memberName}</div>
 						</div>
@@ -68,31 +71,50 @@
 					<div class="d-flex justify-content-center shadow rounded align-content-center flex-wrap" style="background-color: #c6d2df; height:48px;">
 						<h5 class="text-left" style="text-align: center;">My page</h5>
 					</div>
+				
 					<div class="d-flex flex-column mt-3">
 						<div class="d-flex flex-column my-2">
+							<a class="text-left" data-toggle="collapse" href=".collapseZero"
+								style="font-size: large;">Member</a>
+							<hr />
+							<div class="d-flex flex-column">
+								<div class="collapse collapseZero text-left">
+									<a href="<c:url value='/member/list'/>">Member List</a>
+								</div>
+								<div class="collapse collapseZero text-left">
+									<a href="<c:url value='/member/update'/>">Update Info</a>
+								</div>
+							</div>
+						</div>
+						
+				
+						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseOne"
-								style="font-size: large; color: black;">Lecture</a>
+								style="font-size: large;">Lecture</a>
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseOne text-left">
 									<a href="<c:url value='/board/cat/1'/>">Lecture Material</a>
 								</div>
 								<div class="collapse collapseOne text-left">
-									<a href="<c:url value='/board/cat/2'/>" style="color: black;">Report</a>
+									<a href="<c:url value='/board/cat/2'/>">Report</a>
 								</div>
 							</div>
 						</div>
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left " data-toggle="collapse" href=".collapseTwo"
-								style="font-size: large; color: black;">Attendance</a>
+								style="font-size: large;">Attendance</a>
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseTwo text-left">
-									<a href="#" style="color: black;">My Attendance</a>
+									<a href="<c:url value='/attendance/totalList/${member.memberId}'/>">My Attendance</a>
 								</div>
 								<div class="collapse collapseTwo text-left">
-									<a href="#" style="color: black;">Attendance Exception</a>
+									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
+								</div>
+								<div class="collapse collapseTwo text-left">
+									<a href="<c:url value='/attendance/exceptionlist'/>">Attendance Exception List(Exclusive Admin)</a>
 								</div>
 							</div>
 						</div>

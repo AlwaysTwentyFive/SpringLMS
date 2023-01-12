@@ -12,13 +12,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.oti.myuniversity.domain.attendance.model.Attendance;
-import com.oti.myuniversity.domain.board.model.Board;
+import com.oti.myuniversity.domain.attendance.model.AttendanceException;
+import com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile;
 import com.oti.myuniversity.domain.member.model.Member;
 
 @Component
 @Aspect
 @Order(2)
-public class LogAspect {
+public class ServiceLogAspect {
 	//private static int logCount = 0;
 
 	@Pointcut(value="execution(public void com.oti.myuniversity..*.*Service.*(..))")
@@ -32,6 +33,12 @@ public class LogAspect {
 	
 	@Pointcut(value="execution(public com.oti.myuniversity.domain.board.model.Board com.oti.myuniversity..*.*Service.*(..))")
 	private void returnBoardPointcut() {}
+
+	@Pointcut(value="execution(public com.oti.myuniversity.domain.attendance.model.AttendanceException com.oti.myuniversity..*.*Service.*(..))")
+	private void returnAttendanceExceptionPointcut() {}
+	
+	@Pointcut(value="execution(public com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile com.oti.myuniversity..*.*Service.*(..))")
+	private void returnAttendanceExceptionFilePointcut() {}
 	
 	@Before("logPointcut()")
 	public void beforeLog(JoinPoint joinPoint) {
@@ -93,8 +100,8 @@ public class LogAspect {
 		System.out.println("----------------------------------------");
 	}
 	
-	@AfterReturning(value="returnBoardPointcut()", returning="board")
-	public void returnBoardLog(JoinPoint joinPoint, Board board) {
+	@AfterReturning(value="returnAttendanceExceptionPointcut()", returning="attendanceException")
+	public void returnAttendanceExceptionLog(JoinPoint joinPoint, AttendanceException attendanceException) {
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		String typeName = signature.getDeclaringType().getSimpleName();
 		if ('I' == typeName.charAt(0)) {
@@ -105,9 +112,31 @@ public class LogAspect {
 		System.out.println("----------------------------------------");
 		System.out.println("[log No." + logCount + "]");
 		System.out.println("[Class] " + typeName);
-		if (board != null) {
-			System.out.println("[Method] " + signature.getName() + "() - return Board");
-			System.out.println(board.toString());
+		if (attendanceException != null) {
+			System.out.println("[Method] " + signature.getName() + "() - return AttendanceException");
+			System.out.println(attendanceException.toString());
+		}
+		else {
+			System.out.println("[Method] " + signature.getName() + "() - return NULL");			
+		}
+		System.out.println("----------------------------------------");
+	}
+	
+	@AfterReturning(value="returnAttendanceExceptionFilePointcut()", returning="attendanceExceptionFile")
+	public void returnAttendanceExceptionFileLog(JoinPoint joinPoint, AttendanceExceptionFile attendanceExceptionFile) {
+		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+		String typeName = signature.getDeclaringType().getSimpleName();
+		if ('I' == typeName.charAt(0)) {
+			typeName = typeName.substring(1);			
+		}
+		//logCount.set(logCount.get() + 1);
+		logCount++;
+		System.out.println("----------------------------------------");
+		System.out.println("[log No." + logCount + "]");
+		System.out.println("[Class] " + typeName);
+		if (attendanceExceptionFile != null) {
+			System.out.println("[Method] " + signature.getName() + "() - return AttendanceExceptionFile");
+			System.out.println(attendanceExceptionFile.toString());
 		}
 		else {
 			System.out.println("[Method] " + signature.getName() + "() - return NULL");			
