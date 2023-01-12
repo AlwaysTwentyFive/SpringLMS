@@ -13,9 +13,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ServerTimeSupplier {
+	private static Date today;
 	private static Timestamp record;
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 	private static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
+	
+	static {
+		today = new Date(System.currentTimeMillis());
+	}
 	
 	public static int getDayOfWeek() {
 		Calendar rightNow = Calendar.getInstance();
@@ -45,4 +50,13 @@ public class ServerTimeSupplier {
 	public static Timestamp getTime() {
 		return Timestamp.valueOf(timeFormat.format(record));
 	}
+	
+	public static void plusToday() {
+		today = Date.valueOf(today.toLocalDate().plusDays(1).toString());
+	}
+	
+	public static Date getToday() {
+		return today;
+	}
+	
 }

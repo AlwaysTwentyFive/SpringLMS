@@ -43,6 +43,11 @@ public class AttendanceService implements IAttendanceService {
 	public void insertAttendance(Attendance attendance) {
 		attendanceRepository.insertAttendance(attendance);
 	}
+	
+	@Override
+	public void insertAttendanceWithoutTime(Attendance attendance) {
+		attendanceRepository.insertAttendanceWithoutTime(attendance);
+	}
 
 	@Override
 	public boolean checkAttendance(String memberId, Date sqlDate) {
@@ -116,8 +121,7 @@ public class AttendanceService implements IAttendanceService {
 	@Override
 	@Transactional
 	public Model getAttendance(int attendanceExceptionId, Model model) {
-		int attendanceId = attendanceRepository.getMaxAttendanceId();
-		AttendanceException attendanceException = attendanceExceptionRepository.getAttendanceExceptionByAttendanceId(attendanceId);
+		AttendanceException attendanceException = attendanceExceptionRepository.getAttendanceExceptionByAttendanceExceptionId(attendanceExceptionId);
 		model.addAttribute("attendanceException", attendanceException);
 		
 		List<AttendanceExceptionFile> attendanceExceptionFiles = attendanceExceptionFileRepository.getAttendanceExceptionFilesByExceptionId(attendanceExceptionId);
@@ -128,8 +132,26 @@ public class AttendanceService implements IAttendanceService {
 	
 	@Override
 	@Transactional
-	public void manageAttendance(Attendance attendance, AttendanceException attendanceException) {
-		attendanceRepository.updateAttendanceStatus(attendance);
+	public void manageAttendance(AttendanceException attendanceException, Date attendanceExceptionDate) {
+		//승인 되면 Attendance를 기록
+		if (attendanceException.getAttendanceExceptionApproved() == true) {
+			Attendance attendance = new Attendance();
+			int attendanceId = attendanceException.getAttendanceId();
+			//미래에 발생 할 출결 예외 인정 처리
+			if (attendanceId < 0)  {
+				attendance.setMemberId(attendanceException.getMemberId());
+				attendance.setAttendanceDate(attendanceExceptionDate);
+				attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
+				attendanceRepository.insertAttendanceWithoutTime(attendance);
+			}
+			//과거에 기록 된 출결에서 예외 인정 처리 
+			else {
+				attendance.setMemberId(attendanceException.getMemberId());
+				attendance.setAttendanceDate(attendanceException.getAttendanceExceptionDate());
+				attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
+				attendanceRepository.updateAttendanceStatus(attendance);
+			}
+		}
 		attendanceExceptionRepository.updateAttendanceException(attendanceException);
 	}
 

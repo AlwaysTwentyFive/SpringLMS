@@ -11,7 +11,7 @@ import com.oti.myuniversity.domain.attendance.model.AttendanceException;
 public interface IAttendanceExceptionRepository {
 	int getTotalAttendanceExceptionCount();
 	List<AttendanceException> getTotalAttendanceException(Pager pager);
-	AttendanceException getAttendanceExceptionByAttendanceId(int attendanceId);
+	AttendanceException getAttendanceExceptionByAttendanceExceptionId(int attendanceExceptionId);
 	List<AttendanceException> getAttendanceExceptionsByApplyDate(Pager pager, @Param("attendanceExceptionApplyDate") Date attendanceExceptionApplyDate);
 	List<AttendanceException> getAttendanceExceptionsByStatus(Pager pager, @Param("attendanceExceptionStatus") String attendanceExceptionStatus);
 	List<AttendanceException> getAttendanceExceptionsByApproved(Pager pager, @Param("attendanceExceptionApproved") boolean attendanceExceptionApproved);

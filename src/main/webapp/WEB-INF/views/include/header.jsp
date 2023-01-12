@@ -79,7 +79,7 @@
 									<a href="#">My Attendance</a>
 								</div>
 								<div class="collapse collapseTwo text-left">
-									<a href="#">Attendance Exception</a>
+									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
 								</div>
 							</div>
 						</div>
