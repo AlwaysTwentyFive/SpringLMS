@@ -23,17 +23,18 @@ public class HomeController {
 	@RequestMapping(value = "/home")
 	public String home(HttpSession session, Model model) {
 		Member member = (Member) session.getAttribute("member");
-		String memberId = member.getMemberId();
-		
+		String memberId = member.getMemberId();	
 		Attendance attendance = attendanceService.selectAttendanceByDate(memberId, ServerTimeSupplier.getDate());
 		model.addAttribute("day", ServerTimeSupplier.getDayOfWeek());
 		if (attendance != null) {
 			Timestamp arriveTime = attendance.getAttendanceArriveTime();
+			System.out.println(arriveTime);
 			Timestamp departTime = attendance.getAttendanceDepartTime();
 			boolean isAttend = attendanceService.checkAttendance(memberId, attendance.getAttendanceDate());
 			model.addAttribute("arriveTime", arriveTime);
 			model.addAttribute("departTime", departTime);
 			model.addAttribute("isAttend", isAttend);
+			
 		}
 		else {
 			Timestamp arriveTime = null;
@@ -42,7 +43,7 @@ public class HomeController {
 			model.addAttribute("departTime", departTime);
 			model.addAttribute("isAttend", false);
 		}
-		
+	
 		return "home";
 	} 
 	

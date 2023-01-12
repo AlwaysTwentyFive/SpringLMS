@@ -129,7 +129,7 @@
 	                     <div class="clock w-btn-outline w-btn-yellow-outline mb-3 mr-2"
 	                        style="width: 210px; text-align: center;">출근시간 : 
 	                        <c:if test="${arriveTime != null}">
-	                        <fmt:formatDate pattern="hh:mm:ss" value="${arriveTime}"/>
+	                        <fmt:formatDate pattern="HH:mm:ss" value="${arriveTime}"/>
 	                        </c:if>
 	                        <c:if test="${arriveTime == null}">
 	                        -
