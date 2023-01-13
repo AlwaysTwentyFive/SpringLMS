@@ -3,9 +3,9 @@
 
 <div class="d-flex">
 
-	<div class="col-2">${reply.memberName}</div>
-	<div class="col-8">${reply.boardContent}</div>
-	<div class="col-2">${reply.boardDate}</div>
+	<div class="col-2">${acomment.memberName}</div>
+	<div class="col-2">${acomment.memberId}</div>
+	<div class="col-8">${acomment.commentContent}</div>
 </div>
 <hr/>
 

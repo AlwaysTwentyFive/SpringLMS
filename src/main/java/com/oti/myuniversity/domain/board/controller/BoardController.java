@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -18,13 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.board.model.Board;
 import com.oti.myuniversity.domain.board.model.BoardFile;
+import com.oti.myuniversity.domain.board.model.Comment;
 import com.oti.myuniversity.domain.board.service.IBoardFileService;
 import com.oti.myuniversity.domain.board.service.IBoardService;
 import com.oti.myuniversity.domain.member.model.Member;
@@ -78,6 +77,10 @@ public class BoardController {
 		
 		
 		if(board.getBoardCategory()==1) {
+			//댓글 조회
+			List<Comment> commentList = boardService.selectCommentList(boardId);
+			model.addAttribute("commentList", commentList);
+			
 			return "board/library/viewdetail";
 
 		} else {
@@ -331,13 +334,14 @@ public class BoardController {
 	}
 	//댓글 작성
 	@RequestMapping(value="/board/reply", method=RequestMethod.POST)
-	public String replyBoard(Board board, HttpSession session, Model model, RedirectAttributes redirectAttrs) {
+	public String replyBoard(Comment comment, HttpSession session, Model model, RedirectAttributes redirectAttrs) {
 		try {
 			//댓글 입력
-			board.setBoardTitle(board.getBoardTitle());
-			board.setBoardContent(board.getBoardContent());
-			Board reply = boardService.insertReply(board);
-			model.addAttribute("reply", reply);
+			comment.setCommentContent(Jsoup.clean(comment.getCommentContent(), Whitelist.basic()));
+			
+			Comment acomment = boardService.insertComment(comment);
+			
+			model.addAttribute("acomment", acomment);
 		} catch(Exception e) {
 			e.printStackTrace();
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
@@ -345,13 +349,49 @@ public class BoardController {
 		
 		return "board/library/reply";
 	}
+	
+	//댓글 수정
+	@RequestMapping(value="/reply/update", method=RequestMethod.POST)
+	public String updateReply(Comment comment, HttpSession session, Model model, RedirectAttributes redirectAttrs) {
+		try {
+			//댓글 입력
+			Member user = (Member)session.getAttribute("member");
+			String userId = user.getMemberId();
+			comment.setMemberId(userId);
+			
+			comment.setCommentContent(comment.getCommentContent());
+			
+			List<Comment> commentList = boardService.updateComment(comment);
+				
+			model.addAttribute("commentList", commentList);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			redirectAttrs.addFlashAttribute("message", e.getMessage());
+		}
+		
+		return "board/library/replydelete";
+	}
+	//
+	
+	//삭제
+	@RequestMapping("/reply/delete")
+	public String deleteReply(Comment comment, HttpSession session, Model model) {
+		 List<Comment> commentList = boardService.deleteComment(comment);
+		model.addAttribute("commentList", commentList);
+		System.out.println("commentList: " + commentList);
+		return "board/library/replydelete";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
-
-
-
-
-
-
-
-
-

@@ -204,4 +204,21 @@
 	]]>
 </delete>
 
+<select id="selectReplyList" parameterType="int" resultType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		select 
+			boards.BOARDID,
+			BOARDTITLE,
+			BOARDCONTENT,
+			BOARDDATE,
+			BOARDCATEGORY,
+			boards.MEMBERID,
+			membername
+		from boards left join members on boards.memberid = members.memberid
+		where boards.reportNoticeId=#{reportNoticeId}
+		order by boardId
+	]]>
+</select>
+
+
 </mapper>
