@@ -245,6 +245,11 @@ public class BoardService implements IBoardService {
 	}
 
 	@Override
+	public void evaluateSubmittedReport(int boardId, int submissionScore) {
+		boardRepository.evaluateSubmittedReport(boardId, submissionScore);
+	}
+
+	@Override
 	public Board selectScoreNContent(String memberId, int boardId) {
 		Board board = boardRepository.selectScoreNContent(memberId, boardId);
 		return board;

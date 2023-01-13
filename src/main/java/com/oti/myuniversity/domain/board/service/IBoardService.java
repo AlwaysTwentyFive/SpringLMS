@@ -46,6 +46,7 @@ public interface IBoardService {
 	public void deleteArticleByBoardId(int boardId);
 	public Board insertReply(Board board);
 	
-	
+	//과제 평가
+	public void evaluateSubmittedReport(int boardId, int submissionScore);
 
 }

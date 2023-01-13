@@ -59,4 +59,11 @@ public class ServerTimeSupplier {
 		return today;
 	}
 	
+	public static Date timestampToDate(Timestamp timestamp) {
+		return Date.valueOf(dateFormat.format(timestamp));
+	}
+	
+	public static Timestamp dateToTimestamp(Date date) {
+		return Timestamp.valueOf(timeFormat.format(date));
+	}
 }

@@ -68,7 +68,7 @@
 	<![CDATA[
 		update attendances
 		set ATTENDANCESTATUS = '결근'
-		where ATTENDANCEDATE = #{attendanceDate} and ATTENDANCEDEPARTTIME IS NULL
+		where ATTENDANCEDATE = #{attendanceDate} and ATTENDANCEDEPARTTIME IS NULL and ATTENDANCESTATUS = '출근'
 	]]>
 	</update>
 	

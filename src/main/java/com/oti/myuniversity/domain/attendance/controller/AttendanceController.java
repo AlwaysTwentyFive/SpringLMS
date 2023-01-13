@@ -94,6 +94,11 @@ public class AttendanceController {
 		return "redirect:/home";
 	}
 
+	@RequestMapping(value = "/attendance/list")
+	public String getAttendanceList(Model model) {
+		return getAttendanceList(model, 1);
+	}
+
 	@RequestMapping(value = "/attendance/list/{pageNo}")
 	public String getAttendanceList(Model model, @PathVariable int pageNo) {
 		pager.init(ROWS_PER_PAGE, PAGES_PER_GROUP, attendanceService.getTotalAttendanceCount(), pageNo);
@@ -321,8 +326,8 @@ public class AttendanceController {
 	}
 
 	@GetMapping("/attendance/exceptionlist")
-	public String getExceptionList() {
-		return "redirect:/attendance/exceptionlist/1";
+	public String getExceptionList(Model model) {
+		return getExceptionList(model, 1);
 	}
 
 	@GetMapping("/attendance/exceptionlist/{pageNo}")

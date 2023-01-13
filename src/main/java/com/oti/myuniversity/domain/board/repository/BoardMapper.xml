@@ -217,4 +217,13 @@
 	]]>
 </delete>
 
+<update id="evaluateSubmittedReport">
+	<![CDATA[
+		update boards
+		set
+			SUBMISSIONSCORE=#{submissionScore}
+		WHERE boardid=#{boardId}
+	]]>
+</update>
+
 </mapper>

@@ -87,11 +87,11 @@
 					</c:if>
 				</div>
 				<form action="<c:url value='/attendance/manage'/>" method="post">
-				<c:if test="${attendanceId == null}">
+				<c:if test="${attendanceException.attendanceId == null}">
 				<input type="hidden" name="attendanceId" value="-1"/>		
 				</c:if>
-				<c:if test="${attendanceId != null}">
-				<input type="hidden" name="attendanceId" value="${attendanceId}"/>		
+				<c:if test="${attendanceException.attendanceId != null}">
+				<input type="hidden" name="attendanceId" value="${attendanceException.attendanceId}"/>		
 				</c:if>
 				<input type="hidden" name="memberId" value="${attendanceException.memberId}"/>
 				<input type="hidden" name="attendanceExceptionStatus" value="${attendanceException.attendanceExceptionStatus}"/>
