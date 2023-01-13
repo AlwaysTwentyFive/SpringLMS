@@ -4,7 +4,9 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
@@ -14,12 +16,12 @@
 	<context:component-scan base-package="com.oti.myuniversity.domain.member.controller"/>
 	<context:component-scan base-package="com.oti.myuniversity.domain.attendance.controller"/>
 	<context:component-scan base-package="com.oti.myuniversity.domain.board.controller"/>
-	
+	<context:component-scan base-package="com.oti.myuniversity.servletcomponent"/>
+	  
 	<!-- HomeController can be selected by its name value-->
 	<beans:bean name="HomeController" class="com.oti.myuniversity.domain.HomeController"/>
 	
 	<!-- AOP (for Controller)  -->
-	<beans:bean class="com.oti.myuniversity.servletcomponent.LogAspect"/>
 	<aop:aspectj-autoproxy/>
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
@@ -52,6 +54,9 @@
 		<interceptor>
 			<mapping path="/**"/>
 			<exclude-mapping path="/member/login"/>
+			<exclude-mapping path="/js/**"/>
+			<exclude-mapping path="/css/**"/>
+			<exclude-mapping path="/images/**"/>
 			<beans:bean class="com.oti.myuniversity.common.LoginInterceptor"/>
 		</interceptor>
 		<interceptor>

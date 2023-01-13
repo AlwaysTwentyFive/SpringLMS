@@ -131,4 +131,10 @@ public class MemberController {
 		return "member/list";
 	}
 	
+	@GetMapping(value="/member/logout")
+	public String logOut(HttpSession session) {
+		session.invalidate();
+		return "redirect:/login";
+	}
+	
 }

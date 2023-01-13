@@ -12,7 +12,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 	<style>
 		#topHeader {
-			margin-top: 10px;
+		
 			background-color: #34495e;
 			height: 55px;
 		}
@@ -36,8 +36,11 @@
 				<header style="height:155px;">
 					<div id="topHeader">
 						<div class="d-flex justify-content-end">
+							<div class="mb-1 mr-3"style="height:30px;align-self:center">
+								<a class="btn btn-info btn-sm" href="<c:url value="/member/logout"/>">로그아웃</a>
+							</div>
 							<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
-							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${member.memberName}</div>
+							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${sessionScope.member.memberName}</div>
 						</div>
 					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
@@ -54,7 +57,20 @@
 					</div>
 				
 					<div class="d-flex flex-column mt-3">
-				
+						<div class="d-flex flex-column my-2">
+							<a class="text-left" data-toggle="collapse" href=".collapseZero"
+								style="font-size: large;">Member</a>
+							<hr />
+							<div class="d-flex flex-column">
+								<div class="collapse collapseZero text-left">
+									<a href="<c:url value='/member/list'/>">Member List</a>
+								</div>
+								<div class="collapse collapseZero text-left">
+									<a href="<c:url value='/member/update'/>">Update Info</a>
+								</div>
+							</div>
+						</div>
+						
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseOne"
@@ -76,10 +92,13 @@
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseTwo text-left">
-									<a href="#">My Attendance</a>
+									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">My Attendance</a>
 								</div>
 								<div class="collapse collapseTwo text-left">
-									<a href="#">Attendance Exception</a>
+									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
+								</div>
+								<div class="collapse collapseTwo text-left">
+									<a href="<c:url value='/attendance/exceptionlist'/>">Attendance Exception List(Exclusive Admin)</a>
 								</div>
 							</div>
 						</div>

@@ -15,6 +15,7 @@ public class Attendance {
 	private Timestamp attendanceDepartTime;
 	private String attendanceStatus;
 	private String memberName;
+	private String memberType;
 	
 	public int getAttendanceId() {
 		return attendanceId;
@@ -60,12 +61,22 @@ public class Attendance {
 		this.memberName = memberName;
 	}
 	
+	public String getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
+	}
+	
 	@Override
 	public String toString() {
 		return "Attendance [attendanceId=" + attendanceId + ", memberId=" + memberId + ", attendanceDate="
 				+ attendanceDate + ", attendanceArriveTime=" + attendanceArriveTime + ", attendanceDepartTime="
-				+ attendanceDepartTime + ", attendanceStatus=" + attendanceStatus + ", memberName=" + memberName + "]";
+				+ attendanceDepartTime + ", attendanceStatus=" + attendanceStatus + ", memberName=" + memberName
+				+ ", memberType=" + memberType + "]";
 	}
+	
+	
 	
 	
 }

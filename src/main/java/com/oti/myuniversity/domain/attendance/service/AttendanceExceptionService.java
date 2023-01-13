@@ -27,8 +27,8 @@ public class AttendanceExceptionService implements IAttendanceExceptionService {
 	}
 	
 	@Override
-	public AttendanceException getAttendanceExceptionByAttendanceId(int attendanceId) {
-		return attendanceExceptionRepository.getAttendanceExceptionByAttendanceId(attendanceId);
+	public AttendanceException getAttendanceExceptionByAttendanceExceptionId(int attendanceId) {
+		return attendanceExceptionRepository.getAttendanceExceptionByAttendanceExceptionId(attendanceId);
 	}
 
 	@Override
@@ -64,6 +64,12 @@ public class AttendanceExceptionService implements IAttendanceExceptionService {
 	@Override
 	public int getMaxAttendanceExceptionId() {
 		return attendanceExceptionRepository.getMaxAttendanceExceptionId();
+	}
+
+	@Override
+	public AttendanceException getAttendanceExceptionByAttendanceId(int attendanceId) {
+		// TODO Auto-generated method stub
+		return attendanceExceptionRepository.getAttendanceExceptionByAttendanceId(attendanceId);
 	}
 
 }
