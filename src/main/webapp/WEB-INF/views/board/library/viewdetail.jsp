@@ -35,6 +35,10 @@ input[type=text], textarea[type=reportReply]{
   	border: 1px solid #ccc;
   	
 }
+.rContent{
+	word-wrap: break-word;
+}
+
 </style>
 <script>
 	//게시글 삭제 확인 받기
@@ -46,46 +50,158 @@ input[type=text], textarea[type=reportReply]{
 			console.log("취소. 변화 없음");
 		}
 	}
-	
+	//댓글 입력
 	 function insertReply(){
 		console.log("insertReply() 실행");
 		
-		var boardTitle = $("input[name=boardTitle]").val();
-		var boardContent = $("textarea[name=boardContent]").val();
-		var reportNoticeId = $("input[name=reportNoticeId]").val();
+		var commentContent = $("textarea[name=commentContent]").val();
+		var boardId = $("input[name=boardId]").val();
 		var memberId =  $("input[name=memberId]").val();
-		var boardCategory =  $("input[name=boardCategory]").val();
-		
-		console.log(boardTitle,boardContent,reportNoticeId,memberId);
 		
 		  $.ajax({
 			url:"/myuniversity/board/reply",
 			type:"POST",
 			data : {
-				boardTitle: boardTitle,
-				boardContent: boardContent,
-				reportNoticeId: reportNoticeId,
 				memberId: memberId,
-				boardCategory: boardCategory
+				commentContent: commentContent,
+				boardId: boardId
 			},
 			contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 			error : function() {
 		            alert('통신실패!');
-		         },
 
+	         },
 			success:function(result){
-				if(result ==1)	{
 					$("#replyList").append(result);
 					location.reload();
-				} else if(result == 0){
-					alert("댓글 작성에 실패하였습니다");
-
-				}
 			}
 			
 		});   
-		
 	} 
+	//댓글 수정
+	function tryUpdateReply(commentContent, updatebtn, deletebtn, confirmbtn, canclebtn, updateArea){
+		console.log("tryUpdateReply() 실행");
+		let contentId = "#" + commentContent;
+		let updatebtnId = "#" + updatebtn;
+		let deletebtnId = "#" + deletebtn;
+		let confirmbtnId = "#" + confirmbtn;
+		let canclebtnId = "#" + canclebtn;
+		let updateAreaId = "#" + updateArea;
+		console.log($(contentId).text());
+		
+		/* let textarea = '<textarea id="updateArea" name="commentContent" rows="3" cols="150" style="width:550px;"></textarea>'; */
+		
+	/*+'<div class="col-8 rContent" id="${status.count}">${acomment.commentContent}</div>';
+	 	$(contentId).empty();
+		$(contentId).html(textarea);
+		$("#updateArea").next().hide(); */
+		$(updateAreaId).css('display','block');
+		$(contentId).hide();
+		
+		$(updatebtnId).hide();
+		$(deletebtnId).hide();
+		$(confirmbtnId).show();
+		$(canclebtnId).show();
+	
+	}
+	
+	function updateReply(updatebtn, deletebtn, confirmbtn, canclebtn, commentIdValue, updateArea){
+		console.log("updateReply() 실행");
+		let updatebtnId = "#" + updatebtn;
+		let deletebtnId = "#" + deletebtn;
+		let confirmbtnId = "#" + confirmbtn;
+		let canclebtnId = "#" + canclebtn;
+		let updateAreaId = "#" + updateArea;
+		let commentId = commentIdValue;
+		
+		let boardId = ${board.boardId};
+		let commentContent = $(updateAreaId).val();
+		console.log(commentContent);
+		
+		
+		$.ajax({
+			url:"/myuniversity/reply/update",
+			type:"POST",
+			data : {
+				commentId: commentId,
+				commentContent: commentContent,
+				boardId: boardId
+			},
+			contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			error : function() {
+		            alert('통신실패!');
+
+	         },
+			success:function(result){
+					$("#replyList").html(result);
+					$(updatebtnId).show();
+					$(deletebtnId).show();
+					$(confirmbtnId).hide();
+					$(canclebtnId).hide();
+			}
+			
+		});
+		
+		
+		
+	}
+	function cancleUpdateReply(commentContent, updatebtn, deletebtn, confirmbtn, canclebtn, updateArea){
+		console.log("cancleUpdateReply 실행");
+		
+		let contentId = "#" + commentContent;
+		let updatebtnId = "#" + updatebtn;
+		let deletebtnId = "#" + deletebtn;
+		let confirmbtnId = "#" + confirmbtn;
+		let canclebtnId = "#" + canclebtn;
+		let updateAreaId = "#" + updateArea;
+
+		$(updateAreaId).css('display','none');
+		$(contentId).show();
+		
+		$(updatebtnId).show();
+		$(deletebtnId).show();
+		$(confirmbtnId).hide();
+		$(canclebtnId).hide();
+		
+		let content =$(contentId).text();
+		console.log(content);
+		/* $(contentId).child().next().text(content); */
+	}
+	
+	
+	//댓글 삭제
+	function deleteReply(){
+		console.log("deleteReply() 실행");
+		var confirmflag = confirm("삭제 하시겠습니까?");
+		if(confirmflag){
+			var memberId = $("input[name=memberIdR]").val();
+			var commentId = $("input[name=commentIdR]").val();
+			var boardId = $("input[name=boardIdR]").val();
+			console.log(commentId, boardId);
+			$.ajax({
+				url:"/myuniversity/reply/delete",
+				type:"GET",
+				data:{
+					commentId: commentId,
+					memberId: memberId,
+					boardId: boardId
+				},
+				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				error : function() {
+		            alert('통신실패!');
+	
+		         },
+				success:function(result){
+					$("#replyList").html(result);
+				}
+				
+			});
+			
+			
+		} else{
+			console.log("실행 취소");
+		}
+	}
 
 </script>
 
@@ -98,9 +214,9 @@ input[type=text], textarea[type=reportReply]{
 	<hr/>
 	<div id="reportContent">
 		${board.boardContent}<br/>
-		${board.memberName}<br/>
 	</div>
-	<hr/>
+	<br>
+	<br>
 	<div id="attachment" class="d-flex flex-column">
 		<c:if test="${!empty board.fileList}">
 			<c:forEach var="file" items="${board.fileList}">
@@ -123,40 +239,43 @@ input[type=text], textarea[type=reportReply]{
 	</form>
 	<hr/>
 	<div id="replyList" class="d-flex flex-column">
-		<div class="d-flex">
-			<div class="col-2">이름</div>
-			<div class="col-8">ReplyContent</div>
-			<div class="col-2">2021-01-03</div>
-		</div>
-		<hr/>
-		<div class="d-flex">
-			<div class="col-2">이름</div>
-			<div class="col-10">
-				<div class="d-flex">
-					<div class="col-9">
-						<textarea name="reportReply" rows="3" cols="150" style="width:500px;">댓글 작성자 = 세션id일 때 수정, 삭제 가능</textarea>
-					</div>
-					<div class="col-3">
-						<button name="update" class="btn btn-sm btn-primary mx-2">수정</button>
-						<button name="delete" class="btn btn-sm btn-danger" ">삭제</button>
-					</div>
+		<c:forEach var="acomment" items="${commentList}" varStatus="status">
+			<div class="d-flex">
+				<div class="col-2">${acomment.memberName}</div>
+				<div class="col-8">
+					<div class="rContent" id="${status.count}">${acomment.commentContent}</div>
+					<textarea id="updateArea${status.count}" name="commentContent" rows="3" cols="150" style="width:450px; display:none;" required></textarea>
+				</div>
+				<div class="col-2">
+					<c:if test="${acomment.memberId eq sessionScope.member.memberId}">
+						<div id="cover${status.count}">
+							<a name="update" id="update${status.count}" onclick="tryUpdateReply(${status.count}, 'update${status.count}', 'delete${status.count}', 'confirm${status.count}', 'cancle${status.count}', 'updateArea${status.count}');">수정</a>
+				 			<a name="confirm" id="confirm${status.count}" onclick="updateReply('update${status.count}', 'delete${status.count}', 'confirm${status.count}', 'cancle${status.count}', ${acomment.commentId}, 'updateArea${status.count}');" style="display: none;">확인</a> 
+							<span>|</span>
+							<a name="delete" id="delete${status.count}" onclick="deleteReply();">삭제</a>
+				 			<a name="cancle" id="cancle${status.count}" onclick="cancleUpdateReply(${status.count}, 'update${status.count}', 'delete${status.count}', 'confirm${status.count}', 'cancle${status.count}', 'updateArea${status.count}');" style="display: none;">취소</a> 
+						</div>
+					</c:if>
 				</div>
 			</div>
-		</div>
+			<hr/>
+		<input type="hidden" name="memberIdR" value="${sessionScope.member.memberId}">
+		<input type="hidden" name="commentIdR" value="${acomment.commentId}">
+		<input type="hidden" name="boardIdR" value="${acomment.boardId}">
+		</c:forEach>
 	</div>
-	<hr/>
+	<br/>
+	<br/>
 	<div id="replyWrite" class="mb-5">
-			<div class="d-flex">
-				<div class="col-2">ReplyWriter</div>
-				<textarea name="boardContent" rows="3" cols="150" ></textarea>
-			</div>
-			<div class="d-flex justify-content-end">
-				<input type="hidden" name="boardTitle" value="${board.boardId}의 댓글">
-				<input type="hidden" name="reportNoticeId" value="${board.boardId}">
-				<input type="hidden" name="boardCategory" value="4">
-				<input type="hidden" name="memberId" value="${sessionScope.member.memberId}">
-				<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning mt-3" onclick="insertReply();">댓글 입력</button>
-			</div>
+		<div class="d-flex">
+			<div class="col-2">ReplyWriter</div>
+			<textarea name="commentContent" rows="3" cols="150" ></textarea>
+		</div>
+		<div class="d-flex justify-content-end">
+			<input type="hidden" name="boardId" value="${board.boardId}">
+			<input type="hidden" name="memberId" value="${sessionScope.member.memberId}">
+			<button type="submit" name="insert" value="insert" class="btn btn-sm btn-warning mt-3" onclick="insertReply();">댓글 입력</button>
+		</div>
 	</div>
 	<br/>
 	<br/>

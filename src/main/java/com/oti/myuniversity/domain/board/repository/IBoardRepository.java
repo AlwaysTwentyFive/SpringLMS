@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.board.model.Board;
+import com.oti.myuniversity.domain.board.model.Comment;
 
 public interface IBoardRepository {
 
@@ -46,11 +47,9 @@ public interface IBoardRepository {
 	public void updateReportNotice(Board newBoard);
 	//게시글 삭제하기
 	public void deleteArticleByBoardId(int boardId);
+	
 	//과제 평가
 	public void evaluateSubmittedReport(@Param("boardId") int boardId, @Param("submissionScore") int submissionScore);
-
-
-
 	
 	
 }

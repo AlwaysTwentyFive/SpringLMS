@@ -5,6 +5,7 @@ public class Comment {
 	private String commentContent;
 	private int boardId;
 	private String memberId;
+	private String memberName;
 	
 	public int getCommentId() {
 		return commentId;
@@ -35,6 +36,12 @@ public class Comment {
 	public String toString() {
 		return "Comment [commentId=" + commentId + ", commentContent=" + commentContent + ", boardId=" + boardId
 				+ ", memberId=" + memberId + "]";
+	}
+	public String getMemberName() {
+		return memberName;
+	}
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 	
 }

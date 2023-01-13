@@ -16,8 +16,10 @@ import com.oti.myuniversity.domain.attendance.model.AttendanceException;
 import com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile;
 import com.oti.myuniversity.domain.board.model.Board;
 import com.oti.myuniversity.domain.board.model.BoardFile;
+import com.oti.myuniversity.domain.board.model.Comment;
 import com.oti.myuniversity.domain.board.repository.IBoardFileRepository;
 import com.oti.myuniversity.domain.board.repository.IBoardRepository;
+import com.oti.myuniversity.domain.board.repository.ICommentRepository;
 
 @Service
 public class BoardService implements IBoardService {
@@ -30,6 +32,9 @@ public class BoardService implements IBoardService {
 	
 	@Autowired
 	MultipartFileResolver multipartFileResolver;
+	
+	@Autowired
+	ICommentRepository commentRepository;
 	
 	//게시판 리스트 가져오기
 	@Override
@@ -234,14 +239,37 @@ public class BoardService implements IBoardService {
 
 	@Override
 	@Transactional
-	public Board insertReply(Board board) {
+	public Comment insertComment(Comment comment) {
 		//댓글 입력
-		boardRepository.insertLibrary(board);
+		commentRepository.insertComment(comment);
 		//댓글 출력
-		int boardId = boardRepository.selectMaxBoardId();
-		Board reply = boardRepository.selectArticle(boardId);
-		return reply;
+		int commentId = commentRepository.selectMaxCommentId();
+		Comment reply = commentRepository.selectComment(commentId);
 		
+		return reply;
+	}
+
+	@Override
+	@Transactional
+	public List<Comment> deleteComment(Comment comment) {
+		commentRepository.deleteComment(comment.getCommentId());
+		return commentRepository.selectCommentList(comment.getBoardId());
+	}
+
+	@Override
+	@Transactional
+	public List<Comment> updateComment(Comment comment) {
+		//댓글 수정
+		commentRepository.updateComment(comment);
+		//댓글 출력
+		return commentRepository.selectCommentList(comment.getBoardId());
+		
+	}
+
+	@Override
+	public List<Comment> selectCommentList(int boardId) {
+		List<Comment> commentList = commentRepository.selectCommentList(boardId);
+		return commentList;
 	}
 
 	@Override

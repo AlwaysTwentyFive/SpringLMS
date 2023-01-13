@@ -2,4 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.oti.myuniversity.domain.board.repository.ICommentRepository">
+
+<insert id="insertComment" parameterType="com.oti.myuniversity.domain.board.model.Comment">
+	<![CDATA[
+		INSERT INTO COMMENTS
+		(
+			COMMENTID,
+            COMMENTCONTENT,
+            BOARDID,
+            MEMBERID
+		)
+		VALUES
+		(
+			SEQ_COMMENTID.NEXTVAL,
+			#{commentContent},
+			#{boardId},
+			#{memberId}
+		)
+	]]>
+</insert>
+
+<select id="selectMaxCommentId" resultType="int">
+		select nvl(max(comments.commentid),0) as commentid FROM comments
+</select>
+
+<select id="selectComment" parameterType="int" resultType="com.oti.myuniversity.domain.board.model.Comment">
+	select  COMMENTID,
+            COMMENTCONTENT,
+            BOARDID,
+            comments.MEMBERID,
+            MEMBERNAME
+        from comments left join members on comments.memberId = members.memberId
+        WHERE comments.boardid=#{commentId}
+</select>
+
+<select id="selectCommentList" parameterType="int" resultType="com.oti.myuniversity.domain.board.model.Comment">
+	select 
+			COMMENTID,
+			comments.BOARDID,
+			COMMENTCONTENT,
+			comments.MEMBERID,
+			MEMBERNAME
+        from comments left join members on comments.memberId = members.memberId
+        WHERE comments.boardid=#{boardId}
+		order by COMMENTID
+</select>
+
+<update id="updateComment" parameterType="com.oti.myuniversity.domain.board.model.Comment">
+		update comments
+		set
+			COMMENTCONTENT =#{commentContent}
+		WHERE COMMENTID=#{commentId} and MEMBERID =#{memberId}
+</update>
+
+<delete id="deleteComment" parameterType="int">
+
+	DELETE from comments where COMMENTID=#{commentId}
+
+</delete>
+
+
 </mapper>
