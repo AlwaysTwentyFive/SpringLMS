@@ -52,6 +52,26 @@
 	]]>
 	</select>
 	
+	<select id="getAttendanceExceptionByAttendanceId" parameterType="int" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONID,
+			ATTENDANCEID,
+			ATTENDANCEEXCEPTIONAPPLYDATE,
+			ATTENDANCEEXCEPTIONSTATUS,
+			ATTENDANCEEXCEPTIONAPPROVED,
+			ATTENDANCEEXCEPTIONTITLE,
+			ATTENDANCEEXCEPTIONCONTENT,
+			MEMBERNAME,
+			ATTENDANCEEXCEPTIONDATE,
+			MEMBERID
+		FROM
+			ATTENDANCES_EXCEPTIONS
+		WHERE
+			ATTENDANCEID = ${attendanceId}
+	]]>
+	</select>
+	
 	<select id="getAttendanceExceptionsByApplyDate" parameterType="com.oti.myuniversity.component.Pager" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
 	<![CDATA[
 		SELECT

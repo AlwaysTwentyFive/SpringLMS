@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -34,6 +36,7 @@ import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.component.ServerTimeSupplier;
 import com.oti.myuniversity.domain.attendance.model.Attendance;
 import com.oti.myuniversity.domain.attendance.model.AttendanceException;
+import com.oti.myuniversity.domain.attendance.service.AttendanceService;
 import com.oti.myuniversity.domain.attendance.service.IAttendanceExceptionFileService;
 import com.oti.myuniversity.domain.attendance.service.IAttendanceExceptionService;
 import com.oti.myuniversity.domain.attendance.service.IAttendanceService;
@@ -47,26 +50,26 @@ public class AttendanceController {
 
 	@Autowired
 	IAttendanceService attendanceService;
-	
+
 	@Autowired
 	IAttendanceExceptionService attendanceExceptionService;
-	
+
 	@Autowired
 	IAttendanceExceptionFileService attendanceExceptionFileService;
-	
+
 	@Autowired
 	IBoardService boardService;
 
 	@Autowired
 	AttendPolicy oneDayPolicy;
-	
+
 	@Autowired
 	IMemberService memberSerivce;
-	
-	//in com.oti.myuniversity.config.AppConfig.java
+
+	// in com.oti.myuniversity.config.AppConfig.java
 	@Autowired
 	Attendance initializedAttendance;
-	
+
 	@Autowired
 	Pager pager;
 
@@ -80,8 +83,8 @@ public class AttendanceController {
 		attendanceService.insertAttendance(initializedAttendance);
 		return "redirect:/home";
 	}
-	
-	@RequestMapping(value="/attendance/leave", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/attendance/leave", method = RequestMethod.POST)
 	public String leave(HttpSession session) {
 		Member member = (Member) session.getAttribute("member");
 		initializedAttendance.setMemberId(member.getMemberId());
@@ -90,110 +93,151 @@ public class AttendanceController {
 		attendanceService.updateTimeStatus(initializedAttendance);
 		return "redirect:/home";
 	}
-	
-	@RequestMapping(value="/attendance/list/{pageNo}")
+
+	@RequestMapping(value = "/attendance/list/{pageNo}")
 	public String getAttendanceList(Model model, @PathVariable int pageNo) {
 		pager.init(ROWS_PER_PAGE, PAGES_PER_GROUP, attendanceService.getTotalAttendanceCount(), pageNo);
 		model.addAttribute("attendanceList", attendanceService.getTotalAttendance(pager));
 		model.addAttribute("pager", pager);
 		return "attendance/totalList";
 	}
-	
-	@RequestMapping(value="/attendance/view/{attendanceId}", method = RequestMethod.GET)
-	public @ResponseBody Attendance dataToJson(@PathVariable int attendanceId, Date sqlDate) {
+
+	@RequestMapping(value = "/attendance/view/{attendanceId}", method = RequestMethod.GET)
+	public @ResponseBody Attendance dataToJson(@PathVariable int attendanceId, Date sqlDate, HttpSession session) {
+		Member member = (Member) session.getAttribute("member");
 		Attendance attendance = attendanceService.selectAttendanceById(attendanceId);
+		attendance.setMemberType(member.getMemberType());
 		return attendance;
 	}
-	
-	@RequestMapping(value="/attendance/totalList/{studentId}")
+
+	@RequestMapping(value = "/attendance/checkException/{attendanceId}", method = RequestMethod.GET)
+	public @ResponseBody String getExceptionByAttId(@PathVariable int attendanceId) {
+		System.out.println("checkException 컨트롤러 들어옴");
+		System.out.println(attendanceId);
+		AttendanceException attendanceException = attendanceExceptionService
+				.getAttendanceExceptionByAttendanceId(attendanceId);
+		System.out.println(attendanceException);
+		String result = "fail";
+		if (attendanceException != null) {
+			result = Integer.toString(attendanceException.getAttendanceExceptionId());
+		}
+		return result;
+
+	}
+
+	@RequestMapping(value = "/attendance/readException/{attendanceId}", method = RequestMethod.GET)
+	public String getExceptionByAttId(@PathVariable int attendanceId, Model model) {
+		System.out.println("readException 컨트롤러 들어옴");
+		System.out.println(attendanceId);
+
+		AttendanceException attendanceException = attendanceExceptionService
+				.getAttendanceExceptionByAttendanceId(attendanceId);
+		System.out.println("attendanceExcetion: " + attendanceException);
+		return getAttendanceException(model, attendanceException.getAttendanceExceptionId());
+
+	}
+
+	@RequestMapping(value = "/attendance/totalList/{studentId}")
 	public String getPersonalAttendanceList(HttpSession session, Model model, @PathVariable String studentId) {
-		//한 사람의 모든 출결 가져옴
-		LinkedList<Attendance> personalList = (LinkedList<Attendance>) attendanceService.getPersonalAttendanceList(studentId);
-		//시작 날짜 localDate로 변환
+		// 한 사람의 모든 출결 가져옴
+		LinkedList<Attendance> personalList = (LinkedList<Attendance>) attendanceService
+				.getPersonalAttendanceList(studentId);
+		// 시작 날짜 localDate로 변환
 		LocalDate date = Consts.CLASS_START_DATE.toLocalDate();
-		//주차별 출결 담을 list 선언
+		// 주차별 출결 담을 list 선언
 		LinkedList<LinkedList<Attendance>> totalList = new LinkedList<LinkedList<Attendance>>();
-		//하나의 주차의 출결 담을 list 선언 
+		// 하나의 주차의 출결 담을 list 선언
 		LinkedList<Attendance> weekList = new LinkedList<Attendance>();
-		//한 학생의 모든 list 꺼냄
+		// 한 학생의 모든 list 꺼냄
 		ServerTimeSupplier.setTime();
 		LocalDate today = ServerTimeSupplier.getDate().toLocalDate();
 		int count = 0;
-		
-		while(date.compareTo(today)<=0 && !(personalList.isEmpty())){		
-			//숫자 요일을 구하기 위해 dayOfWeek 객체로 변환
-			DayOfWeek dayOfWeek = date.getDayOfWeek();	 	
-			//숫자 요일 구하기
-	        int dayOfWeekNumber = dayOfWeek.getValue();
 
-			if(dayOfWeekNumber != 6 && dayOfWeekNumber != 7) {
+		while (date.compareTo(today) <= 0 ) {
+			// 숫자 요일을 구하기 위해 dayOfWeek 객체로 변환
+			DayOfWeek dayOfWeek = date.getDayOfWeek();
+			// 숫자 요일 구하기
+			int dayOfWeekNumber = dayOfWeek.getValue();
+
+			if (dayOfWeekNumber != 6 && dayOfWeekNumber != 7) {
 				count++;
-				 while(weekList.size() < dayOfWeekNumber-1) {
-			        	Attendance attendance = new Attendance();
-			        	weekList.add(attendance);
-			        	System.out.println("weekList size : " + weekList.size());
-			        }
-		        //attendance 정보가 있고 기준 날짜와 출결 날짜가 같으면
-		        Attendance attendance = personalList.peek();
-		        System.out.println("attendance: "+ attendance);
-		        LocalDate attDate = attendance.getAttendanceDate().toLocalDate();
-		        System.out.println("attDate: "+ attDate);
-		        if(date.compareTo(attDate)==0) {
-		        	attendance = personalList.poll();
-		        	weekList.add(attendance);
-		        	
-		        	
-		        } else {
-		        	Attendance absAttendance = new Attendance();
-		        		absAttendance.setAttendanceArriveTime(null);
-		        		absAttendance.setAttendanceDepartTime(null);
-		        		absAttendance.setAttendanceStatus("결근");
-			        	weekList.add(absAttendance); 	
-		        }									
-			
+				while (weekList.size() < dayOfWeekNumber - 1) {
+					Attendance attendance = new Attendance();
+					weekList.add(attendance);
+				}
+
+				// attendance 정보가 있고 기준 날짜와 출결 날짜가 같으면
+				LocalDate attDate;
+				Attendance attendance = null;
+				if (!(personalList.isEmpty())) {
+					attendance = personalList.peek();
+					attDate = attendance.getAttendanceDate().toLocalDate();
+
+				} else {
+					attDate = date;
+				}
+
+				if (date.compareTo(attDate) == 0) {
+					if (attendance != null) {
+						attendance = personalList.poll();
+					} else {
+						attendance = new Attendance();
+						Date absDate = Date.valueOf(date);
+						attendance.setAttendanceDate(absDate);
+						attendance.setAttendanceArriveTime(null);
+						attendance.setAttendanceDepartTime(null);
+						attendance.setAttendanceStatus("결근");
+					}
+					weekList.add(attendance);
+				} else {
+					Attendance absAttendance = new Attendance();
+					Date absDate = Date.valueOf(date);
+					absAttendance.setAttendanceDate(absDate);
+					absAttendance.setAttendanceArriveTime(null);
+					absAttendance.setAttendanceDepartTime(null);
+					absAttendance.setAttendanceStatus("결근");
+					weekList.add(absAttendance);
+				}
 			}
-			
-			//만약에 일요일이면 
-			if(dayOfWeekNumber == 6) {
-				//하나의 주 데이터가 모인 list를 총 list에 담음
+			// 만약에 일요일이면
+			if (dayOfWeekNumber == 6) {
+				// 하나의 주 데이터가 모인 list를 총 list에 담음
 				totalList.add(weekList);
-				//하나의 주 데이터 담을 list 갱신
+				// 하나의 주 데이터 담을 list 갱신
 				weekList = new LinkedList<Attendance>();
 			}
-			//기준날짜를 더함
+			// 기준날짜를 더함
 			date = date.plusDays(1);
-		
 		}
-		
-		if(weekList.size()>0) {
+
+		if (weekList.size() > 0) {
 			totalList.add(weekList);
 		}
-		
-		System.out.println("사이즈: "+ totalList.size());
-		for(List<Attendance> list : totalList) {
+		for (List<Attendance> list : totalList) {
 			System.out.println();
-			System.out.println("totalList: "+ list);
+			System.out.println("totalList: " + list);
 			System.out.println();
 		}
-		
 		int attCount = attendanceService.getAttendanceCount(studentId, "출근");
 		int absCount = attendanceService.getAttendanceCount(studentId, "결근");
 		int vacationCount = attendanceService.getAttendanceCount(studentId, "공가");
 		int leaveCount = attendanceService.getAttendanceCount(studentId, "조퇴");
 		int lateCount = attendanceService.getAttendanceCount(studentId, "지각");
-	
-		System.out.println("count: "+count);
-		if(count != attCount+absCount+vacationCount+leaveCount+lateCount) {
-			absCount = (count - (attCount+absCount+vacationCount+leaveCount+lateCount)) + absCount;
+		int sickCount = attendanceService.getAttendanceCount(studentId, "병가");
+		int goOutCount = attendanceService.getAttendanceCount(studentId, "외출");
+		
+		if (count != attCount + absCount + vacationCount + leaveCount + lateCount + sickCount + goOutCount) {
+			absCount = (count - (attCount + absCount + vacationCount + leaveCount + lateCount  + sickCount + goOutCount)) + absCount;
 		}
-
 		model.addAttribute("totalList", totalList);
 		model.addAttribute("member", memberSerivce.selectMember(studentId));
-		model.addAttribute("attCount",attCount);
-		model.addAttribute("absCount",absCount);
-		model.addAttribute("vacationCount",vacationCount);
-		model.addAttribute("leaveCount",leaveCount);
-		model.addAttribute("lateCount",lateCount);
+		model.addAttribute("attCount", attCount);
+		model.addAttribute("absCount", absCount);
+		model.addAttribute("vacationCount", vacationCount);
+		model.addAttribute("leaveCount", leaveCount);
+		model.addAttribute("lateCount", lateCount);
+		model.addAttribute("sickCount", sickCount);
+		model.addAttribute("goOutCount", goOutCount);
 		return "/attendance/list";
 	}
 
@@ -201,40 +245,70 @@ public class AttendanceController {
 	public String applyException() {
 		return "attendance/write";
 	}
-	
+
 	@PostMapping("/attendance/write")
-	public String applyException(HttpSession session, AttendanceException attendanceException, String date, String time, MultipartFile[] attendanceExceptionFiles) throws IOException {
+	public String applyException(HttpSession session, AttendanceException attendanceException, String date, String time,
+			MultipartFile[] attendanceExceptionFiles) throws IOException {
 		ServerTimeSupplier.setTime();
 		Member member = (Member) session.getAttribute("member");
 		attendanceException.setMemberId(member.getMemberId());
 		attendanceException.setMemberName(member.getMemberName());
 		attendanceException.setAttendanceExceptionDate(ServerTimeSupplier.getDate());
 		attendanceException.setAttendanceExceptionApplyDate(Timestamp.valueOf(date + " " + time + ":00"));
-		
+
 		int attendanceExceptionId = attendanceService.applyException(attendanceException, attendanceExceptionFiles);
 		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}
-	
+
+	@PostMapping(value = "/attendance/update", produces = "application/text; charset=UTF-8")
+	public @ResponseBody String updateStatus(@RequestParam("status") String status,
+			@RequestParam("attendanceId") int attendanceId, @RequestParam("date") String date,
+			@RequestParam("memberId") String memberId, HttpServletResponse response) {
+		Attendance attendance = new Attendance();
+		// database에 출석한 이력이 없다면
+		if (attendanceId == 0) {
+			Date attDate = Date.valueOf(date);
+			attendance.setAttendanceStatus(status);
+			attendance.setAttendanceDate(attDate);
+			attendance.setMemberId(memberId);
+			
+			attendanceService.insertAttendanceWithoutTime(attendance);
+
+		} else {
+			// update 진행
+			attendance.setMemberId(memberId);
+			Date attDate = Date.valueOf(date);
+			attendance.setAttendanceDate(attDate);
+			attendance.setAttendanceStatus(status);
+			attendanceService.updateAttendanceStatus(attendance);
+		}
+
+		response.setCharacterEncoding("UTF-8");
+		return status;
+	}
+
 	@GetMapping("/attendance/exception/{attendanceExceptionId}")
 	public String getAttendanceException(Model model, @PathVariable int attendanceExceptionId) {
 		attendanceService.getAttendance(attendanceExceptionId, model);
 		return "attendance/view";
 	}
-	
+
 	@PostMapping("/attendance/manage")
-	public String manageException(HttpSession session, AttendanceException attendanceException, int attendanceExceptionId, Date attendanceExceptionDate) {
+	public String manageException(HttpSession session, AttendanceException attendanceException,
+			int attendanceExceptionId, Date attendanceExceptionDate) {
 		attendanceService.manageAttendance(attendanceException, attendanceExceptionDate);
 		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}
-	
+
 	@GetMapping("/attendance/exceptionlist")
 	public String getExceptionList() {
 		return "redirect:/attendance/exceptionlist/1";
 	}
-	
+
 	@GetMapping("/attendance/exceptionlist/{pageNo}")
 	public String getExceptionList(Model model, @PathVariable int pageNo) {
-		pager.init(ROWS_PER_PAGE, PAGES_PER_GROUP, attendanceExceptionService.getTotalAttendanceExceptionCount(), pageNo);
+		pager.init(ROWS_PER_PAGE, PAGES_PER_GROUP, attendanceExceptionService.getTotalAttendanceExceptionCount(),
+				pageNo);
 		model.addAttribute("attendanceExceptionList", attendanceExceptionService.getTotalAttendanceException(pager));
 		model.addAttribute("pager", pager);
 		return "attendance/exceptionlist";
