@@ -98,6 +98,9 @@
 									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
 								</div>
 								<div class="collapse collapseTwo text-left">
+									<a href="<c:url value='/attendance/list'/>">Attendance List(Exclusive Admin)</a>
+								</div>
+								<div class="collapse collapseTwo text-left">
 									<a href="<c:url value='/attendance/exceptionlist'/>">Attendance Exception List(Exclusive Admin)</a>
 								</div>
 							</div>

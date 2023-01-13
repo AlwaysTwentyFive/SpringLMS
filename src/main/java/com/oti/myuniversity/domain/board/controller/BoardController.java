@@ -70,7 +70,7 @@ public class BoardController {
 	
 	//글 상세 보기
 	@RequestMapping("/board/{boardId}/{pageNo}")
-	public String getBoardDetails(@PathVariable int pageNo,@PathVariable int boardId,HttpSession session, Model model) {
+	public String getBoardDetails(@PathVariable int pageNo, @PathVariable int boardId, HttpSession session, Model model) {
 		Board board = boardService.selectArticle(boardId);
 		model.addAttribute("board", board);
 		model.addAttribute("pageNo", pageNo);
@@ -93,6 +93,11 @@ public class BoardController {
 				//학생
 				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달
 				Board reportBoard = boardService.selectReport(boardId, memberId);
+				Boolean isUpdate = (Boolean) session.getAttribute("update");
+				if(isUpdate != null && isUpdate == true) {
+					reportBoard.setSubmissionSubmitDate(null);
+					session.removeAttribute("update");
+				}
 				model.addAttribute("reportBoard", reportBoard);
 				
 				return "board/report/studentdetail";
@@ -171,7 +176,7 @@ public class BoardController {
 			return "redirect:/board/cat/" + board.getBoardCategory(); 		
 	}
 	
-	//학생의 과제 제출 
+	//학생의 과제 제출 및 업데이트
 	@RequestMapping(value="/board/report/submit", method=RequestMethod.POST)
 	public String submitReport(Board board,@RequestParam int pageNo ,@RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs ) {
 		
@@ -208,6 +213,13 @@ public class BoardController {
 		return "redirect:/board/"+ board.getReportNoticeId() + "/" + pageNo;
 	}
 	
+	//과제 업데이트 화면
+	@RequestMapping(value="/board/report/updatereport")
+	public String updateSubmittedReport(int pageNo, int reportNoticeId, HttpSession session) {
+		session.setAttribute("update", new Boolean(true));
+		return "redirect:/board/" + reportNoticeId + "/" + pageNo;
+	}
+	
 	//자료실 글 수정하기
 	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.GET)
 	public String updateLibary(@PathVariable int boardId, @RequestParam int pageNo, Model model) {
@@ -222,6 +234,13 @@ public class BoardController {
 		} else {
 			return "board/report/update";
 		}
+	}
+	
+	//과제 평가
+	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.POST)
+	public String evaluateSubmittedReport(int reportNoticeId, @PathVariable int boardId, int submissionScore, int pageNo, Model model) {
+		boardService.evaluateSubmittedReport(boardId, submissionScore);
+		return "redirect:/board/" + reportNoticeId + "/" + pageNo;
 	}
 	
 	@RequestMapping(value="/board/library/update", method=RequestMethod.POST)

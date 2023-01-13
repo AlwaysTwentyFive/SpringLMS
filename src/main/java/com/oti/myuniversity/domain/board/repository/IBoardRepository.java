@@ -43,6 +43,8 @@ public interface IBoardRepository {
 	public void updateReportNotice(Board newBoard);
 	//게시글 삭제하기
 	public void deleteArticleByBoardId(int boardId);
+	//과제 평가
+	public void evaluateSubmittedReport(@Param("boardId") int boardId, @Param("submissionScore") int submissionScore);
 
 
 
