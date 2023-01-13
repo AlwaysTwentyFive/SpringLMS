@@ -5,15 +5,18 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.board.model.Board;
 import com.oti.myuniversity.domain.board.model.BoardFile;
 
 public interface IBoardService {
-	public List<Board> selectArticleListByCatoryType(int categoryType,int pageNo);
+	public List<Board> selectArticleListByCategoryType(int categoryType,Pager pager);
 	public int selectTotalArticleCount(int categoryType);
 	public Board selectArticle(int boardId);
 
 	int selectMaxBoardId();
+	
+	public Board selectScoreNContent(String memberId, int boardId);
 
 	//자료실 관리자 글 입력
 	public void insertLibrary(Board board, MultipartFile[] files);
