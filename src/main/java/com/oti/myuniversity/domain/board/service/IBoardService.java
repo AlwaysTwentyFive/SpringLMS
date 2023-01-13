@@ -5,17 +5,20 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.board.model.Board;
 import com.oti.myuniversity.domain.board.model.BoardFile;
 import com.oti.myuniversity.domain.board.model.Comment;
 
 public interface IBoardService {
-	public List<Board> selectArticleListByCatoryType(int categoryType,int pageNo);
+	public List<Board> selectArticleListByCategoryType(int categoryType,Pager pager);
 	public int selectTotalArticleCount(int categoryType);
 	//게시글 상세 조회
 	public Board selectArticle(int boardId);
 
 	int selectMaxBoardId();
+	
+	public Board selectScoreNContent(String memberId, int boardId);
 
 	//자료실 관리자 글 입력
 	public void insertLibrary(Board board, MultipartFile[] files);
@@ -52,4 +55,7 @@ public interface IBoardService {
 	public List<Comment> updateComment(Comment comment);
 	//댓글 리스트 출력
 	public List<Comment> selectCommentList(int boardId);
+	//과제 평가
+	public void evaluateSubmittedReport(int boardId, int submissionScore);
+
 }

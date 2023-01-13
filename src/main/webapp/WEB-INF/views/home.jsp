@@ -60,7 +60,7 @@
 						</div>
 					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
-						<img class="mt-3" src="<c:url value="/images/logo.png"/>" width="125" height="105"/>
+						<a href="<c:url value="/home"/>"><img class="mt-3" src="<c:url value="/images/logo.png"/>" width="125" height="105"/></a>
 					</div>
 					<hr color = "#34495e" size = "3"/>
 				</header>
@@ -108,10 +108,13 @@
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseTwo text-left">
-									<a href="<c:url value='/attendance/totalList/${member.memberId}'/>">My Attendance</a>
+									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">My Attendance</a>
 								</div>
 								<div class="collapse collapseTwo text-left">
 									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
+								</div>
+								<div class="collapse collapseTwo text-left">
+									<a href="<c:url value='/attendance/list'/>">Attendance List(Exclusive Admin)</a>
 								</div>
 								<div class="collapse collapseTwo text-left">
 									<a href="<c:url value='/attendance/exceptionlist'/>">Attendance Exception List(Exclusive Admin)</a>
@@ -170,7 +173,7 @@
 	                
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
-		                  	<c:if test="${day != 1 and day != 7 and departTime == null}">
+		                  	<c:if test="${day != 1 and day != 7 and departTime == null and status == '출근'}">
 			                  	<c:if test="${isAttend == false}">
 				                  	 <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
 				                    	<button class="w-btn w-btn-attendance" type="submit">출근하기</button>

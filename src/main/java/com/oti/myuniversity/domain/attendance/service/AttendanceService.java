@@ -2,6 +2,7 @@ package com.oti.myuniversity.domain.attendance.service;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.oti.myuniversity.component.MultipartFileResolver;
 import com.oti.myuniversity.component.Pager;
+import com.oti.myuniversity.component.ServerTimeSupplier;
 import com.oti.myuniversity.domain.attendance.model.Attendance;
 import com.oti.myuniversity.domain.attendance.model.AttendanceException;
 import com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile;
@@ -135,17 +137,32 @@ public class AttendanceService implements IAttendanceService {
 	public void manageAttendance(AttendanceException attendanceException, Date attendanceExceptionDate) {
 		//승인 되면 Attendance를 기록
 		if (attendanceException.getAttendanceExceptionApproved() == true) {
-			Attendance attendance = new Attendance();
 			int attendanceId = attendanceException.getAttendanceId();
-			//미래에 발생 할 출결 예외 인정 처리
+			
+			//미래에 발생 할 (또는 과거에 기록 된) 출결 예외 인정 처리
 			if (attendanceId < 0)  {
-				attendance.setMemberId(attendanceException.getMemberId());
-				attendance.setAttendanceDate(attendanceExceptionDate);
-				attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
-				attendanceRepository.insertAttendanceWithoutTime(attendance);
+				Date date = ServerTimeSupplier.timestampToDate(attendanceException.getAttendanceExceptionApplyDate());
+				Attendance attendance = attendanceRepository.selectAttendanceByDate(attendanceException.getMemberId(), date);
+				
+				//신청 날짜에  출근 기록이 존재하면 insert가 아니라 update를 해야 함
+				if (attendance == null) {
+					attendance = new Attendance();
+					attendance.setMemberId(attendanceException.getMemberId());
+					attendance.setAttendanceDate(attendanceExceptionDate);
+					attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
+					attendanceRepository.insertAttendanceWithoutTime(attendance);
+				}
+				else {
+					attendance.setMemberId(attendanceException.getMemberId());
+					attendance.setAttendanceDate(attendanceExceptionDate);
+					attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
+					attendanceRepository.updateAttendanceStatus(attendance);
+				}
 			}
+			
 			//과거에 기록 된 출결에서 예외 인정 처리 
 			else {
+				Attendance attendance = new Attendance();
 				attendance.setMemberId(attendanceException.getMemberId());
 				attendance.setAttendanceDate(attendanceException.getAttendanceExceptionDate());
 				attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());

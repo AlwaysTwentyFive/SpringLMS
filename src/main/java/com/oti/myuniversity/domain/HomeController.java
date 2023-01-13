@@ -26,22 +26,26 @@ public class HomeController {
 		String memberId = member.getMemberId();	
 		Attendance attendance = attendanceService.selectAttendanceByDate(memberId, ServerTimeSupplier.getDate());
 		model.addAttribute("day", ServerTimeSupplier.getDayOfWeek());
+		//출근 기록 있음
 		if (attendance != null) {
 			Timestamp arriveTime = attendance.getAttendanceArriveTime();
-			System.out.println(arriveTime);
 			Timestamp departTime = attendance.getAttendanceDepartTime();
+			String status = attendance.getAttendanceStatus();
 			boolean isAttend = attendanceService.checkAttendance(memberId, attendance.getAttendanceDate());
 			model.addAttribute("arriveTime", arriveTime);
 			model.addAttribute("departTime", departTime);
 			model.addAttribute("isAttend", isAttend);
-			
+			model.addAttribute("status", status);
 		}
+		//출근 기록 없음
 		else {
 			Timestamp arriveTime = null;
 			Timestamp departTime = null;
+			String status = "출근";
 			model.addAttribute("arriveTime", arriveTime);
 			model.addAttribute("departTime", departTime);
 			model.addAttribute("isAttend", false);
+			model.addAttribute("status", status);
 		}
 	
 		return "home";

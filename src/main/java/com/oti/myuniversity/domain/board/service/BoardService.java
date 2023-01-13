@@ -10,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oti.myuniversity.component.MultipartFileResolver;
+import com.oti.myuniversity.component.Pager;
+import com.oti.myuniversity.domain.attendance.model.Attendance;
+import com.oti.myuniversity.domain.attendance.model.AttendanceException;
+import com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile;
 import com.oti.myuniversity.domain.board.model.Board;
 import com.oti.myuniversity.domain.board.model.BoardFile;
 import com.oti.myuniversity.domain.board.model.Comment;
@@ -34,10 +38,9 @@ public class BoardService implements IBoardService {
 	
 	//게시판 리스트 가져오기
 	@Override
-	public List<Board> selectArticleListByCatoryType(int categoryType, int pageNo) {
-		int start = (pageNo-1) *10 +1;
+	public List<Board> selectArticleListByCategoryType(int categoryType, Pager pager) {
 		
-		return boardRepository.selectArticleListByCatoryType(categoryType, start, start+10, pageNo);
+		return boardRepository.selectArticleListByCategoryType(categoryType, pager);
 	}
 	
 	//게시물의 총 개수 알기
@@ -267,6 +270,17 @@ public class BoardService implements IBoardService {
 	public List<Comment> selectCommentList(int boardId) {
 		List<Comment> commentList = commentRepository.selectCommentList(boardId);
 		return commentList;
+	}
+
+	@Override
+	public void evaluateSubmittedReport(int boardId, int submissionScore) {
+		boardRepository.evaluateSubmittedReport(boardId, submissionScore);
+	}
+
+	@Override
+	public Board selectScoreNContent(String memberId, int boardId) {
+		Board board = boardRepository.selectScoreNContent(memberId, boardId);
+		return board;
 	}
 
 

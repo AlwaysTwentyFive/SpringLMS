@@ -44,21 +44,48 @@ public class BoardController {
 	//글 목록 조회
 	@RequestMapping("/board/cat/{categoryType}/{pageNo}")
 	public String getListByCategoryType(@PathVariable int categoryType, @PathVariable int pageNo, HttpSession session, Model model) {
-		
+		Member member = (Member) session.getAttribute("member");
 		model.addAttribute("categoryType", categoryType);
-		List<Board> boardList = boardService.selectArticleListByCatoryType(categoryType, pageNo);
-		model.addAttribute("boardList", boardList);
 		
 		//paging start
 		int totalRows = boardService.selectTotalArticleCount(categoryType);
-		 pager.init(10, 5, totalRows, pageNo);
+		pager.init(10, 5, totalRows, pageNo);
 		model.addAttribute("pager", pager);
 		
-		if(categoryType == 1) {
-			return "board/library/list";
+		List<Board> tempBoardList = boardService.selectArticleListByCategoryType(categoryType, pager);
+		List<Board> boardList = new ArrayList<Board>();
+		if(member.getMemberType().equals("admin")) {
+			boardList = tempBoardList;
+			model.addAttribute("boardList", boardList);
+		
+			
+			if(categoryType == 1) {
+				return "board/library/admin/list";
+			} else {
+				return "board/report/admin/list";
+			}
+			
 		} else {
-			return "board/report/list";
+			for(Board board : tempBoardList) {
+				Board myBoard = boardService.selectScoreNContent(member.getMemberId(), board.getBoardId());
+				if(myBoard != null) {
+					board.setIsSubmit("제출");
+					board.setSubmissionScore(myBoard.getSubmissionScore());
+				} else {
+					board.setIsSubmit("미제출");
+				}
+				boardList.add(board);		
+			}	
+			
+			model.addAttribute("boardList", boardList);
+			
+			if(categoryType == 1) {
+				return "board/library/list";
+			} else {
+				return "board/report/list";
+			}
 		}
+	
 	}
 	
 	@RequestMapping("/board/cat/{categoryType}")
@@ -69,7 +96,7 @@ public class BoardController {
 	
 	//글 상세 보기
 	@RequestMapping("/board/{boardId}/{pageNo}")
-	public String getBoardDetails(@PathVariable int pageNo,@PathVariable int boardId,HttpSession session, Model model) {
+	public String getBoardDetails(@PathVariable int pageNo, @PathVariable int boardId, HttpSession session, Model model) {
 		Board board = boardService.selectArticle(boardId);
 		model.addAttribute("board", board);
 		model.addAttribute("pageNo", pageNo);
@@ -96,6 +123,11 @@ public class BoardController {
 				//학생
 				//관리자가 쓴 board 객체 , 학생이 쓴 board객체 두개 전달
 				Board reportBoard = boardService.selectReport(boardId, memberId);
+				Boolean isUpdate = (Boolean) session.getAttribute("update");
+				if(isUpdate != null && isUpdate == true) {
+					reportBoard.setSubmissionSubmitDate(null);
+					session.removeAttribute("update");
+				}
 				model.addAttribute("reportBoard", reportBoard);
 				
 				return "board/report/studentdetail";
@@ -174,7 +206,7 @@ public class BoardController {
 			return "redirect:/board/cat/" + board.getBoardCategory(); 		
 	}
 	
-	//학생의 과제 제출 
+	//학생의 과제 제출 및 업데이트
 	@RequestMapping(value="/board/report/submit", method=RequestMethod.POST)
 	public String submitReport(Board board,@RequestParam int pageNo ,@RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs ) {
 		
@@ -211,6 +243,13 @@ public class BoardController {
 		return "redirect:/board/"+ board.getReportNoticeId() + "/" + pageNo;
 	}
 	
+	//과제 업데이트 화면
+	@RequestMapping(value="/board/report/updatereport")
+	public String updateSubmittedReport(int pageNo, int reportNoticeId, HttpSession session) {
+		session.setAttribute("update", new Boolean(true));
+		return "redirect:/board/" + reportNoticeId + "/" + pageNo;
+	}
+	
 	//자료실 글 수정하기
 	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.GET)
 	public String updateLibary(@PathVariable int boardId, @RequestParam int pageNo, Model model) {
@@ -225,6 +264,13 @@ public class BoardController {
 		} else {
 			return "board/report/update";
 		}
+	}
+	
+	//과제 평가
+	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.POST)
+	public String evaluateSubmittedReport(int reportNoticeId, @PathVariable int boardId, int submissionScore, int pageNo, Model model) {
+		boardService.evaluateSubmittedReport(boardId, submissionScore);
+		return "redirect:/board/" + reportNoticeId + "/" + pageNo;
 	}
 	
 	@RequestMapping(value="/board/library/update", method=RequestMethod.POST)
