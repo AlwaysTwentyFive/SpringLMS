@@ -54,7 +54,7 @@ input[type=text], textarea[type=reportReply]{
 	 function insertReply(){
 		console.log("insertReply() 실행");
 		
-		var commentContent = $("textarea[name=commentContent]").val();
+		var commentContent = $("#commentContent").val();
 		var boardId = $("input[name=boardId]").val();
 		var memberId =  $("input[name=memberId]").val();
 		
@@ -269,7 +269,7 @@ input[type=text], textarea[type=reportReply]{
 	<div id="replyWrite" class="mb-5">
 		<div class="d-flex">
 			<div class="col-2">ReplyWriter</div>
-			<textarea name="commentContent" rows="3" cols="150" ></textarea>
+			<textarea id="commentContent" rows="3" cols="150" ></textarea>
 		</div>
 		<div class="d-flex justify-content-end">
 			<input type="hidden" name="boardId" value="${board.boardId}">
