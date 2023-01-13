@@ -49,6 +49,7 @@ public class AppConfig {
 		String attendanceDate = ServerTimeSupplier.getToday().toString();
 		int result = attendanceRepository.updateTodayAttendance(attendanceDate);
 		ServerTimeSupplier.plusToday();
+		System.out.println(System.currentTimeMillis());
 		System.out.println("[Auto update Attendance]: " + result);
 	}
 }
