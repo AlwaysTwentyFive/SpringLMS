@@ -152,23 +152,23 @@ body {
 		    	$('#errorModal').modal('show');
 		    } )
 		</script>
-		<div>
-		<div id="errorModal" class="modal">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content bg-white">
-					<div class="modal-header">
-						<h3 class="modal-title">로그인에 실패하셨습니다</h3>
-					</div>
-					<div class="modal-body">
-						<h1>${message}</h1>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+			<div>
+			<div id="errorModal" class="modal">
+				<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content bg-white">
+							<div class="modal-header">
+								<h3 class="modal-title">로그인에 실패하셨습니다</h3>
+							</div>
+							<div class="modal-body">
+								<h1>${message}</h1>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		</div>
 		</c:if>
 		
 	</div>

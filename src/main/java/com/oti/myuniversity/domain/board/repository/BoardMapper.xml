@@ -51,30 +51,30 @@
 </select>
 
 <insert id="insertLibrary" parameterType="com.oti.myuniversity.domain.board.model.Board">
-	<![CDATA[
+	
 		insert into boards
 				(BOARDID,
 				BOARDTITLE,
 				BOARDCONTENT,
 				BOARDDATE,
 				BOARDCATEGORY,
-				MEMBERID)
+				MEMBERID
+			<if test="reportNoticeId != null">
+				, REPORTNOTICEID
+			</if>
+				)
 		VALUES (
 				SEQ_BOARDID.NEXTVAL,
 				#{boardTitle},
 				#{boardContent},
 				sysdate, 
 				#{boardCategory}, 
-				#{memberId})
-	]]>
-	
+				#{memberId}
+				<if test="reportNoticeId != null">
+					, #{reportNoticeId}
+				</if>
+				)
 </insert>
-
-<select id="getMaxBoardId" resultType="int">
-	<![CDATA[
-		select nvl(max(boards.boardid),0) as boardid FROM boards
-	]]>
-</select>
 
 <select id="selectReport" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="map">
 	select
@@ -171,7 +171,37 @@
    	select COUNT(*) from boards where memberId=#{memberId} and REPORTNOTICEID=#{reportNoticeId}
 </select>
 
+<update id="updateLibrary" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		update boards
+		set 
+			BOARDTITLE =#{boardTitle},
+			BOARDCONTENT =#{boardContent},
+			BOARDDATE = sysdate,
+			BOARDCATEGORY = #{boardCategory},
+			MEMBERID =#{memberId}
+		WHERE boardid=#{boardId}
+	]]>
+</update>
+<update id="updateReportNotice" parameterType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		update boards
+		set
+			BOARDTITLE =#{boardTitle},
+			BOARDCONTENT =#{boardContent},
+			BOARDDATE = sysdate,
+			BOARDCATEGORY = #{boardCategory},
+			MEMBERID =#{memberId},
+			REPORTDEADLINE =#{reportDeadline},
+			REPORTDEADLINETIME=#{reportDeadlineTime}
+		WHERE boardid=#{boardId}
+	]]>
+</update>
 
-
+<delete id="deleteArticleByBoardId" parameterType="int">
+	<![CDATA[
+		DELETE from boards where boardid = #{boardId}
+	]]>
+</delete>
 
 </mapper>

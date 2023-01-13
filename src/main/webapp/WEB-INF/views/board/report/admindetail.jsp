@@ -26,8 +26,30 @@
 	   background-color: #34495e;
 	   color: white;
 	   display: inline-block;
+	}
+	.submitFile{
+		width: 300px;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}	
 </style>
+
+<script>
+	function confirmDelete(){
+		var studentsBoard = $(this).next().val();
+		if(studentsBoard === null){
+			var confirmflag = confirm("삭제 하시겠습니까?");
+			if(confirmflag){
+				form.action = "<c:url value='/board/delete'/>";
+			}else{
+				console.log("취소. 변화 없음");
+			}
+		} else{
+			alert("등록된 과제글이 존재합니다.");
+		}
+	}
+
+</script>
 
 <!-- content -->
 <div class="d-flex flex-column justify-content-center">
@@ -59,6 +81,21 @@
 						</c:if>
 					</td>
 				</tr>
+				<tr>
+					<form name="form">
+						<c:if test="${board.memberId eq member.memberId}">
+							<div class="d-flex justify-content-end">
+								<input type="hidden" name="boardCategory" value="${board.boardCategory}">
+								<input type="hidden" name="boardId" value="${board.boardId}">
+								<input type="hidden" name="memberId" value="${board.memberId}">
+								<input type="hidden" name="pageNo" value="${pageNo}">
+								<button name="update" class="btn btn-sm btn-primary mx-2" formaction='<c:url value="/board/update/${board.boardId}"/>'>수정</button>
+								<button name="delete" class="btn btn-sm btn-danger" onclick="confirmDelete()">삭제</button>
+								<input type="hidden" name="studentsBoard" value="${studentsBoard}">
+							</div>
+						</c:if>
+					</form>
+				</tr>
 				<tr id="reportBoardList">
 					<tr class="reportBoard mt-3">
 					<form action="#">
@@ -84,16 +121,16 @@
 									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
-											<td>
+											<td class="submitFile">
 												<c:if test="${!empty student.fileList}">
 													<c:forEach var="file" items="${student.fileList}">
 															<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 													</c:forEach>
 												</c:if>
 											</td>
-											<td>${student.submissionSubmitDate} ${student.reportDeadlineTime}</td>
+											<td>${student.submissionSubmitDate}</td>
 											<td><input type="text"></td>
-											<td><button type="submit" class="btn btn-sm btn-warning mt-2">과제 평가 완료하기</button></td>
+											<td><button type="submit" class="btn btn-sm btn-warning mt-2">입력</button></td>
 										</tr>
 									</c:forEach>
 								</c:if>
@@ -132,7 +169,7 @@
 									<c:forEach var="student" items="${studentsBoard}">
 										<tr>
 											<td>${student.memberName}</td>
-											<td>
+											<td class="submitFile">
 												<c:if test="${!empty student.fileList}">
 													<c:forEach var="file" items="${student.fileList}">
 															<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>

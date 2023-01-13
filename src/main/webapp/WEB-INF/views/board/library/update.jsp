@@ -3,7 +3,6 @@
 <link rel="stylesheet" type="text/css" href="<c:url value='css/style.css'/>">
 
 <style>
-
 input[type=text], select, textarea {
   width: 100%;
   padding: 12px;
@@ -40,7 +39,6 @@ input[type=text], select, textarea {
   padding: 20px;
 }
 </style>
-
 <script>
 	$(document).ready(function() {
 	    $(".file-delete").on("click", function(e) {
@@ -64,15 +62,16 @@ input[type=text], select, textarea {
 
 
 <div class="container" id="writeContainer">
-	<h5>자료실 작성하기</h5>
+	<h5>자료실 수정하기</h5>
 	<div class="container">
 		<div class="card-body shadow bg-white rounded">
-	    	<form action="<c:url value='/board/libary/write'/>"  method="POST" enctype="multipart/form-data">
+	    	<form action="<c:url value='/board/library/update'/>"  method="POST" enctype="multipart/form-data">
+				<input type="hidden" name="boardCategory" value="${categoryType}">
 		        <label for="boardTitle">제목</label>
-		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
+		        <input type="text" name="boardTitle"  value="${board.boardTitle}"  placeholder="title" required>
 		
 		        <label for="boardContent">내용</label>
-		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px"></textarea>
+		        <textarea id="writeContent" name="boardContent" style="height:200px">${board.boardContent}</textarea>
 				<!-- 파일 태그 -->
 				<div class="form-group" id="file-list">
 			        <a href="#this" onclick="addFile()">파일추가</a>
@@ -80,17 +79,29 @@ input[type=text], select, textarea {
 			            <input type="file" name="files"><a href='#this' class='file-delete'>삭제</a>
 			        </div>
 			    </div>				
-				
 				<!-- 파일 태그 -->
 				<br>
 				<input type="hidden" name ="memberId" value="${member.memberId}">
-				<input type="hidden" name="boardCategory" value="${categoryType}">
+				<input type="hidden" name ="boardId" value="${board.boardId}">
+				<input type="hidden" name ="memberName" value="${member.memberName}">
+				<input type="hidden" name="pageNo" value="${pageNo}">
+				
 				<div class="d-flex justify-content-center">
 			        <input class="ml-3 btn btn-md " id="cancle" type="reset" value="취소">
-			        <input class="ml-3 btn btn-md " id="register" type="submit" value="등록">
+			        <input class="ml-3 btn btn-md " id="register" type="submit" value="수정">
 				</div>
 	    	</form>
 	    </div>
 	</div>
 </div>
+
+
+
+
+
+
+
+
+
+
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>
