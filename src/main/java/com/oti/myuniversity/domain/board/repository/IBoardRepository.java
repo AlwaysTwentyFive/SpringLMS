@@ -4,18 +4,21 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.board.model.Board;
 
 public interface IBoardRepository {
 
-	public List<Board> selectArticleListByCatoryType(@Param("categoryType") int categoryType, @Param("start") int start,
-			@Param("end") int end, @Param("pageNo") int pageNo);
+	public List<Board> selectArticleListByCategoryType(@Param("categoryType") int categoryType, @Param("pager") Pager pager);
 	
 	//글 목록 출력하기
 	public int selectTotalArticleCountByCategoryType(int categoryType);
 	
 	//글 상세 보기
 	public Board selectArticle(int boardId);
+	
+	//점수와 내용 가져오기 (과제 제출 여부)
+	public Board selectScoreNContent(@Param("memberId")String memberId, @Param("boardId")int boardId);
 	
 	//자료실 관리자 글 추가하기
 	public void insertLibrary(Board board);

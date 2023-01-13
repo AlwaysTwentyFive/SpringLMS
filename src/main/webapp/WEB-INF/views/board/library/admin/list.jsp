@@ -1,16 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:include page="/WEB-INF/views/include/header.jsp"/>
-<link rel="stylesheet" type="text/css" href="<c:url value='css/style.css'/>">
-  	<!-- content -->
-  	<form action="<c:url value='/board/library/write/1'/>" method="GET">
+<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<!-- content -->
+  	<form action="<>">
 	<div class="d-flex mb-3">
 		<div class="col-7">
-			<h1>강의자료실</h1>
+			<h1>과제</h1>
 		</div>
 		<c:if test="${member.memberId == 'admin'}">
 			<div class="d-flex align-items-end justify-content-end col-5">
-				<button type="submit" formaction="<c:url value='/board/1/write'/>" class="btn btn-sm btn-warning">자료 등록</button>
+				<button formaction="<c:url value='/board/2/write'/>" name="writeReport" value="writeReport" class="btn btn-sm btn-warning">과제 등록</button>
 			</div>
 		</c:if>
 	</div>
@@ -20,25 +21,45 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th class="col-6">제목</th>
-					<th class="col-3">날짜</th>
-					<th class="col-3">글쓴이</th>
+					<th class="col-5">과제</th>
+					<th class="col-3">제출기한</th>
+					<th class="col-2">제출</th>
+					<th class="col-2">점수</th>
 				</tr>
 			</thead>
 		</table>
-		<table class="table table-hover">
+		<table class="table table-bordered table-hover">
 			<tbody>
 				<c:forEach var="board" items="${boardList}">
 					<tr>
-						<td class="col-6">
+						<td class="col-5">
 							<a href="<c:url value='/board/${board.boardId}/${pager.pageNo}'/>">
 								${board.boardTitle}
 							</a>
 						</td>
-						<td class="col-3">${board.boardDate}</td>
-						<td class="col-3">${board.memberId}</td>
+						<c:if test="${!empty board.reportDeadline} ">
+							<td class="col-3">${board.reportDeadline}${board.reportDeadLineTime} 23:59:59</td>
+						</c:if>
+						<c:if test="${empty board.reportDeadline}">
+							<td class="col-3"> - </td>
+						</c:if>
+						<c:if test="${!empty board.submissionSubmitDate}">
+							<td class="col-2">${board.submissionSubmitDate}</td>
+						</c:if>
+						
+							<td class="col-2">${board.isSubmit}</td>
+						
+						<c:if test="${board.submissionScore != 0}">
+							<td class="col-2">${board.submissionScore}점</td>
+						</c:if>
+						<c:if test="${empty board.submissionSubmitDate && board.submissionScore==0}">
+							<td class="col-2">미확정</td>
+						</c:if>
+						<c:if test="${!empty board.submissionSubmitDate && board.submissionScore==0}">
+							<td class="col-2">0점</td>
+						</c:if>
 					</tr>
-				</c:forEach>
+				</c:forEach>	
 			</tbody>
 		</table>
 	</div>
@@ -68,6 +89,4 @@
 		</div>
 		<div class="flex-fulfill"></div>
 	</div>
-	
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
-	

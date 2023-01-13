@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.oti.myuniversity.component.MultipartFileResolver;
+import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.domain.attendance.model.Attendance;
 import com.oti.myuniversity.domain.attendance.model.AttendanceException;
 import com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile;
@@ -32,10 +33,9 @@ public class BoardService implements IBoardService {
 	
 	//게시판 리스트 가져오기
 	@Override
-	public List<Board> selectArticleListByCatoryType(int categoryType, int pageNo) {
-		int start = (pageNo-1) *10 +1;
+	public List<Board> selectArticleListByCategoryType(int categoryType, Pager pager) {
 		
-		return boardRepository.selectArticleListByCatoryType(categoryType, start, start+10, pageNo);
+		return boardRepository.selectArticleListByCategoryType(categoryType, pager);
 	}
 	
 	//게시물의 총 개수 알기
@@ -242,6 +242,12 @@ public class BoardService implements IBoardService {
 		Board reply = boardRepository.selectArticle(boardId);
 		return reply;
 		
+	}
+
+	@Override
+	public Board selectScoreNContent(String memberId, int boardId) {
+		Board board = boardRepository.selectScoreNContent(memberId, boardId);
+		return board;
 	}
 
 

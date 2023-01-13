@@ -18,6 +18,7 @@ public class Board {
 	private String memberId;
 	private Timestamp reportDeadlineTime;
 	private int reportNoticeId;
+	private String isSubmit;
 	
 	private String memberName;
 	
@@ -34,6 +35,13 @@ public class Board {
 	}
 	public void setBoardTitle(String boardTitle) {
 		this.boardTitle = boardTitle;
+	}
+	
+	public String getIsSubmit() {
+		return isSubmit;
+	}
+	public void setIsSubmit(String isSubmit) {
+		this.isSubmit = isSubmit;
 	}
 	public String getBoardContent() {
 		return boardContent;

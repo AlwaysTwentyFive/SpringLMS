@@ -44,7 +44,7 @@
 						</div>
 					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
-						<img class="mt-3" src="<c:url value="/images/logo.png"/>" width="125" height="105"/>
+						<a href="<c:url value="/home"/>"><img class="mt-3" src="<c:url value="/images/logo.png"/>" width="125" height="105"/></a>
 					</div>
 					<hr color = "#34495e" size = "3"/>
 				</header>

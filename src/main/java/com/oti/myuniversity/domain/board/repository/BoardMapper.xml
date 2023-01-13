@@ -2,19 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.oti.myuniversity.domain.board.repository.IBoardRepository">
 
-<select id="selectArticleListByCatoryType" parameterType="map" resultType="com.oti.myuniversity.domain.board.model.Board">
+<select id="selectArticleListByCategoryType" resultType="com.oti.myuniversity.domain.board.model.Board">
 	<![CDATA[
 		SELECT
 			BOARDID,
 			BOARDTITLE,
 			BOARDCONTENT,
 			BOARDDATE,
-			MEMBERID
+			MEMBERID,
+			REPORTDEADLINE
+		
 		FROM BOARDS
 		WHERE boards.boardcategory = #{categoryType} and reportnoticeid is null
 		ORDER BY BOARDDATE DESC
-		OFFSET (#{end} - #{start})*(#{pageNo}-1) ROWS
-		FETCH NEXT 10 ROWS ONLY
+		OFFSET (#{pager.pageNo} - 1) * #{pager.rowsPerPage} ROWS
+		FETCH NEXT #{pager.rowsPerPage} ROWS ONLY
 	]]>
 </select>
 
@@ -22,9 +24,20 @@
 	<![CDATA[
 		SELECT COUNT(BOARDID) AS "count"
 		FROM BOARDS
-		WHERE BOARDCATEGORY = #{categoryType}
+		WHERE BOARDCATEGORY = #{categoryType} and reportnoticeid is null
 	]]>
 </select>
+
+<select id="selectScoreNContent" resultType="com.oti.myuniversity.domain.board.model.Board">
+	<![CDATA[
+		SELECT SUBMISSIONSCORE, MEMBERID 
+		FROM BOARDS
+		WHERE MEMBERID = #{memberId} and REPORTNOTICEID = #{boardId}
+
+	]]>
+	
+
+</select> 
 
 <select id="selectArticle" resultType="com.oti.myuniversity.domain.board.model.Board" parameterType="int">
 	<![CDATA[
