@@ -69,8 +69,18 @@ input[type=text], textarea[type=reportReply]{
 				boardCategory: boardCategory
 			},
 			contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			error : function() {
+		            alert('통신실패!');
+		         },
+
 			success:function(result){
-				$("#replyList").append(result);
+				if(result ==1)	{
+					$("#replyList").append(result);
+					location.reload();
+				} else if(result == 0){
+					alert("댓글 작성에 실패하였습니다");
+
+				}
 			}
 			
 		});   
