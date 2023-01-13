@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <jsp:include page="/WEB-INF/views/include/header.jsp" />
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+
 <style>
 .w-btn-yellow-outline {
 	border: 3px solid #e0e0e0;
@@ -18,8 +18,14 @@
 	font-weight: 600;
 	transition: 0.25s;
 }
+
 </style>
 <script>
+	
+function dismiss() {
+
+	$("#exampleModal").modal("hide");
+}
 
 function updateStatus(buttonId, attendanceId,date,id){
 	let status = $("select[name=admin_select]").val();
@@ -149,11 +155,16 @@ function viewReason(i){
 		});
 }
 
-function modalData(buttonId, attendanceId, attendanceStatus, memberType, attendanceDate, memberId) {
+function modalData(buttonId, attendanceId, memberType, attendanceDate, memberId) {
 	console.log(attendanceDate);
 	let date = "'"+attendanceDate + "'";
 	let id = "'" + memberId + "'";
-	console.log(attendanceStatus);
+	let button = "#" + buttonId;
+
+	console.log( $(button).text());
+	let attendanceStatus = $(button).text();
+	
+	console.log("바뀐 status"+attendanceStatus);
 	
 	if(memberType == "admin"){
 		console.log(memberType);
@@ -171,21 +182,26 @@ function modalData(buttonId, attendanceId, attendanceStatus, memberType, attenda
 		$("#adminSelect").html(adminSelect);
 	
 	}
+
 	
-	
-	if(attendanceStatus == "결근"){
+	if(attendanceStatus == "결근" ){
 		$("#arriveTime").empty();
 		$("#departTime").empty();
 		$("#attendStatus").empty();
-		$("#attendStatus").text(attendanceStatus);
+		$("#attendStatus").text("결근");
 		$("#ExceptionFiles").empty();
 		$("#exampleModal").modal("show");
+		
 	} else {
 		
 		$.ajax({
 			url : "/myuniversity/attendance/view/"+ attendanceId,
 			contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			type : "get",
+			type : "post",
+			data : {
+				
+				attendanceStatus : attendanceStatus
+			},
 			
 			success : function(attendance) {		
 				
@@ -194,19 +210,23 @@ function modalData(buttonId, attendanceId, attendanceStatus, memberType, attenda
 				$("#attendStatus").empty();
 				$("#ExceptionFiles").empty();
 				
+				console.log('controller에 다녀온 attendance: '+attendance.attendanceStatus);
 				
 				
-				if(attendanceStatus != "출근") {
+				if(attendance.attendanceStatus != "출근" && attendance.attendanceStatus != "결근" && attendance.attendanceStatus != "") {
 					var str = "/myuniversity/attendance/readException/" + attendance.attendanceId;
-// 					console.log(str);
 					let param1 = '<button type="button" onclick="viewReason('+ attendance.attendanceId +')" class="btn btn-info">사유서 바로가기</button>';
-// 					console.log(param1);
 					$("#ExceptionFiles").html(param1);	
+					$("#attendStatus").text(attendance.attendanceStatus);
+				} else if(attendance.attendanceStatus == "출근") {
+					$("#attendStatus").text(attendance.attendanceStatus);
+				} else {
+					$("#attendStatus").text("결근");
 				}
 		
 				$("#arriveTime").text(attendance.attendanceArriveTime);
 				$("#departTime").text(attendance.attendanceDepartTime);
-				$("#attendStatus").text(attendance.attendanceStatus);
+				
 				
 				$("#exampleModal").modal("show");
 
@@ -264,7 +284,8 @@ function modalData(buttonId, attendanceId, attendanceStatus, memberType, attenda
 									btn-warning
 								</c:if>
 								"
-								onclick = "modalData(${(status.count-1)*5 + i.count}, ${attendance.attendanceId}, '${attendance.attendanceStatus}','${sessionScope.member.memberType}', '${attendance.attendanceDate}', '${member.memberId}')" >${attendance.attendanceStatus}
+								onclick = "modalData(${(status.count-1)*5 + i.count}, ${attendance.attendanceId},'${sessionScope.member.memberType}', '${attendance.attendanceDate}', '${member.memberId}')" >
+								${attendance.attendanceStatus}
 							</button>
 						
 						</td>
@@ -314,7 +335,7 @@ function modalData(buttonId, attendanceId, attendanceStatus, memberType, attenda
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">닫기</button>
+						onclick="dismiss()">닫기</button>
 					<div id="adminBttn">				
 					</div>
 				</div>

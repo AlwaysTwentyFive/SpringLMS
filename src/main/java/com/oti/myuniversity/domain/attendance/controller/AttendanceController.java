@@ -102,18 +102,40 @@ public class AttendanceController {
 		return "attendance/totalList";
 	}
 
-	@RequestMapping(value = "/attendance/view/{attendanceId}", method = RequestMethod.GET)
-	public @ResponseBody Attendance dataToJson(@PathVariable int attendanceId, Date sqlDate, HttpSession session) {
+	@RequestMapping(value = "/attendance/view/{attendanceId}", method = RequestMethod.POST)
+	public @ResponseBody Attendance dataToJson(@PathVariable int attendanceId, @RequestParam("attendanceStatus") String status ,Date sqlDate, HttpSession session) {
 		Member member = (Member) session.getAttribute("member");
+		System.out.println(attendanceId);
 		Attendance attendance = attendanceService.selectAttendanceById(attendanceId);
+		
+		if(attendance != null) {
+			attendance = attendanceService.selectAttendanceById(attendanceId);
+		} else {
+			attendance = new Attendance();
+			if(status.equals("출근")) {
+				attendance.setAttendanceStatus("출근");			
+			} else if (status.equals("조퇴")) {
+				attendance.setAttendanceStatus("조퇴");	
+			} else if (status.equals("외출")) {
+				attendance.setAttendanceStatus("외출");	
+			} else if (status.equals("병가")) {
+				attendance.setAttendanceStatus("병가");	
+			} else if (status.equals("공가")) {
+				attendance.setAttendanceStatus("공가");	
+			} else {
+				attendance.setAttendanceStatus("결근");	
+			}
+		}
+		
 		attendance.setMemberType(member.getMemberType());
+		
+		
 		return attendance;
 	}
 
 	@RequestMapping(value = "/attendance/checkException/{attendanceId}", method = RequestMethod.GET)
 	public @ResponseBody String getExceptionByAttId(@PathVariable int attendanceId) {
-		System.out.println("checkException 컨트롤러 들어옴");
-		System.out.println(attendanceId);
+
 		AttendanceException attendanceException = attendanceExceptionService
 				.getAttendanceExceptionByAttendanceId(attendanceId);
 		System.out.println(attendanceException);
@@ -127,8 +149,6 @@ public class AttendanceController {
 
 	@RequestMapping(value = "/attendance/readException/{attendanceId}", method = RequestMethod.GET)
 	public String getExceptionByAttId(@PathVariable int attendanceId, Model model) {
-		System.out.println("readException 컨트롤러 들어옴");
-		System.out.println(attendanceId);
 
 		AttendanceException attendanceException = attendanceExceptionService
 				.getAttendanceExceptionByAttendanceId(attendanceId);
