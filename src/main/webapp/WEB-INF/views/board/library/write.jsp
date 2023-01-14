@@ -69,10 +69,10 @@ input[type=text], select, textarea {
 		<div class="card-body shadow bg-white rounded">
 	    	<form action="<c:url value='/board/libary/write'/>"  method="POST" enctype="multipart/form-data">
 		        <label for="boardTitle">제목</label>
-		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
+		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title" required>
 		
 		        <label for="boardContent">내용</label>
-		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px"></textarea>
+		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px" required></textarea>
 				<!-- 파일 태그 -->
 				<div class="form-group" id="file-list">
 			        <a href="#this" onclick="addFile()">파일추가</a>

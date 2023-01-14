@@ -86,6 +86,7 @@
 						<!-- For Student -->
 					<c:if test="${reportBoard.memberId eq member.memberId}">
 						<c:if test="${!empty reportBoard.submissionSubmitDate}">
+							<input type="hidden" name="boardId" value="${reportBoard.boardId}">
 							<tr>
 								<td class="col-6">제출한 날짜</td>
 								<td class="col-6">${reportBoard.submissionSubmitDate}</td>
@@ -155,17 +156,18 @@
 						</c:if>
 				</tbody>
 			</table>
+			</div>
 			<input type="hidden" name="boardCategory" value="${board.boardCategory}">
 			<input type="hidden" name="reportNoticeId" value="${board.boardId}">
 			<input type="hidden" name="pageNo" value="${pageNo}">
 			<input type="hidden" name="memberId" value="${member.memberId}">
-			<input type="hidden" name="boardId" value="${reportBoard.boardId}">
+	
 			<div class="d-flex justify-content-end">
 				<c:if test="${empty reportBoard.submissionSubmitDate}">
-					<button name="insert" value="insert" class="btn btn-sm btn-warning mx-2" onclick="javascript: form.action='<c:url value="/board/report/submit"/>'">과제 등록</button>
+					<button name="insert" value="insert" class="btn btn-sm btn-warning mx-2" formaction='<c:url value="/board/report/submit"/>'>과제 등록</button>
 				</c:if>
 				<c:if test="${!empty reportBoard.submissionSubmitDate}">
-					<button name="update" value="update" class="btn btn-sm btn-primary mx-2" onclick="javascript: form.action='<c:url value="/board/report/updatereport"/>'">과제 수정</button>
+					<button name="update" value="update" class="btn btn-sm btn-primary mx-2" formaction='<c:url value="/board/report/updatereport"/>'>과제 수정</button>
 					<button name="delete" value="delete" class="btn btn-sm btn-danger" onclick="confirmDelete()">과제 삭제</button>
 				</c:if>
 			</div>

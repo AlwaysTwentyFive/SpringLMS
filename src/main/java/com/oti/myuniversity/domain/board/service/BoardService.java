@@ -62,13 +62,17 @@ public class BoardService implements IBoardService {
 	@Override
 	public void insertLibrary(Board board) {
 		boardRepository.insertLibrary(board);
+		System.out.println("board.getReportNoticeId():"+board.getReportNoticeId());
+
 	}
 	
 	@Override
 	@Transactional
 	public void insertLibrary(Board board,MultipartFile[] files ) {
+		System.out.println(board.getReportNoticeId());
 
 		boardRepository.insertLibrary(board);
+		
 		int boardId = boardRepository.selectMaxBoardId();
 		List<BoardFile> fileList;
 		try {
@@ -152,16 +156,24 @@ public class BoardService implements IBoardService {
 	
 	@Transactional
 	@Override
-	public void insertReport(Board board, ArrayList<BoardFile> fileList) {
+	public void insertReport(Board board, MultipartFile[] files) {
 		boardRepository.insertReport(board);
-		if(fileList.size() != 0) {
-			for(int i = 0; i<fileList.size(); i++) {
-				if(fileList.get(i).getBoardFileName() != null 
-						&& !fileList.get(i).getBoardFileName().equals("")) {
-					fileList.get(i).setBoardId(board.getBoardId());
-					boardFileRepository.insertFileData(fileList.get(i));
+		int boardId = boardRepository.selectMaxBoardId();
+		List<BoardFile> fileList = null;
+		
+		try {
+			fileList = multipartFileResolver.getBoardFileList(files, boardId);
+		
+			if(fileList.size() != 0) {
+				for(int i = 0; i<fileList.size(); i++) {
+					if(fileList.get(i).getBoardFileName() != null 
+							&& !fileList.get(i).getBoardFileName().equals("")) {
+						boardFileRepository.insertFileData(fileList.get(i));
+					}
 				}
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -253,6 +265,7 @@ public class BoardService implements IBoardService {
 	@Transactional
 	public List<Comment> deleteComment(Comment comment) {
 		commentRepository.deleteComment(comment.getCommentId());
+		System.out.println(comment.getBoardId());
 		return commentRepository.selectCommentList(comment.getBoardId());
 	}
 

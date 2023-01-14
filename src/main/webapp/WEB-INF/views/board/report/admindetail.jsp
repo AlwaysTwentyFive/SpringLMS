@@ -37,7 +37,7 @@
 <script>
 	function confirmDelete(){
 		var studentsBoard = $(this).next().val();
-		if(studentsBoard === null){
+		if(studentsBoard == null){
 			var confirmflag = confirm("삭제 하시겠습니까?");
 			if(confirmflag){
 				form.action = "<c:url value='/board/delete'/>";
