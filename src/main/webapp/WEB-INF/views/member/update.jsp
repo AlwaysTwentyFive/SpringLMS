@@ -9,7 +9,7 @@
 		<div class="row no-gutters">
 			<div class="profile col-md-4">
 				<div style="width: 150px" class=" mx-auto mt-4 mb-5">
-					<img src="images/profile.png" class="card-img" width="100%">
+					<img src="<c:url value="/images/profile.png"/>" class="card-img" width="100%">
 				</div>
 			</div>
 			<div class="col-md-8">
