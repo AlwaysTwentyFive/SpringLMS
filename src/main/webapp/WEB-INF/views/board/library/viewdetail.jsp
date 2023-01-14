@@ -58,6 +58,10 @@ input[type=text], textarea[type=reportReply]{
 		var boardId = $("input[name=boardId]").val();
 		var memberId =  $("input[name=memberId]").val();
 		
+		if(commentContent == ""){
+			alert("내용을 입력해주세요.");
+			return
+		} 
 		  $.ajax({
 			url:"/myuniversity/board/reply",
 			type:"POST",
@@ -89,12 +93,7 @@ input[type=text], textarea[type=reportReply]{
 		let updateAreaId = "#" + updateArea;
 		console.log($(contentId).text());
 		
-		/* let textarea = '<textarea id="updateArea" name="commentContent" rows="3" cols="150" style="width:550px;"></textarea>'; */
-		
-	/*+'<div class="col-8 rContent" id="${status.count}">${acomment.commentContent}</div>';
-	 	$(contentId).empty();
-		$(contentId).html(textarea);
-		$("#updateArea").next().hide(); */
+	
 		$(updateAreaId).css('display','block');
 		$(contentId).hide();
 		
@@ -104,7 +103,7 @@ input[type=text], textarea[type=reportReply]{
 		$(canclebtnId).show();
 	
 	}
-	
+	// 수정 -> 확인 버튼 클릭시 데이터 전송
 	function updateReply(updatebtn, deletebtn, confirmbtn, canclebtn, commentIdValue, updateArea){
 		console.log("updateReply() 실행");
 		let updatebtnId = "#" + updatebtn;
@@ -116,8 +115,11 @@ input[type=text], textarea[type=reportReply]{
 		
 		let boardId = ${board.boardId};
 		let commentContent = $(updateAreaId).val();
-		console.log(commentContent);
 		
+		if(commentContent == ""){
+			alert("내용을 입력해주세요.");
+			return
+		} 
 		
 		$.ajax({
 			url:"/myuniversity/reply/update",
@@ -165,19 +167,18 @@ input[type=text], textarea[type=reportReply]{
 		
 		let content =$(contentId).text();
 		console.log(content);
-		/* $(contentId).child().next().text(content); */
 	}
 	
 	
 	//댓글 삭제
-	function deleteReply(){
+	function deleteReply(commentId, memberId, boardId){
 		console.log("deleteReply() 실행");
+		console.log(boardId);
+		
+		
 		var confirmflag = confirm("삭제 하시겠습니까?");
 		if(confirmflag){
-			var memberId = $("input[name=memberIdR]").val();
-			var commentId = $("input[name=commentIdR]").val();
-			var boardId = $("input[name=boardIdR]").val();
-			console.log(commentId, boardId);
+			
 			$.ajax({
 				url:"/myuniversity/reply/delete",
 				type:"GET",
@@ -244,7 +245,7 @@ input[type=text], textarea[type=reportReply]{
 				<div class="col-2">${acomment.memberName}</div>
 				<div class="col-8">
 					<div class="rContent" id="${status.count}">${acomment.commentContent}</div>
-					<textarea id="updateArea${status.count}" name="commentContent" rows="3" cols="150" style="width:450px; display:none;" required></textarea>
+					<textarea id="updateArea${status.count}" name="commentContent" rows="3" cols="150" style="width:450px; display:none;"></textarea>
 				</div>
 				<div class="col-2">
 					<c:if test="${acomment.memberId eq sessionScope.member.memberId}">
@@ -252,16 +253,13 @@ input[type=text], textarea[type=reportReply]{
 							<a name="update" id="update${status.count}" onclick="tryUpdateReply(${status.count}, 'update${status.count}', 'delete${status.count}', 'confirm${status.count}', 'cancle${status.count}', 'updateArea${status.count}');">수정</a>
 				 			<a name="confirm" id="confirm${status.count}" onclick="updateReply('update${status.count}', 'delete${status.count}', 'confirm${status.count}', 'cancle${status.count}', ${acomment.commentId}, 'updateArea${status.count}');" style="display: none;">확인</a> 
 							<span>|</span>
-							<a name="delete" id="delete${status.count}" onclick="deleteReply();">삭제</a>
+							<a name="delete" id="delete${status.count}" onclick="deleteReply(${acomment.commentId}, '${acomment.memberId}', ${acomment.boardId});">삭제</a>
 				 			<a name="cancle" id="cancle${status.count}" onclick="cancleUpdateReply(${status.count}, 'update${status.count}', 'delete${status.count}', 'confirm${status.count}', 'cancle${status.count}', 'updateArea${status.count}');" style="display: none;">취소</a> 
 						</div>
 					</c:if>
 				</div>
 			</div>
 			<hr/>
-		<input type="hidden" name="memberIdR" value="${sessionScope.member.memberId}">
-		<input type="hidden" name="commentIdR" value="${acomment.commentId}">
-		<input type="hidden" name="boardIdR" value="${acomment.boardId}">
 		</c:forEach>
 	</div>
 	<br/>

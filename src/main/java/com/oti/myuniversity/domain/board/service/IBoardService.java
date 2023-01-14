@@ -36,7 +36,7 @@ public interface IBoardService {
 	
 	//과제실 학생 과제 제출
 	public void insertReport(Board board);
-	public void insertReport(Board board, ArrayList<BoardFile> fileList);
+	public void insertReport(Board board,  MultipartFile[] files);
 	
 	//한 학생의 과제 게시글 가져오기
 	public Board selectReport(int boardId, String memberId);

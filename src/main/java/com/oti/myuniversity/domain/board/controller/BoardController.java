@@ -158,12 +158,14 @@ public class BoardController {
 	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files,
 			HttpSession session, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
-
+		System.out.println(files.length);
 		//string -> Timestamp
 		if(time!=null && !time.equals("")) {
 			String timeStamptool = board.getReportDeadline() + " " + time + ":00.0";
 			board.setReportDeadlineTime(Timestamp.valueOf(timeStamptool));
-			System.out.println("getReportDeadLineTime함" + board.getReportDeadlineTime());
+		} else {
+			String timeStamptool = board.getReportDeadline() + " " + "00:00:00.0";
+			board.setReportDeadlineTime(Timestamp.valueOf(timeStamptool));
 		}
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
@@ -188,7 +190,7 @@ public class BoardController {
 	@RequestMapping(value= "/board/libary/write", method=RequestMethod.POST)
 	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
-
+		System.out.println(board.getReportNoticeId());
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
@@ -210,27 +212,14 @@ public class BoardController {
 	@RequestMapping(value="/board/report/submit", method=RequestMethod.POST)
 	public String submitReport(Board board,@RequestParam int pageNo ,@RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs ) {
 		
+		System.out.println("멀티파드파일[] files 길이 :" + files.length);
 		try {
 			board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 			board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
 			
-			ArrayList<BoardFile> fileList = new ArrayList<BoardFile>();
-			System.out.println("멀티파드파일[] files 길이 :" + files.length);
 
-			for(int i = 0; i<files.length; i++) {
-				logger.info("/board/write: " + files[i].getOriginalFilename());
-				BoardFile file = new BoardFile();
-				file.setBoardFileName(files[i].getOriginalFilename());
-				file.setBoardFileSize(files[i].getSize());
-				file.setBoardFileContentType(files[i].getContentType());
-				file.setBoardFileData(files[i].getBytes());
-				System.out.println("file"+ i + "번째 파일의 fileName:" +  files[i].getOriginalFilename());
-				fileList.add(file);
-				logger.info("/board/write : " + file.toString());
-			}
-			System.out.println("fileList 개수: " + fileList.size());
-			if(fileList!=null && !fileList.isEmpty() ) {
-				boardService.insertReport(board, fileList);
+			if(files!=null) {
+				boardService.insertReport(board, files);
 			} else {
 				boardService.insertReport(board);
 			}
@@ -315,7 +304,10 @@ public class BoardController {
 		if(time!=null && !time.equals("")) {
 			String timeStamptool = board.getReportDeadline() + " " + time + ":00.0";
 			board.setReportDeadlineTime(Timestamp.valueOf(timeStamptool));
-		}
+		} else {
+			String timeStamptool = board.getReportDeadline() + " " + "00:00:00.0";
+			board.setReportDeadlineTime(Timestamp.valueOf(timeStamptool));
+			}
 	try {
 		board.setBoardTitle(Jsoup.clean(board.getBoardTitle(), Whitelist.basic()));
 		board.setBoardContent(Jsoup.clean(board.getBoardContent(), Whitelist.basic()));
@@ -423,10 +415,19 @@ public class BoardController {
 	//삭제
 	@RequestMapping("/reply/delete")
 	public String deleteReply(Comment comment, HttpSession session, Model model) {
-		 List<Comment> commentList = boardService.deleteComment(comment);
-		model.addAttribute("commentList", commentList);
-		System.out.println("commentList: " + commentList);
-		return "board/library/replydelete";
+		//유저가 일치하는지 확인
+		Member user = (Member)session.getAttribute("member");
+		String userId = user.getMemberId();
+		if(userId.equals(comment.getMemberId())) {
+			List<Comment> commentList = boardService.deleteComment(comment);
+			model.addAttribute("commentList", commentList);
+			System.out.println("commentList: " + commentList);
+			
+			
+			return "board/library/replydelete";
+		} else {
+			return "board/library/viewdetail";
+		}
 	}
 	
 	
