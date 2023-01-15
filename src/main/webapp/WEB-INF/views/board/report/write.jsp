@@ -44,7 +44,9 @@ input[type=text], select, textarea {
 	        e.preventDefault();
 	        deleteFile($(this));
 	    });
+	    
 	})
+
 	 function addFile() {
         var str = "<div class='file-group'><input type='file' name='files'><a href='#this' name='file-delete'>삭제</a></div>";
         $("#file-list").append(str);
@@ -57,6 +59,21 @@ input[type=text], select, textarea {
     function deleteFile(obj) {
         obj.parent().remove();
     }
+ /*    
+    function checkFileSize(){
+    	const maxSize = 10*1024*1024;
+    	
+    	for(let i = 0; i <= index; i++){
+    		let fileSize = $("#fileTag" + i)[0].files[0].size;
+    		console.log(file.size);
+        	
+        	if(fileSize > maxSize){
+        		alert("10MB 이내로 등록 가능합니다.");
+        		return false;
+        	}  		
+    	}
+    } */
+    
 </script>
 
 <div class="container" id="writeContainer">
@@ -65,9 +82,9 @@ input[type=text], select, textarea {
 		<div class="card-body shadow bg-white rounded">
 	    	<form  method="POST" enctype="multipart/form-data" name="form">
 				<input type="hidden" name="boardCategory" value="${categoryType}">
-		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title">
+		        <input type="text" id="writeTitle" name="boardTitle" placeholder="title" required>
 		        <label for="boardContent">내용</label>
-		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px"></textarea>
+		        <textarea id="writeContent" name="boardContent" placeholder="content" style="height:200px" required></textarea>
 				<!-- 파일 태그 -->
 				<div class="form-group" id="file-list">
 			        <a href="#this" onclick="addFile()">파일추가</a>
@@ -80,7 +97,7 @@ input[type=text], select, textarea {
  				<input type="hidden" name ="memberId" value="${member.memberId}">
  				
  				<label for="reportDeadline">제출 기한:</label>
- 				<input name="reportDeadline" type="date">
+ 				<input name="reportDeadline" type="date" required>
 				<input name="time"  type="time">
 <!-- 				<input name="reportDeadlineTime"  type="time"> -->
 				
