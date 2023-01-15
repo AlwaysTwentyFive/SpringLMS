@@ -169,12 +169,14 @@ public class AttendanceController {
 				.getPersonalAttendanceList(studentId);
 		// 시작 날짜 localDate로 변환
 		LocalDate date = Consts.CLASS_START_DATE.toLocalDate();
+		Date startDate = Consts.CLASS_START_DATE;
 		// 주차별 출결 담을 list 선언
 		LinkedList<LinkedList<Attendance>> totalList = new LinkedList<LinkedList<Attendance>>();
 		// 하나의 주차의 출결 담을 list 선언
 		LinkedList<Attendance> weekList = new LinkedList<Attendance>();
 		// 한 학생의 모든 list 꺼냄
 		ServerTimeSupplier.setTime();
+		Date sqlToday = ServerTimeSupplier.getDate();
 		LocalDate today = ServerTimeSupplier.getDate().toLocalDate();
 		int count = 0;
 
@@ -243,13 +245,13 @@ public class AttendanceController {
 			System.out.println("totalList: " + list);
 			System.out.println();
 		}
-		int attCount = attendanceService.getAttendanceCount(studentId, "출근");
-		int absCount = attendanceService.getAttendanceCount(studentId, "결근");
-		int vacationCount = attendanceService.getAttendanceCount(studentId, "공가");
-		int leaveCount = attendanceService.getAttendanceCount(studentId, "조퇴");
-		int lateCount = attendanceService.getAttendanceCount(studentId, "지각");
-		int sickCount = attendanceService.getAttendanceCount(studentId, "병가");
-		int goOutCount = attendanceService.getAttendanceCount(studentId, "외출");
+		int attCount = attendanceService.getAttendanceCount(studentId, "출근",sqlToday, startDate);
+		int absCount = attendanceService.getAttendanceCount(studentId, "결근",sqlToday,startDate);
+		int vacationCount = attendanceService.getAttendanceCount(studentId, "공가",sqlToday,startDate);
+		int leaveCount = attendanceService.getAttendanceCount(studentId, "조퇴",sqlToday,startDate);
+		int lateCount = attendanceService.getAttendanceCount(studentId, "지각",sqlToday,startDate);
+		int sickCount = attendanceService.getAttendanceCount(studentId, "병가",sqlToday,startDate);
+		int goOutCount = attendanceService.getAttendanceCount(studentId, "외출",sqlToday,startDate);
 		
 		if (count != attCount + absCount + vacationCount + leaveCount + lateCount + sickCount + goOutCount) {
 			absCount = (count - (attCount + absCount + vacationCount + leaveCount + lateCount  + sickCount + goOutCount)) + absCount;

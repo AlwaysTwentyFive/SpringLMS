@@ -5,28 +5,27 @@
 <link rel="stylesheet" type="text/css" href="css/home.css">
 <!-- content -->
 <div class="container">
-	<div class="card mb-4 shadow bg-white rounded mx-auto mt-5" style="max-width: 540px;">
-		<div class="row no-gutters">
-			<div class="profile col-md-4">
-				<div style="width: 150px" class=" mx-auto mt-4 mb-5">
-					<img src="images/profile.png" class="card-img" width="100%">
-				</div>
-			</div>
-			<div class="col-md-8">
-				<div class="card-body">
-					<h5 class="card-title">${member.memberName}</h5>
-					<p class="email card-text">${member.memberEmail}</p>
-					<p>${member.memberPhoneNumber}</p>
-					<p class="card-text">
-					<c:if test="${member.memberBirthday != null}">
-					<small class="birth text-muted">${member.memberBirthday}</small>
-					</c:if>
-					</p>
-				</div>
-			</div>
+		  <div class="card mb-4 shadow bg-white rounded mx-auto mt-2" style="max-width: 540px;">
+              <div class="row no-gutters">
+                 <div class="profile col-md-4" style="background: #34495e;">
+                    <div style="width: 150px" class=" mx-auto mt-4 mb-5" >
+                       <img src="<c:url value="/images/profile.png"/>" class="card-img" width="100%">
+                    </div>
+                 </div>
+                 <div class="col-md-8">
+                    <div class="card-body">
+                       <h5 class="card-title">${member.memberName}</h5>
+                       <p class="email card-text">${member.memberEmail}</p>
+                       <p>${member.memberPhoneNumber}</p>
+                       <p class="card-text">
+                          <small class="birth text-muted">${member.memberBirthday}</small>
+                       </p>
+                    </div>
+                 </div>
+              </div>
+           </div>
 		</div>
-	</div>
-</div>
+	<br/>
 <hr/>
 <div class="d-flex flex-column justify-content-start">
 	<form action="<c:url value='/member/update'/>" method="post">
@@ -66,7 +65,9 @@
 	<hr/>
 	<input type="hidden" name="memberName" value=""/>
 	<input type="hidden" name="memberType" value=""/>
-	<button type="submit" class="btn btn-lg btn-primary col-2">수정하기</button>
+	<div style="text-align:center;margin-top:25px;">
+		<button type="submit" class="btn btn-lg btn-primary col-2 mb-5">수정하기</button>
+	</div>
 	</form>
 </div>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

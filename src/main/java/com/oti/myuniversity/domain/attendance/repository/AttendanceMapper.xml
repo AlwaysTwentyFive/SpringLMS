@@ -131,7 +131,7 @@
 		<![CDATA[
 			SELECT COUNT(*)
 			FROM ATTENDANCES
-			WHERE ATTENDANCESTATUS = #{status} and MEMBERID = #{memberId}
+			WHERE ATTENDANCESTATUS = #{status} and MEMBERID = #{memberId} and ATTENDANCEDATE <= #{date} and ATTENDANCEDATE >= #{startDate}
 		]]>
 
 	</select>

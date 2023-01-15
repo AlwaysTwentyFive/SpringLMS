@@ -175,13 +175,13 @@
 	                
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
-		                  	<c:if test="${day != 1 and day != 7 and departTime == null and status == '출근'}">
-			                  	<c:if test="${isAttend == false}">
+		                  	<c:if test="${day != 1 and day != 7 }">
+			                  	<c:if test="${isAttend == false and status == null and departTime == null}">
 				                  	 <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
 				                    	<button class="w-btn w-btn-attendance" type="submit">출근하기</button>
 				                     </form>
 			                  	</c:if>
-			                  	<c:if test="${isAttend == true}">
+			                  	<c:if test="${isAttend == true and arriveTime != null}">
 			                  	    <form class="bttn" action="<c:url value='/attendance/leave'/>" method="post">
 			                    		<button class="w-btn w-btn-attendance" type="submit">퇴근하기</button>
 			                    	</form>
