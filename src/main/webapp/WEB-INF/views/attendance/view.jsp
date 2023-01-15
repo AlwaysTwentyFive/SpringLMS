@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="/WEB-INF/views/include/header.jsp" %>
 <style>
 #writeContainer {
@@ -64,15 +66,27 @@
 			<div class="d-flex flex-column">	
 				<c:forEach var="attendanceExceptionFile" items="${attendanceExceptionFiles}">
 				<div style="color:grey">
-					${attendanceExceptionFile.attendanceExceptionFileName} (${attendanceExceptionFile.attendanceExceptionFileSize}KB)
+				<a href="<c:url value="/exceptionfile/${attendanceExceptionFile.attendanceExceptionFileId}"/>">${attendanceExceptionFile.attendanceExceptionFileName} (${attendanceExceptionFile.attendanceExceptionFileSize}KB)</a>
 				</div>
 				</c:forEach>
 			</div>
 			<br/><br/>
-			<div id="box">${attendanceException.attendanceExceptionContent}</div>	
-			<br/><br/>
+			<div id="box">${attendanceException.attendanceExceptionContent}</div>
+			<hr/>
+			<div>예외 인정 적용 될 날짜: <fmt:formatDate value="${attendanceException.attendanceExceptionApplyDate}" pattern="yyyy-MM-dd hh:mm:ss"/></div>
+			<hr/>
 			<div class="d-flex justify-content-end">
+				<c:if test="${attendanceException.attendanceExceptionApproved != null}">
+				<c:if test="${attendanceException.attendanceExceptionApproved == true}">
+				<img class="mt-1 mr-2" src="<c:url value='/images/check.png'/>" height="34px"> 
+				</c:if>
+				<c:if test="${attendanceException.attendanceExceptionApproved == false}">
 				<img class="mt-1 mr-2" src="<c:url value='/images/deny.png'/>" height="34px"> 
+				</c:if>
+				</c:if>
+				<c:if test="${attendanceException.attendanceExceptionApproved == null}">
+				<img class="mt-1 mr-2" src="<c:url value='/images/clock.png'/>" height="34px"> 
+				</c:if>
 				<div class="w-btn-outline w-btn-yellow-outline mr-2" style="width: 150px; text-align: center;">
 					<c:if test="${attendanceException.attendanceExceptionApproved != null}">
 						<c:if test="${attendanceException.attendanceExceptionApproved == true}">
@@ -97,6 +111,7 @@
 				<input type="hidden" name="attendanceExceptionStatus" value="${attendanceException.attendanceExceptionStatus}"/>
 				<input type="hidden" name="attendanceExceptionId" value="${attendanceException.attendanceExceptionId}"/>
 				<input type="hidden" name="attendanceExceptionDate" value="${attendanceException.attendanceExceptionDate}"/>
+				<input type="hidden" name="attendanceExceptionApplyDate" value="${attendanceException.attendanceExceptionApplyDate}"/>
 				<c:if test="${attendanceException.attendanceExceptionApproved == null}">
 				<button type="submit" name="attendanceExceptionApproved" value="true"  class="btn btn-sm btn-primary mx-2">승인</button>
 				<button type="submit" name="attendanceExceptionApproved" value="false" class="btn btn-sm btn-danger">거절</button>
@@ -111,6 +126,6 @@
 </div>
 <br/><br/>
 <div class="bttn">
-<button class="w-btn w-btn-attendance" type="button">목록으로</button>
+<a href="<c:url value="/attendance/exceptionlist"/>" class="w-btn w-btn-attendance" type="button">목록으로</a>
 </div>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

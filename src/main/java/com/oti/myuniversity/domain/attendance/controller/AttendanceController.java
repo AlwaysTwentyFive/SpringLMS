@@ -274,10 +274,10 @@ public class AttendanceController {
 	@PostMapping("/attendance/write")
 	public String applyException(HttpSession session, AttendanceException attendanceException, String date, String time,
 			MultipartFile[] attendanceExceptionFiles) throws IOException {
-		ServerTimeSupplier.setTime();
 		Member member = (Member) session.getAttribute("member");
 		attendanceException.setMemberId(member.getMemberId());
 		attendanceException.setMemberName(member.getMemberName());
+		ServerTimeSupplier.setTime();
 		attendanceException.setAttendanceExceptionDate(ServerTimeSupplier.getDate());
 		attendanceException.setAttendanceExceptionApplyDate(Timestamp.valueOf(date + " " + time + ":00"));
 
@@ -321,6 +321,7 @@ public class AttendanceController {
 	@PostMapping("/attendance/manage")
 	public String manageException(HttpSession session, AttendanceException attendanceException,
 			int attendanceExceptionId, Date attendanceExceptionDate) {
+		
 		attendanceService.manageAttendance(attendanceException, attendanceExceptionDate);
 		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}

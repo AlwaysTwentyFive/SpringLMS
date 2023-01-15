@@ -15,6 +15,11 @@ public class AttendanceExceptionFileService implements IAttendanceExceptionFileS
 	IAttendanceExceptionFileRepository attendanceExceptionFileRepository;
 
 	@Override
+	public AttendanceExceptionFile getAttendanceExceptionFileByExceptionFileId(int attendanceExceptionFileId) {
+		return attendanceExceptionFileRepository.getAttendanceExceptionFileByExceptionFileId(attendanceExceptionFileId);
+	}
+	
+	@Override
 	public List<AttendanceExceptionFile> getAttendanceExceptionFilesByExceptionId(int attendanceExceptionId) {
 		return attendanceExceptionFileRepository.getAttendanceExceptionFilesByExceptionId(attendanceExceptionId);
 	}

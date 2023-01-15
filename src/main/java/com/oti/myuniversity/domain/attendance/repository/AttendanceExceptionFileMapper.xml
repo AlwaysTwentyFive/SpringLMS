@@ -3,9 +3,24 @@
 <mapper
 	namespace="com.oti.myuniversity.domain.attendance.repository.IAttendanceExceptionFileRepository">
 	
+	<select id="getAttendanceExceptionFileByExceptionFileId" parameterType="int" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile">
+	<![CDATA[
+		SELECT
+			ATTENDANCEEXCEPTIONFILENAME,
+			ATTENDANCEEXCEPTIONFILESIZE,
+			ATTENDANCEEXCEPTIONFILEDATA,
+			ATTENDANCEEXCEPTIONFILECONTENTTYPE
+		FROM
+			ATTENDANCES_EXCEPTIONS_FILES
+		WHERE
+			ATTENDANCEEXCEPTIONFILEID=#{attendanceExceptionFileId}
+	]]>
+	</select>
+	
 	<select id="getAttendanceExceptionFilesByExceptionId" parameterType="int" resultType="com.oti.myuniversity.domain.attendance.model.AttendanceExceptionFile">
 	<![CDATA[
 		SELECT
+			ATTENDANCEEXCEPTIONFILEID,
 			ATTENDANCEEXCEPTIONFILENAME,
 			ATTENDANCEEXCEPTIONFILESIZE,
 			ATTENDANCEEXCEPTIONFILEDATA,
