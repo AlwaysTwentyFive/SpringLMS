@@ -9,7 +9,7 @@ tr, th, td {
 </style>
 
 <div class="container">
-	<h3 style="text-align:center;">오티아이</h3>
+	<h3 style="text-align:center;"><b>오티아이</b></h3>
 	<br>
 	<table class="table">
 		<thead>
