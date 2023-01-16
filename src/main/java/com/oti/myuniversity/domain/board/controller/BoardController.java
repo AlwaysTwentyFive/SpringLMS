@@ -155,8 +155,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value= "/board/report/write", method=RequestMethod.POST)
-	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files,
-			HttpSession session, RedirectAttributes redirectAttrs) {
+	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
 		System.out.println(files.length);
 		//string -> Timestamp
@@ -188,7 +187,7 @@ public class BoardController {
 	
 	
 	@RequestMapping(value= "/board/libary/write", method=RequestMethod.POST)
-	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
+	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
 		System.out.println(board.getReportNoticeId());
 		try {

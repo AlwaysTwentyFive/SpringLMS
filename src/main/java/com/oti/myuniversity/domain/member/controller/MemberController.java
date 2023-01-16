@@ -104,16 +104,16 @@ public class MemberController {
 				resetSession(session, member);
 				
 				model.addAttribute("member", member);
-				return "home";
+				return "redirect:/home";
 			}
 			else {
 				System.out.println("!password.equals(repassword)");
-				return "member/update";
+				return "redirect:/member/update";
 			}
 		}
 		else {
 			System.out.println("password == null || repassword == null");
-			return "member/update";
+			return "redirect:/member/update";
 		}
 		
 	}
