@@ -31,25 +31,26 @@
 	</style>
 	</head>
 	<body>
-		<div class="container-fluid">
+	<div class="container-fluid">
 			<div id="divHeaderWrapper">
-				<header style="height:155px;">
+				<header style="height:230px;">
 					<div id="topHeader">
-						<div class="d-flex justify-content-end">
-							<div class="mb-1 mr-3"style="height:30px;align-self:center">
-								<a class="btn btn-info btn-sm" href="<c:url value="/member/logout"/>">로그아웃</a>
+							<div class="d-flex justify-content-end">
+								<div class="mb-1 mr-3" style="height:30px;align-self:center">
+									<a class="btn btn-info btn-sm" href="<c:url value="/member/logout"/>">로그아웃</a>
+								</div>
+								<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
+								<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${member.memberName}</div>
 							</div>
-							<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
-							<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${sessionScope.member.memberName}</div>
 						</div>
-					</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
-						<a href="<c:url value="/home"/>"><img class="mt-3" src="<c:url value="/images/logo.png"/>" width="125" height="105"/></a>
+						<a href="<c:url value="/home"/>"><img class="mt-3" src="<c:url value="/images/logo.png"/>" width="230" height="200"/></a>
 					</div>
-					<hr color = "#34495e" size = "3"/>
 				</header>
+			<br/><br/>
+			<hr color = "#34495e" size = "3"/>
 			</div>
-			<br><br><br>
+			<br/>
 			<div class="container row wrapper" id="totalWrapper">
 				<div id="sidebar" class="col-sm-2 col-md-2 d-none d-xl-block">
 					<div class="d-flex justify-content-center shadow rounded align-content-center flex-wrap" style="background-color: #c6d2df; height:48px;">
@@ -59,10 +60,10 @@
 					<div class="d-flex flex-column mt-3">
 						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseZero"
-								style="font-size: large;">Member</a>
+								style="font-size: 23px;"><b>Member</b></a>
 							<hr />
 							<div class="d-flex flex-column">
-								<div class="collapse collapseZero text-left">
+								<div class="collapse collapseZero text-left mb-2">
 									<a href="<c:url value='/member/list'/>">Member List</a>
 								</div>
 								<div class="collapse collapseZero text-left">
@@ -74,10 +75,10 @@
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseOne"
-								style="font-size: large;">Lecture</a>
+								style="font-size: 23px;"><b>Lecture</b></a>
 							<hr />
 							<div class="d-flex flex-column">
-								<div class="collapse collapseOne text-left">
+								<div class="collapse collapseOne text-left mb-2">
 									<a href="<c:url value='/board/cat/1'/>">Lecture Material</a>
 								</div>
 								<div class="collapse collapseOne text-left">
@@ -88,16 +89,16 @@
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left " data-toggle="collapse" href=".collapseTwo"
-								style="font-size: large;">Attendance</a>
+								style="font-size: 23px;"><b>Attendance</b></a>
 							<hr />
 							<div class="d-flex flex-column">
-								<div class="collapse collapseTwo text-left">
+								<div class="collapse collapseTwo text-left mb-3">
 									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">My Attendance</a>
 								</div>
-								<div class="collapse collapseTwo text-left">
+								<div class="collapse collapseTwo text-left mb-3">
 									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
 								</div>
-								<div class="collapse collapseTwo text-left">
+								<div class="collapse collapseTwo text-left mb-3">
 									<a href="<c:url value='/attendance/list'/>">Attendance List(Exclusive Admin)</a>
 								</div>
 								<div class="collapse collapseTwo text-left">

@@ -11,14 +11,12 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +34,6 @@ import com.oti.myuniversity.component.Pager;
 import com.oti.myuniversity.component.ServerTimeSupplier;
 import com.oti.myuniversity.domain.attendance.model.Attendance;
 import com.oti.myuniversity.domain.attendance.model.AttendanceException;
-import com.oti.myuniversity.domain.attendance.service.AttendanceService;
 import com.oti.myuniversity.domain.attendance.service.IAttendanceExceptionFileService;
 import com.oti.myuniversity.domain.attendance.service.IAttendanceExceptionService;
 import com.oti.myuniversity.domain.attendance.service.IAttendanceService;
@@ -169,12 +166,14 @@ public class AttendanceController {
 				.getPersonalAttendanceList(studentId);
 		// 시작 날짜 localDate로 변환
 		LocalDate date = Consts.CLASS_START_DATE.toLocalDate();
+		Date startDate = Consts.CLASS_START_DATE;
 		// 주차별 출결 담을 list 선언
 		LinkedList<LinkedList<Attendance>> totalList = new LinkedList<LinkedList<Attendance>>();
 		// 하나의 주차의 출결 담을 list 선언
 		LinkedList<Attendance> weekList = new LinkedList<Attendance>();
 		// 한 학생의 모든 list 꺼냄
 		ServerTimeSupplier.setTime();
+		Date sqlToday = ServerTimeSupplier.getDate();
 		LocalDate today = ServerTimeSupplier.getDate().toLocalDate();
 		int count = 0;
 
@@ -233,6 +232,7 @@ public class AttendanceController {
 			}
 			// 기준날짜를 더함
 			date = date.plusDays(1);
+			
 		}
 
 		if (weekList.size() > 0) {
@@ -243,13 +243,13 @@ public class AttendanceController {
 			System.out.println("totalList: " + list);
 			System.out.println();
 		}
-		int attCount = attendanceService.getAttendanceCount(studentId, "출근");
-		int absCount = attendanceService.getAttendanceCount(studentId, "결근");
-		int vacationCount = attendanceService.getAttendanceCount(studentId, "공가");
-		int leaveCount = attendanceService.getAttendanceCount(studentId, "조퇴");
-		int lateCount = attendanceService.getAttendanceCount(studentId, "지각");
-		int sickCount = attendanceService.getAttendanceCount(studentId, "병가");
-		int goOutCount = attendanceService.getAttendanceCount(studentId, "외출");
+		int attCount = attendanceService.getAttendanceCount(studentId, "출근",sqlToday, startDate);
+		int absCount = attendanceService.getAttendanceCount(studentId, "결근",sqlToday,startDate);
+		int vacationCount = attendanceService.getAttendanceCount(studentId, "공가",sqlToday,startDate);
+		int leaveCount = attendanceService.getAttendanceCount(studentId, "조퇴",sqlToday,startDate);
+		int lateCount = attendanceService.getAttendanceCount(studentId, "지각",sqlToday,startDate);
+		int sickCount = attendanceService.getAttendanceCount(studentId, "병가",sqlToday,startDate);
+		int goOutCount = attendanceService.getAttendanceCount(studentId, "외출",sqlToday,startDate);
 		
 		if (count != attCount + absCount + vacationCount + leaveCount + lateCount + sickCount + goOutCount) {
 			absCount = (count - (attCount + absCount + vacationCount + leaveCount + lateCount  + sickCount + goOutCount)) + absCount;
@@ -274,10 +274,10 @@ public class AttendanceController {
 	@PostMapping("/attendance/write")
 	public String applyException(HttpSession session, AttendanceException attendanceException, String date, String time,
 			MultipartFile[] attendanceExceptionFiles) throws IOException {
-		ServerTimeSupplier.setTime();
 		Member member = (Member) session.getAttribute("member");
 		attendanceException.setMemberId(member.getMemberId());
 		attendanceException.setMemberName(member.getMemberName());
+		ServerTimeSupplier.setTime();
 		attendanceException.setAttendanceExceptionDate(ServerTimeSupplier.getDate());
 		attendanceException.setAttendanceExceptionApplyDate(Timestamp.valueOf(date + " " + time + ":00"));
 
@@ -321,6 +321,7 @@ public class AttendanceController {
 	@PostMapping("/attendance/manage")
 	public String manageException(HttpSession session, AttendanceException attendanceException,
 			int attendanceExceptionId, Date attendanceExceptionDate) {
+		
 		attendanceService.manageAttendance(attendanceException, attendanceExceptionDate);
 		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}

@@ -67,26 +67,26 @@
 	        	<label class="col-sm-2" for="attendanceExceptionTitle">제목</label>
 	        	<div class="col-sm-4"></div>
 	        	<label class="col-sm-2 ml-4" for="attendanceExceptionStatus" >신청 타입</label>
-				<select class="col-sm-3 mb-1" name="attendanceExceptionStatus" id="attendanceExceptionStatus">
-				    <option value="공가">공가</option>
+				<select class="col-sm-3 mb-1" name="attendanceExceptionStatus" id="attendanceExceptionStatus" required>
+				    <option value="공가" selected>공가</option>
 				    <option value="조퇴">조퇴</option>
 				    <option value="외출">외출</option>
 				    <option value="병가">병가</option>
 				</select>
 	        
 	        </div>
-	        <input type="text" id="attendanceExceptionTitle" name="attendanceExceptionTitle" placeholder="title">
+	        <input type="text" id="attendanceExceptionTitle" name="attendanceExceptionTitle" placeholder="title" required>
 	
 	        <label for="boardContent">내용</label>
-	        <textarea id="attendanceExceptionContent" name="attendanceExceptionContent" placeholder="content" style="height:200px"></textarea>
+	        <textarea id="attendanceExceptionContent" name="attendanceExceptionContent" placeholder="content" style="height:200px" required></textarea>
 			<div class="d-flex">
 				<div>
 					<label for="date">신청날짜:</label>
-					<input class="mb-1 ml-1" type="date" id="date" name="date">
+					<input class="mb-1 ml-1" type="date" id="date" name="date" required>
 				</div>
 				<div class="d-flex ml-4">
 					<label for="time">시간 선택: </label>
-					<input type="time" id="time" name="time" class="form-control ml-3" style="width:150px; height:30px;">
+					<input type="time" id="time" name="time" class="form-control ml-3" style="width:150px; height:30px;" required>
 				</div>
 			</div>
 			<div class="d-flex mt-2">

@@ -7,11 +7,11 @@
   	<form action="<>">
 	<div class="d-flex mb-3">
 		<div class="col-7">
-			<h1>과제</h1>
+			<h1>자료실</h1>
 		</div>
 		<c:if test="${member.memberId == 'admin'}">
 			<div class="d-flex align-items-end justify-content-end col-5">
-				<button formaction="<c:url value='/board/2/write'/>" name="writeReport" value="writeReport" class="btn btn-sm btn-warning">과제 등록</button>
+				<button formaction="<c:url value='/board/1/write'/>" name="writeReport" value="writeReport" class="btn btn-sm btn-warning">자료 등록</button>
 			</div>
 		</c:if>
 	</div>
@@ -63,7 +63,7 @@
 			</tbody>
 		</table>
 	</div>
-	
+	<c:if test="${pager.totalRows > 0}">
 	<div class="pager d-flex justify-content-center my-3">
 		<div class="flex-fulfill"></div>
 		<div class="pagingButtonSet d-flex justify-content-center col-5">
@@ -89,4 +89,12 @@
 		</div>
 		<div class="flex-fulfill"></div>
 	</div>
+	</c:if>
+	<c:if test="${pager.totalRows == 0}">
+	<div class="pager d-flex justify-content-center my-3">
+	   	<div class="flex-fulfill"></div>
+	   		<div>조회할 게시글이 없습니다</div>
+		<div class="flex-fulfill"></div>
+	</div>
+	</c:if>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>

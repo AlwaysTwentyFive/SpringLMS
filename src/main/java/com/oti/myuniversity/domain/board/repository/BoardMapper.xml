@@ -72,7 +72,7 @@
 				BOARDDATE,
 				BOARDCATEGORY,
 				MEMBERID
-			<if test="reportNoticeId != null">
+			<if test="reportNoticeId != 0">
 				, REPORTNOTICEID
 			</if>
 				)
@@ -83,7 +83,7 @@
 				sysdate, 
 				#{boardCategory}, 
 				#{memberId}
-				<if test="reportNoticeId != null">
+				<if test="reportNoticeId != 0">
 					, #{reportNoticeId}
 				</if>
 				)

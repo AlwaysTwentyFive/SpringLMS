@@ -66,7 +66,7 @@ input[type=text], select, textarea {
 	    	<form  method="POST" enctype="multipart/form-data" name="form">
 		        <input type="text" name="boardTitle"  value="${board.boardTitle}"  placeholder="title" required>
 		        <label for="boardContent">내용</label>
-		        <textarea id="writeContent" name="boardContent" style="height:200px">${board.boardContent}</textarea>
+		        <textarea id="writeContent" name="boardContent" style="height:200px" required>${board.boardContent}</textarea>
 				<!-- 파일 태그 -->
 				<div class="form-group" id="file-list">
 			        <a href="#this" onclick="addFile()">파일추가</a>
@@ -82,7 +82,7 @@ input[type=text], select, textarea {
 				<input type="hidden" name ="memberName" value="${member.memberName}">
 				<input type="hidden" name="pageNo" value="${pageNo}">
  				<label for="reportDeadline">제출 기한:</label>
- 				<input name="reportDeadline" type="date" value="${board.reportDeadline}">
+ 				<input name="reportDeadline" type="date" value="${board.reportDeadline}" required>
 				<input name="time"  type="time" value="${board.reportDeadlineTime}">
 <!-- 				<input name="reportDeadlineTime"  type="time"> -->
 				

@@ -9,7 +9,7 @@ tr, th, td {
 </style>
 
 <div class="container">
-	<h3 style="text-align:center;">오티아이</h3>
+	<h3 style="text-align:center;"><b>오티아이</b></h3>
 	<br>
 	<table class="table">
 		<thead>
@@ -32,7 +32,7 @@ tr, th, td {
 		</tbody>
 	</table>
 </div>
-
+<c:if test="${pager.totalRows > 0}">
 <div class="pager d-flex justify-content-center my-3">
    	<div class="flex-fulfill"></div>
    		<div class="pagingButtonSet d-flex justify-content-center col-5">
@@ -59,4 +59,12 @@ tr, th, td {
 		</div>
 	<div class="flex-fulfill"></div>
 </div>
+</c:if>
+<c:if test="${pager.totalRows == 0}">
+<div class="pager d-flex justify-content-center my-3">
+   	<div class="flex-fulfill"></div>
+   		<div>회원이 없습니다</div>
+	<div class="flex-fulfill"></div>
+</div>
+</c:if>
 <%@ include file="/WEB-INF/views/include/footer.jsp" %>

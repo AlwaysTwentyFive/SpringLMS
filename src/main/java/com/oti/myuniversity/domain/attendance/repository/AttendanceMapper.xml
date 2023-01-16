@@ -68,7 +68,7 @@
 	<![CDATA[
 		update attendances
 		set ATTENDANCESTATUS = '결근'
-		where ATTENDANCEDATE = #{attendanceDate} and ATTENDANCEDEPARTTIME IS NULL and ATTENDANCESTATUS = '출근'
+		where ATTENDANCEDATE = #{attendanceDate} and ATTENDANCEDEPARTTIME IS NULL and ATTENDANCESTATUS = '출근' and ATTENDANCESTATUS = '지각'
 	]]>
 	</update>
 	
@@ -131,7 +131,7 @@
 		<![CDATA[
 			SELECT COUNT(*)
 			FROM ATTENDANCES
-			WHERE ATTENDANCESTATUS = #{status} and MEMBERID = #{memberId}
+			WHERE ATTENDANCESTATUS = #{status} and MEMBERID = #{memberId} and ATTENDANCEDATE <= #{date} and ATTENDANCEDATE >= #{startDate}
 		]]>
 
 	</select>

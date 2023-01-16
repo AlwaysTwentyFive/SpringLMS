@@ -22,6 +22,6 @@ public interface IAttendanceRepository {
 	List<Map<String , Object>> getTotalAttendance(Pager pager);
 	int getTotalAttendanceCount();
 	LinkedList<Attendance> getPersonalAttendanceList(String memberId);
-	int getAttendanceCount(@Param("memberId")String memberId, @Param("status")String status);
+	int getAttendanceCount(@Param("memberId")String memberId, @Param("status")String status, @Param("date") Date sqlDate, @Param("startDate") Date startDate);
 	int getMaxAttendanceId();
 }
