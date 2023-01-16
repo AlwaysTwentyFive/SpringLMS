@@ -23,7 +23,7 @@ public interface IAttendanceService {
 	List<Map<String , Object>> getTotalAttendance(Pager pager);
 	int getTotalAttendanceCount();
 	List<Attendance> getPersonalAttendanceList (String memberId);
-	int getAttendanceCount(String memberId, String status);
+	int getAttendanceCount(String memberId, String status, Date sqlDate, Date startDate);
 	int getMaxAttendanceId();
 	int applyException(AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException;
 	Model getAttendance(int boardId, Model model);

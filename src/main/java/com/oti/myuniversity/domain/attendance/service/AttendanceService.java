@@ -94,8 +94,8 @@ public class AttendanceService implements IAttendanceService {
 	}
 
 	@Override
-	public int getAttendanceCount(String memberId, String status) {
-		return attendanceRepository.getAttendanceCount(memberId, status);
+	public int getAttendanceCount(String memberId, String status, Date sqlDate, Date startDate) {
+		return attendanceRepository.getAttendanceCount(memberId, status, sqlDate, startDate);
 	}
 
 	@Override
