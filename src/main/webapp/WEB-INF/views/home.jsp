@@ -176,7 +176,7 @@
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
 		                  	<c:if test="${day != 1 and day != 7 }">
-			                  	<c:if test="${isAttend == false and status == null and departTime == null}">
+			                  	<c:if test="${isAttend == false and status eq '출근' and departTime == null}">
 				                  	 <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
 				                    	<button class="w-btn w-btn-attendance" type="submit">출근하기</button>
 				                     </form>

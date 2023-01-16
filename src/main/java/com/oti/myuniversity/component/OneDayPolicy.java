@@ -9,8 +9,8 @@ public class OneDayPolicy implements AttendPolicy {
 	
 	@Override
 public String evaluateAttend(Attendance attendance) {
-		String startTime = "11:00:00";
-		String endTime = "10:35:00";
+		String startTime = "09:00:00";
+		String endTime = "18:00:00";
 		String arriveTime = attendance.getAttendanceArriveTime().toString().substring(11,19);
 		String departTime = attendance.getAttendanceDepartTime().toString().substring(11,19);
 		int endSuccess = departTime.compareTo(endTime);
@@ -28,7 +28,7 @@ public String evaluateAttend(Attendance attendance) {
 
 	@Override
 	public String evaluateAttendTemp(Attendance attendance) {
-		String startTime = "11:00:00";
+		String startTime = "09:00:00";
 		String arriveTime = attendance.getAttendanceArriveTime().toString().substring(11,19);
 		int startSuccess = arriveTime.compareTo(startTime);
 		System.out.println(startSuccess);

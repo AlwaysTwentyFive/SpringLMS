@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="css/home.css">
 <!-- content -->
 <div class="container">
+
 		  <div class="card mb-4 shadow bg-white rounded mx-auto mt-2" style="max-width: 540px;">
               <div class="row no-gutters">
                  <div class="profile col-md-4" style="background: #34495e;">
@@ -31,36 +32,36 @@
 	<form action="<c:url value='/member/update'/>" method="post">
 	<div class="d-flex justify-content-start">
 		<div class="badge badge-white col-2 mr-5" style="text-align: left;">ID</div>
-		<input type="text" name="memberId" placeholder="">
+		<input type="text" name="memberId" placeholder="" required>
 	</div>
 	<hr/>
 	<div class="d-flex justify-content-start mb-3">
 		<div class="badge badge-white col-2 mr-5" style="text-align: left;">Password</div>
-		<input type="text" name="memberPassword" placeholder="">
+		<input type="text" name="memberPassword" placeholder="" required>
 	</div>
 	<div class="d-flex justify-content-start">
 		<div class="badge badge-white col-2 mr-5" style="text-align: left;">Password를 다시 입력</div>
-		<input type="text" name="repassword" placeholder="">
+		<input type="text" name="repassword" placeholder="" required>
 	</div>
 	<hr/>
 	<div class="d-flex justify-content-start">
 		<div class="badge badge-white col-2 mr-5" style="text-align: left;">Email</div>
-		<input type="text" name="memberEmail" placeholder="">
+		<input type="text" name="memberEmail" placeholder="" required>
 	</div>
 	<hr/>
 	<div class="d-flex justify-content-start">
 		<div class="badge badge-white col-2 mr-5" style="text-align: left;">Phone Number</div>
-		<input type="text" name="memberPhoneNumber" placeholder="">
+		<input type="text" name="memberPhoneNumber" placeholder="" required>
 	</div>
 	<hr/>
 	<div class="d-flex justify-content-start">
 		<div class="badge badge-white col-2 mr-5" style="text-align: left;">Birthday</div>
-		<input type="date" name="memberBirthday" placeholder="">
+		<input type="date" name="memberBirthday" placeholder="" required>
 	</div>
 	<hr/>
 	<div class="d-flex justify-content-start">
 		<div class="badge badge-white col-2 mr-5" style="text-align: left;">Profile</div>
-		<input type="file" name="file">
+		<input type="file" name="file" required>
 	</div>
 	<hr/>
 	<input type="hidden" name="memberName" value=""/>

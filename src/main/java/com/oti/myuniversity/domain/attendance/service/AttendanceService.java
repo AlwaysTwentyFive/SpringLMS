@@ -115,7 +115,9 @@ public class AttendanceService implements IAttendanceService {
 		int attendanceExceptionId = attendanceExceptionRepository.getMaxAttendanceExceptionId();
 		List<AttendanceExceptionFile> attendanceExceptionFileList = multipartFileResovler.getAttendanceExceptionFileList(attendanceExceptionFiles, attendanceExceptionId);
 		for(AttendanceExceptionFile attendanceExceptionFile : attendanceExceptionFileList) {
-			attendanceExceptionFileRepository.insertAttendanceExceptionFile(attendanceExceptionFile);
+			if (!("".equals(attendanceExceptionFile.getAttendanceExceptionFileName()))) {
+				attendanceExceptionFileRepository.insertAttendanceExceptionFile(attendanceExceptionFile);				
+			}
 		}
 		return attendanceExceptionId;
 	}
@@ -140,7 +142,7 @@ public class AttendanceService implements IAttendanceService {
 			int attendanceId = attendanceException.getAttendanceId();
 			
 			//미래에 발생 할 (또는 과거에 기록 된) 출결 예외 인정 처리
-			if (attendanceId < 0)  {
+			if (attendanceId <= 0)  {
 				Date date = ServerTimeSupplier.timestampToDate(attendanceException.getAttendanceExceptionApplyDate());
 				Attendance attendance = attendanceRepository.selectAttendanceByDate(attendanceException.getMemberId(), date);
 				
@@ -148,15 +150,17 @@ public class AttendanceService implements IAttendanceService {
 				if (attendance == null) {
 					attendance = new Attendance();
 					attendance.setMemberId(attendanceException.getMemberId());
-					attendance.setAttendanceDate(attendanceExceptionDate);
+					attendance.setAttendanceDate(date);
 					attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
 					attendanceRepository.insertAttendanceWithoutTime(attendance);
+					attendanceException.setAttendanceId(attendanceRepository.getMaxAttendanceId());
 				}
 				else {
 					attendance.setMemberId(attendanceException.getMemberId());
-					attendance.setAttendanceDate(attendanceExceptionDate);
+					attendance.setAttendanceDate(date);
 					attendance.setAttendanceStatus(attendanceException.getAttendanceExceptionStatus());
 					attendanceRepository.updateAttendanceStatus(attendance);
+					attendanceException.setAttendanceId(attendance.getAttendanceId());
 				}
 			}
 			

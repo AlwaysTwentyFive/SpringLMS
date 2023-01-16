@@ -170,6 +170,7 @@
 		UPDATE
 			ATTENDANCES_EXCEPTIONS
 		SET
+			ATTENDANCEID=#{attendanceId},
 			ATTENDANCEEXCEPTIONAPPROVED=#{attendanceExceptionApproved}
 		WHERE
 			ATTENDANCEEXCEPTIONID=#{attendanceExceptionId}
