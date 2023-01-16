@@ -196,7 +196,6 @@ public class AttendanceController {
 				if (!(personalList.isEmpty())) {
 					attendance = personalList.peek();
 					attDate = attendance.getAttendanceDate().toLocalDate();
-
 				} else {
 					attDate = date;
 				}

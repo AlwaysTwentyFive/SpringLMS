@@ -77,14 +77,14 @@
 					<div class="d-flex flex-column mt-3">
 						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseZero"
-								style="font-size: 23px;"><b>Member</b></a>
+								style="font-size: 23px;"><b>MEMBER</b></a>
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseZero text-left mb-2">
-									<a href="<c:url value='/member/list'/>">Member List</a>
+									<a href="<c:url value='/member/list'/>">학생 명단</a>
 								</div>
 								<div class="collapse collapseZero text-left">
-									<a href="<c:url value='/member/update'/>">Update Info</a>
+									<a href="<c:url value='/member/update'/>">개인정보 수정</a>
 								</div>
 							</div>
 						</div>
@@ -92,34 +92,34 @@
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseOne"
-								style="font-size: 23px;"><b>Lecture</b></a>
+								style="font-size: 23px;"><b>LECTURE</b></a>
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseOne text-left mb-2">
-									<a href="<c:url value='/board/cat/1'/>">Lecture Material</a>
+									<a href="<c:url value='/board/cat/1'/>">강의 자료</a>
 								</div>
 								<div class="collapse collapseOne text-left">
-									<a href="<c:url value='/board/cat/2'/>">Report</a>
+									<a href="<c:url value='/board/cat/2'/>">과제</a>
 								</div>
 							</div>
 						</div>
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left " data-toggle="collapse" href=".collapseTwo"
-								style="font-size: 23px;"><b>Attendance</b></a>
+								style="font-size: 23px;"><b>ATTENDNACE</b></a>
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseTwo text-left mb-3">
-									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">My Attendance</a>
+									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">나의 출결 현황</a>
 								</div>
 								<div class="collapse collapseTwo text-left mb-3">
-									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
+									<a href="<c:url value='/attendance/write'/>">사유서 신청하기</a>
 								</div>
 								<div class="collapse collapseTwo text-left mb-3">
-									<a href="<c:url value='/attendance/list'/>">Attendance List(Exclusive Admin)</a>
+									<a href="<c:url value='/attendance/list'/>">전체 출결 조회</a>
 								</div>
 								<div class="collapse collapseTwo text-left">
-									<a href="<c:url value='/attendance/exceptionlist'/>">Attendance Exception List(Exclusive Admin)</a>
+									<a href="<c:url value='/attendance/exceptionlist'/>">사유서 조회</a>
 								</div>
 							</div>
 						</div>
@@ -175,7 +175,7 @@
 	                
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
-		                  	<c:if test="${day != 1 and day != 7 }">
+		                  	<c:if test="${day != 1 and day != 7 and departTime == null}">
 			                  	<c:if test="${isAttend == false and status eq '출근' and departTime == null}">
 				                  	 <form class="bttn" action="<c:url value='/attendance/attend'/>" method="post">
 				                    	<button class="w-btn w-btn-attendance" type="submit">출근하기</button>
