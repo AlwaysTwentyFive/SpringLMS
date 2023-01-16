@@ -43,7 +43,7 @@
 			</tbody>
 		</table>
 	</div>
-	
+	<c:if test="${pager.totalRows > 0}">
 	<div class="pager d-flex justify-content-center my-3">
 		<div class="flex-fulfill"></div>
 		<div class="pagingButtonSet d-flex justify-content-center col-5">
@@ -69,4 +69,12 @@
 		</div>
 		<div class="flex-fulfill"></div>
 	</div>
+	</c:if>
+	<c:if test="${pager.totalRows == 0}">
+	<div class="pager d-flex justify-content-center my-3">
+	   	<div class="flex-fulfill"></div>
+	   		<div>조회할 게시글이 없습니다</div>
+		<div class="flex-fulfill"></div>
+	</div>
+	</c:if>
 <jsp:include page="/WEB-INF/views/include/footer.jsp"/>
