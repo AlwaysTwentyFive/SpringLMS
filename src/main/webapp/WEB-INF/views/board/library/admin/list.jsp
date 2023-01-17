@@ -21,48 +21,30 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th class="col-5">과제</th>
-					<th class="col-3">제출기한</th>
-					<th class="col-2">제출</th>
-					<th class="col-2">점수</th>
+					<th class="col-6">제목</th>
+					<th class="col-3">날짜</th>
+					<th class="col-3">글쓴이</th>
 				</tr>
 			</thead>
 		</table>
-		<table class="table table-bordered table-hover">
+		<table class="table table-hover">
 			<tbody>
 				<c:forEach var="board" items="${boardList}">
 					<tr>
-						<td class="col-5">
+						<td class="col-6">
 							<a href="<c:url value='/board/${board.boardId}/${pager.pageNo}'/>">
 								${board.boardTitle}
 							</a>
 						</td>
-						<c:if test="${!empty board.reportDeadline} ">
-							<td class="col-3">${board.reportDeadline}${board.reportDeadLineTime} 23:59:59</td>
-						</c:if>
-						<c:if test="${empty board.reportDeadline}">
-							<td class="col-3"> - </td>
-						</c:if>
-						<c:if test="${!empty board.submissionSubmitDate}">
-							<td class="col-2">${board.submissionSubmitDate}</td>
-						</c:if>
-						
-							<td class="col-2">${board.isSubmit}</td>
-						
-						<c:if test="${board.submissionScore != 0}">
-							<td class="col-2">${board.submissionScore}점</td>
-						</c:if>
-						<c:if test="${empty board.submissionSubmitDate && board.submissionScore==0}">
-							<td class="col-2">미확정</td>
-						</c:if>
-						<c:if test="${!empty board.submissionSubmitDate && board.submissionScore==0}">
-							<td class="col-2">0점</td>
-						</c:if>
+						<td class="col-3">${board.boardDate}</td>
+						<td class="col-3">${board.memberId}</td>
 					</tr>
-				</c:forEach>	
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
+	
+	
 	<c:if test="${pager.totalRows > 0}">
 	<div class="pager d-flex justify-content-center my-3">
 		<div class="flex-fulfill"></div>

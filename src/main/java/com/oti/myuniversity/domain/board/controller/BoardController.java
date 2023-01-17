@@ -62,6 +62,7 @@ public class BoardController {
 			if(categoryType == 1) {
 				return "board/library/admin/list";
 			} else {
+				
 				return "board/report/admin/list";
 			}
 			

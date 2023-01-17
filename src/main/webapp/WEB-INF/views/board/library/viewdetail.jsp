@@ -266,7 +266,7 @@ input[type=text], textarea[type=reportReply]{
 	<br/>
 	<div id="replyWrite" class="mb-5">
 		<div class="d-flex">
-			<div class="col-2">ReplyWriter</div>
+			<div class="col-2">${sessionScope.member.memberName}</div>
 			<textarea id="commentContent" rows="3" cols="150" ></textarea>
 		</div>
 		<div class="d-flex justify-content-end">
