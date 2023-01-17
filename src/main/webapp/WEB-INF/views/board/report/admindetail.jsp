@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
-<link rel="stylesheet" type="text/css" href="css/style.css">
 
 <style>
 	.bttn {
@@ -31,7 +30,28 @@
 		width: 300px;
 		overflow: hidden;
 		text-overflow: ellipsis;
-	}	
+	}
+	.stname{
+	width:90px;
+	}
+	.stcontent{
+	width:285ps;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;	
+	}
+	.stinsert{
+	width: 217px;
+	text-align: center;
+	}
+	.stname, .stcontent, .stdate, .stscore, .stinsert{
+	 display: table-cell; vertical-align: middle;
+	 text-align: center;
+	 
+	}
+	td{
+		text-align: center;
+	}
 </style>
 
 <script>
@@ -96,38 +116,36 @@
 				</tr>
 			</tbody>
 		</table>
-
+		<h4>[미반영 학생 리스트]</h4>
 		<table class="table table-bordered mt-3">
 			<thead>
 				<tr>
-					<th>학생이름</th>
-					<th>과제</th>
-					<th>제출 날짜</th>
-					<th>부여 점수</th>
-					<th>입력</th>
+					<th class="stname" style="width:20%">학생이름</th>
+					<th class="stcontent" style="width:20%">과제</th>
+					<th class="stdate" style="width:20%">제출 날짜</th>
+					<th class="stscore" style="width:20%">점수</th>
+					<th class="stinsert" style="width:20%">입력</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${empty studentsBoard}">
 				<tr>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
+					<th class="stname" style="width:20%">학생이름</th>
+					<th class="stcontent" style="width:20%">과제</th>
+					<th class="stdate" style="width:20%">제출 날짜</th>
+					<th class="stscore" style="width:20%">점수</th>
+					<th class="stinsert" style="width:20%">입력</th>
 				</tr>
 				</c:if>
 				<c:if test="${!empty studentsBoard}">
 				<c:forEach var="student" items="${studentsBoard}" varStatus="i">
-				<c:if test="">
-				</c:if>
-				<c:if test="${student.submissionScore == null}">
+				<c:if test="${student.submissionScore == 0}">
 				<tr>
 					<td>${student.memberName}</td>
 					<td class="submitFile">
 					<c:if test="${!empty student.fileList}">
 					<c:forEach var="file" items="${student.fileList}">
-						<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
+						<a href="<c:url value='/boardfile/${file.boardFileId}'/>" class="stcontent">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 					</c:forEach>
 					</c:if>
 					</td>
@@ -152,35 +170,36 @@
 			<button type="submit" class="btn btn-sm btn-warning mt-2">과제 평가 완료하기</button>
 		</div> -->
 		<hr>
+		<h4>[평가 완료]</h4>
 		<table class="table table-bordered mt-3">
 			<thead>
 				<tr>
-					<th>학생이름</th>
-					<th>과제</th>
-					<th>제출 날짜  ${board.reportDeadline}</th>
-					<th>부여 점수</th>
-					<th>점수 수정하기</th>
-					<th>입력</th>
+					<th class="stname" style="width:20%">학생이름</th>
+					<th class="stcontent" style="width:20%">과제</th>
+					<th class="stdate" style="width:20%">제출 날짜</th>
+					<th class="stscore" style="width:20%">점수</th>
+					<th class="stinsert" style="width:20%">입력</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${empty studentsBoard}">
 				<tr>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
-					<td>-</td>
+					<th class="stname" style="width:20%">학생이름</th>
+					<th class="stcontent" style="width:20%">과제</th>
+					<th class="stdate" style="width:20%">제출 날짜</th>
+					<th class="stscore" style="width:20%">점수</th>
+					<th class="stinsert" style="width:20%">입력</th>
 				</tr>
 				</c:if>
 				<c:if test="${!empty studentsBoard}">
 				<c:forEach var="student" items="${studentsBoard}" varStatus="i">
+				<c:if test="${student.submissionScore != 0}">
 				<tr>
 					<td>${student.memberName}</td>
 					<td class="submitFile">
 					<c:if test="${!empty student.fileList}">
 					<c:forEach var="file" items="${student.fileList}">
-						<a href="<c:url value='/boardfile/${file.boardFileId}'/>">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
+						<a href="<c:url value='/boardfile/${file.boardFileId}'/>" class="stcontent">${file.boardFileName}(<fmt:formatNumber>${file.boardFileSize}</fmt:formatNumber>byte)</a>
 					</c:forEach>
 					</c:if>
 					</td>
@@ -195,15 +214,11 @@
 					</td>
 					<td><button form="submissionScore${i.count}" type="submit" class="btn btn-sm btn-warning mt-2">입력</button></td>
 				</tr>
+				</c:if>
 				</c:forEach>
 				</c:if>
 			</tbody>
 		</table>
-		<!-- <h5>Feedback</h5>
-		<p id="reportBoardContent" class="border">
-		~~학생의 과제는 ~~고 ~~해서 ~~점수를 주었습니다<br/>
-		***교수
-		</p> -->
 		<!-- For Admin -->
 		<div class="bttn">
 	   		<button class="w-btn w-btn-attendance" type="button" onclick="location.href='<c:url value="/board/cat/2/${pageNo}"/>'" style="color: white;">목록</button>
