@@ -40,6 +40,8 @@
 			memberId, memberName, memberEmail, memberPhoneNumber
 		FROM
 			MEMBERS
+		WHERE 
+			MEMBERTYPE != 'admin'
 		OFFSET (#{pageNo} - 1) * #{rowsPerPage} ROWS
 		FETCH NEXT #{rowsPerPage} ROWS ONLY
 	]]>

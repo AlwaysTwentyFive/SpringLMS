@@ -60,11 +60,12 @@ input[type=text], select, textarea {
     function deleteFile(obj) {
         obj.parent().remove();
     }
+
     function goback(categoryType){
     	console.log("goback 실행");
     	location.href ="<c:url value='/board/cat/"+ categoryType + "'/>";
     }
-    
+
 </script>
 
 

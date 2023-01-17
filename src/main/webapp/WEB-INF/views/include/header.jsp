@@ -40,7 +40,7 @@
 									<a class="btn btn-info btn-sm" href="<c:url value="/member/logout"/>">로그아웃</a>
 								</div>
 								<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
-								<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${member.memberName}</div>
+								<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${sessionScope.member.memberName}</div>
 							</div>
 						</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
@@ -60,53 +60,61 @@
 					<div class="d-flex flex-column mt-3">
 						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseZero"
-								style="font-size: 23px;"><b>Member</b></a>
+								style="font-size: 23px;"><b>MEMBER</b></a>
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseZero text-left mb-2">
-									<a href="<c:url value='/member/list'/>">Member List</a>
+									<a href="<c:url value='/member/list'/>">학생 명단</a>
 								</div>
+								<c:if test="${sessionScope.member.memberType != 'admin'}">
 								<div class="collapse collapseZero text-left">
-									<a href="<c:url value='/member/update'/>">Update Info</a>
+									<a href="<c:url value='/member/update'/>">개인정보 수정</a>
 								</div>
+								</c:if>
 							</div>
 						</div>
 						
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left" data-toggle="collapse" href=".collapseOne"
-								style="font-size: 23px;"><b>Lecture</b></a>
+								style="font-size: 23px;"><b>LECTURE</b></a>
 							<hr />
 							<div class="d-flex flex-column">
 								<div class="collapse collapseOne text-left mb-2">
-									<a href="<c:url value='/board/cat/1'/>">Lecture Material</a>
+									<a href="<c:url value='/board/cat/1'/>">강의 자료</a>
 								</div>
 								<div class="collapse collapseOne text-left">
-									<a href="<c:url value='/board/cat/2'/>">Report</a>
+									<a href="<c:url value='/board/cat/2'/>">과제</a>
 								</div>
 							</div>
 						</div>
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left " data-toggle="collapse" href=".collapseTwo"
-								style="font-size: 23px;"><b>Attendance</b></a>
+								style="font-size: 23px;"><b>ATTENDNACE</b></a>
 							<hr />
 							<div class="d-flex flex-column">
+								<c:if test="${sessionScope.member.memberType != 'admin'}">
 								<div class="collapse collapseTwo text-left mb-3">
-									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">My Attendance</a>
+									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">나의 출결 현황</a>
 								</div>
+								</c:if>
+								<c:if test="${sessionScope.member.memberType != 'admin'}">
 								<div class="collapse collapseTwo text-left mb-3">
-									<a href="<c:url value='/attendance/write'/>">Apply Attendance Exception</a>
+									<a href="<c:url value='/attendance/write'/>">사유서 신청하기</a>
 								</div>
+								</c:if>
 								<div class="collapse collapseTwo text-left mb-3">
-									<a href="<c:url value='/attendance/list'/>">Attendance List(Exclusive Admin)</a>
+									<a href="<c:url value='/attendance/list'/>">전체 출결 조회</a>
 								</div>
+								
 								<div class="collapse collapseTwo text-left">
-									<a href="<c:url value='/attendance/exceptionlist'/>">Attendance Exception List(Exclusive Admin)</a>
+									<a href="<c:url value='/attendance/exceptionlist'/>">사유서 조회</a>
 								</div>
+				
 							</div>
 						</div>
 					</div>
-				</div>				
+				</div>						
 				<div class="col-sm-10 col-md-10" id="contentWrapper">
 				

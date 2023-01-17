@@ -196,7 +196,6 @@ public class AttendanceController {
 				if (!(personalList.isEmpty())) {
 					attendance = personalList.peek();
 					attDate = attendance.getAttendanceDate().toLocalDate();
-
 				} else {
 					attDate = date;
 				}
@@ -263,7 +262,7 @@ public class AttendanceController {
 		model.addAttribute("lateCount", lateCount);
 		model.addAttribute("sickCount", sickCount);
 		model.addAttribute("goOutCount", goOutCount);
-		return "/attendance/list";
+		return "attendance/list";
 	}
 
 	@GetMapping("/attendance/write")
