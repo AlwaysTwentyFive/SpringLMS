@@ -176,5 +176,4 @@ public class AttendanceService implements IAttendanceService {
 		attendanceExceptionRepository.updateAttendanceException(attendanceException);
 	}
 
-
 }

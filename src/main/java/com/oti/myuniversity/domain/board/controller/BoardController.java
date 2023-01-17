@@ -60,7 +60,7 @@ public class BoardController {
 		
 			
 			if(categoryType == 1) {
-				return "board/library/admin/list";
+				return "board/library/list";
 			} else {
 				
 				return "board/report/admin/list";
@@ -156,8 +156,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value= "/board/report/write", method=RequestMethod.POST)
-	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files,
-			HttpSession session, RedirectAttributes redirectAttrs) {
+	public String writeBoard(Board board, @RequestParam String time , @RequestParam MultipartFile[] files, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
 		System.out.println(files.length);
 		//string -> Timestamp
@@ -189,7 +188,7 @@ public class BoardController {
 	
 	
 	@RequestMapping(value= "/board/libary/write", method=RequestMethod.POST)
-	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs) {
+	public String writeBoard(Board board,  @RequestParam MultipartFile[] files, RedirectAttributes redirectAttrs) {
 		logger.info("/board/write: " + board.toString());
 		System.out.println(board.getReportNoticeId());
 		try {
@@ -211,7 +210,7 @@ public class BoardController {
 	
 	//학생의 과제 제출 및 업데이트
 	@RequestMapping(value="/board/report/submit", method=RequestMethod.POST)
-	public String submitReport(Board board,@RequestParam int pageNo ,@RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs ) {
+	public String submitReport(Board board, @RequestParam int pageNo, @RequestParam MultipartFile[] files, HttpSession session, RedirectAttributes redirectAttrs ) {
 		
 		System.out.println("멀티파드파일[] files 길이 :" + files.length);
 		try {
@@ -240,9 +239,16 @@ public class BoardController {
 		return "redirect:/board/" + reportNoticeId + "/" + pageNo;
 	}
 	
+	//과제 평가
+	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.POST)
+	public String evaluateSubmittedReport(int reportNoticeId, @PathVariable int boardId, int submissionScore, int pageNo, Model model) {
+		boardService.evaluateSubmittedReport(boardId, submissionScore);
+		return "redirect:/board/" + reportNoticeId + "/" + pageNo;
+	}
+	
 	//자료실 글 수정하기
 	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.GET)
-	public String updateLibary(@PathVariable int boardId, @RequestParam int pageNo, Model model) {
+	public String updateBoard(@PathVariable int boardId, @RequestParam int pageNo, Model model) {
 		Board board = boardService.selectArticle(boardId);
 		int categoryType = board.getBoardCategory();
 		
@@ -254,13 +260,6 @@ public class BoardController {
 		} else {
 			return "board/report/update";
 		}
-	}
-	
-	//과제 평가
-	@RequestMapping(value="/board/update/{boardId}", method=RequestMethod.POST)
-	public String evaluateSubmittedReport(int reportNoticeId, @PathVariable int boardId, int submissionScore, int pageNo, Model model) {
-		boardService.evaluateSubmittedReport(boardId, submissionScore);
-		return "redirect:/board/" + reportNoticeId + "/" + pageNo;
 	}
 	
 	@RequestMapping(value="/board/library/update", method=RequestMethod.POST)

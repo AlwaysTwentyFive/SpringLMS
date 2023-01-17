@@ -166,15 +166,17 @@
 	</insert>
 	
 	<update id="updateAttendanceException" parameterType="com.oti.myuniversity.domain.attendance.model.AttendanceException">
-	<![CDATA[
+	
 		UPDATE
 			ATTENDANCES_EXCEPTIONS
 		SET
+			<if test="attendanceId > 0">
 			ATTENDANCEID=#{attendanceId},
+			</if>
 			ATTENDANCEEXCEPTIONAPPROVED=#{attendanceExceptionApproved}
 		WHERE
 			ATTENDANCEEXCEPTIONID=#{attendanceExceptionId}
-	]]>
+	
 	</update>
 	
 	<delete id="deleteAttendanceException" parameterType="int">
