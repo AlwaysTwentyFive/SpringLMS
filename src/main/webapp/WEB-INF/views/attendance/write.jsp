@@ -60,7 +60,7 @@
     }
 </script>
 <div class="container" id="writeContainer">
-	<h5>결석 사유 작성</h5>
+	<h5>출결 사유서 작성</h5>
 	<div class="card-body shadow bg-white rounded">
     	<form action="<c:url value='/attendance/write'/>" method="post" enctype="multipart/form-data">
     		<div class="row">

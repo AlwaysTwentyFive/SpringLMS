@@ -160,7 +160,7 @@ public class AttendanceController {
 	}
 
 	@RequestMapping(value = "/attendance/totalList/{studentId}")
-	public String getPersonalAttendanceList(HttpSession session, Model model, @PathVariable String studentId) {
+	public String getPersonalAttendanceList(Model model, @PathVariable String studentId) {
 		// 한 사람의 모든 출결 가져옴
 		LinkedList<Attendance> personalList = (LinkedList<Attendance>) attendanceService
 				.getPersonalAttendanceList(studentId);
@@ -319,9 +319,7 @@ public class AttendanceController {
 	}
 
 	@PostMapping("/attendance/manage")
-	public String manageException(HttpSession session, AttendanceException attendanceException,
-			int attendanceExceptionId, Date attendanceExceptionDate) {
-		
+	public String manageException(AttendanceException attendanceException, int attendanceExceptionId, Date attendanceExceptionDate) {
 		attendanceService.manageAttendance(attendanceException, attendanceExceptionDate);
 		return "redirect:/attendance/exception/" + attendanceExceptionId;
 	}
