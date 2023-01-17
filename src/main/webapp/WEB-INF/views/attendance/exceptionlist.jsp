@@ -4,7 +4,7 @@
 
 
 <div class="container">
-<h3>결석 신청서</h3>
+<h3>출결 사유서</h3>
 <br>
 	<table class="table table-hover shadow">
 		<thead style="background-color: #c6d2df;">
@@ -16,10 +16,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="attendanceException" items="${attendanceExceptionList}">
+			<c:forEach var="attendanceException" items="${attendanceExceptionList}" varStatus="i">
 			<tr>
-				<td>1</td>
-				<td style="text-align: center;"><a href="<c:url value='/attendance/exception/${attendanceException.attendanceExceptionId}'/>">${attendanceException.attendanceExceptionTitle}</a><img src="images/paperclip.png" width="18" class="mb-2"/></td>
+				<td>${i.count}</td>
+				<td style="text-align: center;"><a href="<c:url value='/attendance/exception/${attendanceException.attendanceExceptionId}'/>">${attendanceException.attendanceExceptionTitle}</a></td>
 				<td>${attendanceException.memberName}</td>
 				<td>${attendanceException.attendanceExceptionDate}</td>
 			</tr>

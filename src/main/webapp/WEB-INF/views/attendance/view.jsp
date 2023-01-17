@@ -112,7 +112,7 @@
 				<input type="hidden" name="attendanceExceptionId" value="${attendanceException.attendanceExceptionId}"/>
 				<input type="hidden" name="attendanceExceptionDate" value="${attendanceException.attendanceExceptionDate}"/>
 				<input type="hidden" name="attendanceExceptionApplyDate" value="${attendanceException.attendanceExceptionApplyDate}"/>
-				<c:if test="${attendanceException.attendanceExceptionApproved == null}">
+				<c:if test="${attendanceException.attendanceExceptionApproved == null && member.memberId == 'admin'}">
 				<button type="submit" name="attendanceExceptionApproved" value="true"  class="btn btn-sm btn-primary mx-2">승인</button>
 				<button type="submit" name="attendanceExceptionApproved" value="false" class="btn btn-sm btn-danger">거절</button>
 				</c:if>

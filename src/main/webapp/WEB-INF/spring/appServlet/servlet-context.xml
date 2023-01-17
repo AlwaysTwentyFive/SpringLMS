@@ -36,10 +36,10 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<resources location="/WEB-INF/resources/" mapping="/**"></resources>
-	<resources location="/WEB-INF/resources/js/" mapping="/js/**"></resources>
-	<resources location="/WEB-INF/resources/css/" mapping="/css/**"></resources>
-	<resources location="/WEB-INF/resources/images/" mapping="/images/**"></resources>
+	<resources location="/resources/" mapping="/**"></resources>
+	<resources location="/resources/js/" mapping="/js/**"></resources>
+	<resources location="/resources/css/" mapping="/css/**"></resources>
+	<resources location="/resources/images/" mapping="/images/**"></resources>
 	
 	<!-- ViewController -->
 	<view-controller path="/" view-name="member/login"/>

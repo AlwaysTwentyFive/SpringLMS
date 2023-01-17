@@ -129,13 +129,13 @@
 							<tr>
 								<td class="col-6">제목</td>
 								<td class="col-6">
-									<input id="writeTitle" type="text" name="boardTitle">
+									<input id="writeTitle" type="text" name="boardTitle" required>
 								</td>
 							</tr>	
 							<tr>
 								<td class="col-6">내용</td>
 								<td class="col-6">
-									<textarea id="writeContent" name="boardContent"></textarea>
+									<textarea id="writeContent" name="boardContent" required></textarea>
 								</td>
 							</tr>	
 							<tr>
@@ -144,7 +144,7 @@
 									<div class="form-group" id="file-list">
 								        <a href="#this" onclick="addFile()">파일추가</a>
 								        <div class="file-group">
-								            <input type="file" name="files"><a href='#this' class='file-delete'>삭제</a>
+								            <input type="file" name="files"><a href='#this' class='file-delete' required>삭제</a>
 								        </div>
 								    </div>		
 								</td>
