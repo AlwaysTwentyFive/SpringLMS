@@ -83,9 +83,11 @@
 								<div class="collapse collapseZero text-left mb-2">
 									<a href="<c:url value='/member/list'/>">학생 명단</a>
 								</div>
+								<c:if test="${sessionScope.member.memberType != 'admin'}">
 								<div class="collapse collapseZero text-left">
 									<a href="<c:url value='/member/update'/>">개인정보 수정</a>
 								</div>
+								</c:if>
 							</div>
 						</div>
 						
@@ -109,12 +111,16 @@
 								style="font-size: 23px;"><b>ATTENDNACE</b></a>
 							<hr />
 							<div class="d-flex flex-column">
+								<c:if test="${sessionScope.member.memberType != 'admin'}">
 								<div class="collapse collapseTwo text-left mb-3">
 									<a href="<c:url value='/attendance/totalList/${sessionScope.member.memberId}'/>">나의 출결 현황</a>
 								</div>
+								</c:if>
+								<c:if test="${sessionScope.member.memberType != 'admin'}">
 								<div class="collapse collapseTwo text-left mb-3">
 									<a href="<c:url value='/attendance/write'/>">사유서 신청하기</a>
 								</div>
+								</c:if>
 								<div class="collapse collapseTwo text-left mb-3">
 									<a href="<c:url value='/attendance/list'/>">전체 출결 조회</a>
 								</div>
@@ -148,6 +154,7 @@
 	                        </div>
 	                     </div>
 	                  </div>
+	                  <c:if test="${sessionScope.member.memberType != 'admin'}">
 	                  <div class=" d-flex  justify-content-center">
 	                     <div id="divClock"
 	                        class="clock w-btn-outline w-btn-yellow-outline mb-3 mr-2 "
@@ -172,7 +179,9 @@
 	                        </c:if>
 	                        </div>
 	                  </div>
+	                  </c:if>
 	                
+	                	<c:if test="${sessionScope.member.memberType != 'admin'}">
 		                  <div class="bttn">
 		                  	<!-- 출근을 안했다면 c:if~~ 했다면 퇴근하기 버튼 -->
 		                  	<c:if test="${day != 1 and day != 7 and departTime == null}">
@@ -189,6 +198,7 @@
 			                  	</c:if>
 		                  	</c:if>
 		                  </div>
+		                 </c:if>
 	                 
 	               </div>
 	               <!-- 카드 내용 -->				

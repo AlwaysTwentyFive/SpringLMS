@@ -24,7 +24,16 @@ tr, th, td {
 			<c:forEach var="member" items="${memberList}" varStatus="i">
 			<tr>
 				 <td>${i.count + (pager.pageNo - 1) * 10}</td>
-				 <td><a href="<c:url value='/attendance/totalList/${member.memberId}'/>">${member.memberName}</a></td>
+				 <td>
+				 <c:if test="${sessionScope.member.memberType == 'admin'}">
+					 <a href="<c:url value='/attendance/totalList/${member.memberId}'/>">
+				 	${member.memberName}
+				 	</a>
+				 </c:if>
+				 <c:if test="${sessionScope.member.memberType != 'admin'}">
+					 ${member.memberName}
+				 </c:if>
+				 </td>
 				 <td>${member.memberEmail}</td>
 				 <td>${member.memberPhoneNumber}</td>
 			</tr>
