@@ -60,6 +60,10 @@ input[type=text], select, textarea {
     function deleteFile(obj) {
         obj.parent().remove();
     }
+    
+    function cancle1() {
+    	console.log("실행");
+    }
 </script>
 
 
@@ -86,7 +90,7 @@ input[type=text], select, textarea {
 				<input type="hidden" name ="memberId" value="${member.memberId}">
 				<input type="hidden" name="boardCategory" value="${categoryType}">
 				<div class="d-flex justify-content-center">
-			        <input class="ml-3 btn btn-md " id="cancle" type="reset" value="취소">
+			        <input class="ml-3 btn btn-md " id="cancle" type="button" onclick="cancle1()" value="취소">
 			        <input class="ml-3 btn btn-md " id="register" type="submit" value="등록">
 				</div>
 	    	</form>

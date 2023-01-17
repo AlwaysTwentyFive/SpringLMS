@@ -262,7 +262,7 @@ public class AttendanceController {
 		model.addAttribute("lateCount", lateCount);
 		model.addAttribute("sickCount", sickCount);
 		model.addAttribute("goOutCount", goOutCount);
-		return "/attendance/list";
+		return "attendance/list";
 	}
 
 	@GetMapping("/attendance/write")

@@ -57,7 +57,7 @@
 									<a class="btn btn-info btn-sm" href="<c:url value="/member/logout"/>">로그아웃</a>
 								</div>
 								<img class="mb-1 p-2" src="<c:url value="/images/userProfile.png"/>" width="60">
-								<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${member.memberName}</div>
+								<div class="mr-5 pt-3 pl-0" id="studentForm" style="color: white;">${sessionScope.member.memberName}</div>
 							</div>
 						</div>
 					<div id="bottomHeader" class="d-flex justify-content-center">
@@ -165,7 +165,7 @@
 	                     <div class="clock w-btn-outline w-btn-yellow-outline mb-3 "
 	                        style="width: 210px; text-align: center;">퇴근시간 : 
 	                        <c:if test="${departTime != null}">
-	                        <fmt:formatDate pattern="hh:mm:ss" value="${departTime}"/>
+	                        <fmt:formatDate pattern="HH:mm:ss" value="${departTime}"/>
 	                        </c:if>
 	                        <c:if test="${departTime == null}">
 	                        -
