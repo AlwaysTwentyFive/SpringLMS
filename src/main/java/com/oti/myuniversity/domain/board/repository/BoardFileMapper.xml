@@ -6,7 +6,7 @@
 	<select id="selectfileList" resultType="com.oti.myuniversity.domain.board.model.BoardFile" parameterType="int">
 		<![CDATA[
 			select
-				boardFileId, boardFileName, boardFileContentType
+				boardFileId, boardFileName, boardFileContentType, boardFileSize
 			from boards_files
 			where boardid=#{boardId}
 		]]>
