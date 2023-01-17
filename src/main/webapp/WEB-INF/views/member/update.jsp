@@ -59,11 +59,6 @@
 		<input type="date" name="memberBirthday" placeholder="" required>
 	</div>
 	<hr/>
-	<div class="d-flex justify-content-start">
-		<div class="badge badge-white col-2 mr-5" style="text-align: left;">Profile</div>
-		<input type="file" name="file" required>
-	</div>
-	<hr/>
 	<input type="hidden" name="memberName" value=""/>
 	<input type="hidden" name="memberType" value=""/>
 	<div style="text-align:center;margin-top:25px;">
