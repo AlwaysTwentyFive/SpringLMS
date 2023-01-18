@@ -27,9 +27,6 @@ public class MemberController {
 	IMemberService memberService;
 	
 	@Autowired
-	IAttendanceService attendService;
-	
-	@Autowired
 	Pager pager;
 	
 	private void resetSession(HttpSession session, Member member) {
@@ -87,33 +84,29 @@ public class MemberController {
 	
 	@PostMapping("/member/update")
 	public String updateMember(Member member, HttpSession session, Model model) {
+		String memberId = ((Member) session.getAttribute("member")).getMemberId();
 		String password = member.getMemberPassword();
 		String repassword = member.getRepassword();
 		
-		if (password != null && repassword != null) {
+		if (member.getMemberId().equals(memberId)) {
 			if (password.equals(repassword)) {
-				//update Member
+				
+				member.setMemberId(memberId);
 				memberService.updateMember(member);
 				
-				//get member id from session 
-				//to select updated member data
-				String memberId = ((Member) session.getAttribute("member")).getMemberId();
-				member = memberService.selectMember(memberId);
-				
-				//reset session with new member data
 				resetSession(session, member);
 				
 				model.addAttribute("member", member);
 				return "redirect:/home";
 			}
 			else {
-				System.out.println("!password.equals(repassword)");
-				return "redirect:/member/update";
+				model.addAttribute("message", "비밀번호를 정확히 입력했는지 확인해주세요.");
+				return "member/update";
 			}
 		}
 		else {
-			System.out.println("password == null || repassword == null");
-			return "redirect:/member/update";
+			model.addAttribute("message", "아이디를 확인해주세요.");
+			return "member/update";
 		}
 		
 	}

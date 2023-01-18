@@ -24,7 +24,6 @@
 		UPDATE 
 			MEMBERS 
 		SET 
-			memberId=#{memberId},
 			memberPassword=#{memberPassword},
 			memberEmail=#{memberEmail},
 			memberPhoneNumber=#{memberPhoneNumber},

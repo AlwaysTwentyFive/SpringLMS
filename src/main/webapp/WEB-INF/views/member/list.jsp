@@ -44,7 +44,7 @@ tr, th, td {
 <c:if test="${pager.totalRows > 0}">
 <div class="pager d-flex justify-content-center my-3">
    	<div class="flex-fulfill"></div>
-   		<div class="pagingButtonSet d-flex justify-content-center col-5">
+   		<div class="pagingButtonSet d-flex justify-content-center col-7">
 	        <a href="<c:url value='/member/list/1'/>" type="button" class="btn btn-muted shadow">처음으로</a>
 	        
 	      	<c:if test="${pager.groupNo > 1}">

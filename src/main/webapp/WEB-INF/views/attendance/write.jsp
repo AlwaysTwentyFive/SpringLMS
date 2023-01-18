@@ -76,9 +76,10 @@
 	        
 	        </div>
 	        <input type="text" id="attendanceExceptionTitle" name="attendanceExceptionTitle" placeholder="title" required>
-	
+			<hr/>
 	        <label for="boardContent">내용</label>
 	        <textarea id="attendanceExceptionContent" name="attendanceExceptionContent" placeholder="content" style="height:200px" required></textarea>
+			<hr/>
 			<div class="d-flex">
 				<div>
 					<label for="date">신청날짜:</label>
@@ -89,6 +90,7 @@
 					<input type="time" id="time" name="time" class="form-control ml-3" style="width:150px; height:30px;" required>
 				</div>
 			</div>
+			<hr/>
 			<div class="d-flex mt-2">
 				<div class="d-flex flex-wrap align-content-center"><label for="file">첨부파일:</label></div>
 				<div class="form-group" id="file-list">
