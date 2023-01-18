@@ -107,11 +107,9 @@
 								<div class="collapse collapseTwo text-left mb-3">
 									<a href="<c:url value='/attendance/list'/>">전체 출결 조회</a>
 								</div>
-								
 								<div class="collapse collapseTwo text-left">
 									<a href="<c:url value='/attendance/exceptionlist'/>">사유서 조회</a>
 								</div>
-				
 							</div>
 						</div>
 					</div>
