@@ -93,7 +93,7 @@ public class MemberController {
 				
 				member.setMemberId(memberId);
 				memberService.updateMember(member);
-				
+				member = memberService.selectMember(memberId);
 				resetSession(session, member);
 				
 				model.addAttribute("member", member);
