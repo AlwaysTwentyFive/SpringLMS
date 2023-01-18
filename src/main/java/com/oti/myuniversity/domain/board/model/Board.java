@@ -19,6 +19,7 @@ public class Board {
 	private Timestamp reportDeadlineTime;
 	private int reportNoticeId;
 	private String isSubmit;
+	private int commentCount;
 	
 	private String memberName;
 	
@@ -119,5 +120,11 @@ public class Board {
 				+ ", submissionSubmitDate=" + submissionSubmitDate + ", submissionScore=" + submissionScore
 				+ ", memberId=" + memberId + ", reportDeadLineTime=" + reportDeadlineTime + ", memberName=" + memberName
 				+ "]";
+	}
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
 	}
 }

@@ -32,7 +32,12 @@
 					<tr>
 						<td class="col-6">
 							<a href="<c:url value='/board/${board.boardId}/${pager.pageNo}'/>">
+								<c:if test="${board.commentCount == 0}">
 								${board.boardTitle}
+								</c:if>
+								<c:if test="${board.commentCount != 0}">
+								${board.boardTitle} (${board.commentCount})
+								</c:if>
 							</a>
 						</td>
 						<td class="col-3">${board.boardDate}</td>
