@@ -245,7 +245,7 @@ input[type=text], textarea[type=reportReply]{
 				<div class="col-2">${acomment.memberName}</div>
 				<div class="col-8">
 					<div class="rContent" id="${status.count}">${acomment.commentContent}</div>
-					<textarea id="updateArea${status.count}" name="commentContent" rows="3" cols="150" style="width:450px; display:none;"></textarea>
+					<textarea id="updateArea${status.count}" name="commentContent" rows="3" cols="150" style="width:450px; display:none;">${acomment.commentContent}</textarea>
 				</div>
 				<div class="col-2">
 					<c:if test="${acomment.memberId eq sessionScope.member.memberId}">

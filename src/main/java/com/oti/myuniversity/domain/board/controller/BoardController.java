@@ -54,6 +54,15 @@ public class BoardController {
 		
 		List<Board> tempBoardList = boardService.selectArticleListByCategoryType(categoryType, pager);
 		List<Board> boardList = new ArrayList<Board>();
+		
+		//댓글 개수 가져오기
+		for(Board board : tempBoardList) {
+			List<Comment> commentList = new ArrayList<Comment>();
+			commentList = boardService.selectCommentList(board.getBoardId());
+			board.setCommentCount(commentList.size());
+		}
+		
+		//관리자일 경우
 		if(member.getMemberType().equals("admin")) {
 			boardList = tempBoardList;
 			model.addAttribute("boardList", boardList);
@@ -70,7 +79,11 @@ public class BoardController {
 			for(Board board : tempBoardList) {
 				Board myBoard = boardService.selectScoreNContent(member.getMemberId(), board.getBoardId());
 				if(myBoard != null) {
-					board.setIsSubmit("제출");
+					if(myBoard.getSubmissionSubmitDate().before(board.getReportDeadline()) ||myBoard.getSubmissionSubmitDate().equals(board.getReportDeadline()) ) {
+						board.setIsSubmit("제출");
+					} else {
+						board.setIsSubmit("지각");
+					}
 					board.setSubmissionScore(myBoard.getSubmissionScore());
 				} else {
 					board.setIsSubmit("미제출");

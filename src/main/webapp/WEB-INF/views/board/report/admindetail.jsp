@@ -55,9 +55,9 @@
 </style>
 
 <script>
-	function confirmDelete(){
-		var studentsBoard = $(this).next().val();
-		if(studentsBoard == null){
+	function confirmDelete(studentsBoard){
+		console.log(studentsBoard);
+		if(studentsBoard === 0){
 			var confirmflag = confirm("삭제 하시겠습니까?");
 			if(confirmflag){
 				form.action = "<c:url value='/board/delete'/>";
@@ -90,8 +90,7 @@
 			<input type="hidden" name="memberId" value="${board.memberId}">
 			<input type="hidden" name="pageNo" value="${pageNo}">
 			<button name="update" class="btn btn-sm btn-primary mx-2" formaction='<c:url value="/board/update/${board.boardId}"/>'>수정</button>
-			<button name="delete" class="btn btn-sm btn-danger" onclick="confirmDelete()">삭제</button>
-			<input type="hidden" name="studentsBoard" value="${studentsBoard}">
+			<button name="delete" class="btn btn-sm btn-danger" onclick="confirmDelete(${studentsBoard.size()})">삭제</button>
 		</div>
 	</c:if>
 	</form>
@@ -124,17 +123,17 @@
 					<th class="stcontent" style="width:20%">과제</th>
 					<th class="stdate" style="width:20%">제출 날짜</th>
 					<th class="stscore" style="width:20%">점수</th>
-					<th class="stinsert" style="width:20%">입력</th>
+					<th class="stinsert" style="width:10%">입력</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${empty studentsBoard}">
 				<tr>
-					<th class="stname" style="width:20%">학생이름</th>
-					<th class="stcontent" style="width:20%">과제</th>
-					<th class="stdate" style="width:20%">제출 날짜</th>
-					<th class="stscore" style="width:20%">점수</th>
-					<th class="stinsert" style="width:20%">입력</th>
+					<th class="stname" style="width:20%">-</th>
+					<th class="stcontent" style="width:20%">-</th>
+					<th class="stdate" style="width:20%">-</th>
+					<th class="stscore" style="width:20%">-</th>
+					<th class="stinsert" style="width:10%">-</th>
 				</tr>
 				</c:if>
 				<c:if test="${!empty studentsBoard}">
@@ -164,11 +163,6 @@
 				</c:if>
 			</tbody>
 		</table>
-		<!-- <br><br><h4>Feedback</h4><br>
-		<textarea name="reportFeedback" placeholder="피드백 작성란" class="col-12" rows="3" cols="150"></textarea>
-		<div class="d-flex justify-content-end">
-			<button type="submit" class="btn btn-sm btn-warning mt-2">과제 평가 완료하기</button>
-		</div> -->
 		<hr>
 		<h4>[평가 완료]</h4>
 		<table class="table table-bordered mt-3">
@@ -178,17 +172,17 @@
 					<th class="stcontent" style="width:20%">과제</th>
 					<th class="stdate" style="width:20%">제출 날짜</th>
 					<th class="stscore" style="width:20%">점수</th>
-					<th class="stinsert" style="width:20%">입력</th>
+					<th class="stinsert" style="width:10%">입력</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${empty studentsBoard}">
 				<tr>
-					<th class="stname" style="width:20%">학생이름</th>
-					<th class="stcontent" style="width:20%">과제</th>
-					<th class="stdate" style="width:20%">제출 날짜</th>
-					<th class="stscore" style="width:20%">점수</th>
-					<th class="stinsert" style="width:20%">입력</th>
+					<th class="stname" style="width:20%">-</th>
+					<th class="stcontent" style="width:20%">-</th>
+					<th class="stdate" style="width:20%">-</th>
+					<th class="stscore" style="width:20%">-</th>
+					<th class="stinsert" style="width:10%">-</th>
 				</tr>
 				</c:if>
 				<c:if test="${!empty studentsBoard}">

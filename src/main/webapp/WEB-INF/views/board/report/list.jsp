@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
-<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<!-- content -->
   	<form action="<>">
@@ -39,7 +38,7 @@
 						</td>
 							<td class="col-3">${board.reportDeadline}</td>
 							<td class="col-2">${board.isSubmit}</td>
-							<c:if test="${board.isSubmit eq '제출'}">
+							<c:if test="${board.isSubmit eq '제출'||board.isSubmit eq '지각'}">
 								<td class="col-2">${board.submissionScore}점</td>
 							</c:if>
 							<c:if test="${board.isSubmit eq '미제출'}">
