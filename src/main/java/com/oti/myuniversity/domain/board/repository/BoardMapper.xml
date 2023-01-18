@@ -30,7 +30,7 @@
 
 <select id="selectScoreNContent" resultType="com.oti.myuniversity.domain.board.model.Board">
 	<![CDATA[
-		SELECT SUBMISSIONSCORE, MEMBERID 
+		SELECT SUBMISSIONSCORE, MEMBERID, SUBMISSIONSUBMITDATE 
 		FROM BOARDS
 		WHERE MEMBERID = #{memberId} and REPORTNOTICEID = #{boardId}
 
