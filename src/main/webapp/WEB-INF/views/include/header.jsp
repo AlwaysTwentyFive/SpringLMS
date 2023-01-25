@@ -91,7 +91,7 @@
 				
 						<div class="d-flex flex-column my-2">
 							<a class="text-left " data-toggle="collapse" href=".collapseTwo"
-								style="font-size: 23px;"><b>ATTENDNACE</b></a>
+								style="font-size: 23px;"><b>ATTENDANCE</b></a>
 							<hr />
 							<div class="d-flex flex-column">
 								<c:if test="${sessionScope.member.memberType != 'admin'}">

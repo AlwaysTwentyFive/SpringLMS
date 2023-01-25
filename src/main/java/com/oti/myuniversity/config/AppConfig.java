@@ -12,6 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import com.oti.myuniversity.component.ServerTimeSupplier;
 import com.oti.myuniversity.domain.attendance.model.Attendance;
 import com.oti.myuniversity.domain.attendance.repository.IAttendanceRepository;
+import com.oti.myuniversity.domain.attendance.service.AttendanceService;
+import com.oti.myuniversity.domain.attendance.service.IAttendanceService;
 
 @EnableScheduling
 @Configuration
@@ -19,7 +21,7 @@ public class AppConfig {
 
 	//XML에 빈 등록을 해놓아서 Autowired가 작동함
 	@Autowired
-	IAttendanceRepository attendanceRepository;
+	IAttendanceService attendanceService;
 	
 	//Http 요청 시 마다 attendance 객체 생성, Attendance 필드 생성 시, initializedAttendance라고 명명하면 이  Bean이 반환 됨.
 	//request scope를 가지는 경우, Provider를 따로 만들거나, proxymode의 TARGET_CLASS을 이용해야 한다.
@@ -40,7 +42,7 @@ public class AppConfig {
 	@Scheduled(cron="0 0 0 * * *")
 	public void checkTodayAttendance() {
 		String attendanceDate = ServerTimeSupplier.getToday().toString();
-		int result = attendanceRepository.updateTodayAttendance(attendanceDate);
+		int result = attendanceService.updateTodayAttendance(attendanceDate);
 		ServerTimeSupplier.plusToday();
 		System.out.println(System.currentTimeMillis());
 		System.out.println("[Auto update Attendance]: " + result);
