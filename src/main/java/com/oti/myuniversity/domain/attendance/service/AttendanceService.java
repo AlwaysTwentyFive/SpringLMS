@@ -176,4 +176,9 @@ public class AttendanceService implements IAttendanceService {
 		attendanceExceptionRepository.updateAttendanceException(attendanceException);
 	}
 
+	@Override
+	public int updateTodayAttendance(String attendanceDate) {
+		return attendanceRepository.updateTodayAttendance(attendanceDate);
+	}
+
 }

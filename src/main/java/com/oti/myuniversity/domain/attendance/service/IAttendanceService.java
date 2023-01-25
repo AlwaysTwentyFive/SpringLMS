@@ -28,4 +28,5 @@ public interface IAttendanceService {
 	int applyException(AttendanceException attendanceException, MultipartFile[] attendanceExceptionFiles) throws IOException;
 	Model getAttendance(int boardId, Model model);
 	void manageAttendance(AttendanceException attendanceException, Date attendanceExceptionDate);
+	int updateTodayAttendance(String attendanceDate);
 }
